@@ -1,4 +1,4 @@
-# Week 2 {-}
+# Week 2 
 
 
 ## A quick introduction of terms
