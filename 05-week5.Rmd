@@ -1,0 +1,248 @@
+# Week 5 {-}
+
+## What we'll do today
+
+We have now covered quite a bit. You've learnt about spatial objects and various formats in which they come and are stored by R, how to produce maps using a variety of packages, and also provided you with a brief introduction to common spatial operations. In what remains of the semester we are going to shift the emphasis and start focusing a bit more on spatial statistics. First we will focus on techniques that are used to explore and analyse points in a geographical space and in subsequent sessions we will cover techniques that are used to analyse spatial data when our unit of analysis are polygons (e.g., postal code areas, census areas, police beats, etc).
+
+We will introduce a new R package called **spatstat**, that was developed for spatial point pattern analysis and modelling. It was written by Adrian Baddeley and Rolf Turner. There is a [webpage](http://spatstat.org) dedicated to this package. The [thickest book](https://www.crcpress.com/Spatial-Point-Patterns-Methodology-and-Applications-with-R/Baddeley-Rubak-Turner/p/book/9781482210200) in my library, at 810 pages, is dedicated to this package. So as you can imagine the theory and practice of spatial pattern analysis is something one could devote an entire course to. You can get a pdf document used in a course the authors of this package develop [here](https://research.csiro.au/software/wp-content/uploads/sites/6/2015/02/Rspatialcourse_CMIS_PDF-Standard.pdf). In our course we are only going to provide you with an introductory practical entry into this field of techniques. If this package is not installed in your machine, make sure you install it before we carry on.
+
+```{r, warnings=FALSE, message=FALSE}
+library(sf)
+library(tmap)
+library(dplyr)
+library(spatstat)
+```
+
+## Getting the data
+
+We will using the crime data from Greater Manchester police we have been using so far. Let's focus on burglary in the Fallowfield area. The code below has already been explained and used in previous sessions, so we won't go over the detail again. But rather than cut and paste automatically, try to remember what each line of code is doing.
+
+By the way, the police data for Manchester we have used in previous sessions correspond to only one month of the year. Here we are using a full year worth of data, so the data import will take a bit longer.
+
+```{r}
+#Read a geojson file with Manchester wards
+manchester_ward <- st_read("https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson")
+#Create a new object that only has the city centre ward
+df1 <- manchester_ward %>%
+  filter(wd16nm == "Fallowfield")
+#Change coordinate systems
+fallowfield <- st_transform(df1, 4326)
+#Get rid of objects we no longer need
+rm(manchester_ward)
+rm(df1)
+
+#Read Greater Manchester police data
+crimes <- read.csv("https://raw.githubusercontent.com/jjmedinaariza/CrimeMapping/master/gmpcrime.csv")
+burglary <- filter(crimes, crime_type == "Burglary")
+
+#Transform the dataframe with crime information into a sf object
+burglary_spatial = st_as_sf(burglary, coords = c("long", "lat"), 
+                 crs = 4326, agr = "constant")
+
+#Select only the crimes that take place within the space defined by the Ward boundaries
+# intersection
+bur_fal <- st_intersects(fallowfield, burglary_spatial)
+# subsetting
+bur_fal <- burglary_spatial[unlist(bur_fal),]
+rm(crimes)
+rm(burglary)
+
+#Let's see the results
+tm_shape(fallowfield) + 
+  tm_fill() +
+  tm_shape(bur_fal) +
+  tm_dots()
+
+```
+
+In the point pattern analysis literature each point is often referred to as an **event** and these events can have **marks**, attributes or characteristics that are also encoded in the data. In our spatial object one of these *marks* is the type of crime (altough in this case it's of little interest since we have filtered on it).
+
+## Getting the data into spatstat: the problem with duplicates
+
+So let's start using spatstat.The first thing we need to do is to transform our sf object into a **ppp** object which is how spatstat likes to store its point patterns. Unfortunately, spatstat and many other packages for analysis of spatial data precede sf, so the transformation is a bit awkard. Also before we do that, it is important to realise that a point pattern is defined as a series of events in a given area, or window, of observation. It is therefore extremely important to precisely define this window. In *spatstat* the function *owin()* is used to set the observation window. However, the standard function takes the coordinates of a rectangle or of a polygon from a matrix, and therefore it may be a bit tricky to use. Luckily the package *maptools* provides a way to transform a SpatialPolygons into an object of class owin, using the function as.owin 
+
+```{r}
+#First we transform our Falllowfield polygon into a sp object
+fallowfield_sp <-as(fallowfield, "Spatial")
+#Then we use the as.owin function to define the window
+window <- maptools::as.owin.SpatialPolygons(fallowfield_sp)
+#Check that this worked
+class(window)
+window
+
+```
+
+Now that we have created the window as an owin object let's get the points:
+
+```{r}
+
+#First we will extract the coordinates from our sf point data into a matrix
+sf_bur_fal_coords <- matrix(unlist(bur_fal$geometry), ncol = 2, byrow = T)
+#Then we use the ppp function to create the object using the information from our matrix and the window that we created
+bur_ppp <- ppp(x = sf_bur_fal_coords[,1], y = sf_bur_fal_coords[,2],
+                   window = window, check = T)
+plot(bur_ppp)
+
+```
+
+
+Notice the warning message about duplicates. In spatial point pattern analysis an issue of significance is the presence of duplicates. The statistical methodology used for spatial point pattern processes is based largely on the assumption that processes are simple, that is, that the points cannot be coincident. That assumption may be unreasonable in many contexts (for example, the literature on repeat victimisation indeed suggests that we should expect the same households to be at a higher risk of being hit again). Even so the point (no pun intended) is that "when the data has coincidence points, some statistical procedures will be severely affected. So it is always strongly advisable to check for duplicate points and to decide on a strategy for dealing with them if they are present" (Baddeley et al., 2016: 60).
+
+We can check the duplication in a ppp object with the following syntax:
+
+```{r}
+any(duplicated(bur_ppp))
+```
+
+To count the number of coincidence points we use the multiplicity() function. This will return a vector of integers, with one entry for each observation in our dataset, giving the number of points that are identical to the point in question (including itself).
+
+```{r, eval=FALSE}
+
+multiplicity(bur_ppp)
+```
+
+If you want to know how many locations have more than one event you can use:
+
+```{r}
+sum(multiplicity(bur_ppp) > 1)
+```
+
+That's quite something. 190 points out of 223 here share coordinates.
+
+```{r}
+tm_shape(fallowfield) + 
+  tm_fill() +
+  tm_shape(bur_fal) +
+  tm_dots(alpha=0.4, size=1)
+```
+
+In the case of crime, as we have hinted some of this may be linked to the nature of crime itself. Hint: repeat victimisation. However, this pattern of duplication is fairly obvious across all crime categories in the police.uk website and, although I have not explored this in detail, I strongly suspect it is a function of the anonimisation process used to create these maps. The coordinates provided in the open data are not the exact locations of crimes, but they come from a list of points generated for purposes of data publication. You can see the details [here](https://data.police.uk/about/#anonymisation). This process is likely inflating the amount of duplication we observe. So keep in mind when analysing and working with this data that it is not the same as working with the real locations.
+
+What to do about duplicates in spatial point pattern analysis is not always clear. You could simply delete the duplicates, but of course that may ignore issues such as repeat victimisation. You could also use jittering, which will add a small perturbation to the duplicate points so that they do not occupy the exact same space. Which again, may ignore things like repeat victimisation. Another alternative is to make each point "unique" and then attach the multiplicites of the points to the patterns as *marks*, as attributes of the points. Then you would need analytical techniques that take into account these marks.
+
+If you were to be doing this for real you would want access to the real thing, not this public version of the data and then go for the second solution suggested above. We don't have access to the source data, so for the sake of simplicity and so that we can illustrate how spatstat works we will add some jittering to the data. The first argument for the function is the object, retry asks whether we want the algorithm to have another go if the jittering places a point outside the window (we want this so that we don't loose points), and the drop argument is used to ensure we get a ppp object as a result of running this function.
+
+```{r}
+jitter_bur <- rjitter(bur_ppp, retry=TRUE, nsim=1, drop=TRUE)
+plot(jitter_bur)
+```
+
+Notice the difference with the original plot. Can you see how the circumferences do not overlap perfectly now?
+
+## Inspecting our data with spatstat
+
+This package supports all kind of exploratory point pattern analysis. One example of this is quadrant counting. One could divide the window of observation into quadrants and count the number of points into each of these quadrants. For example, if we want four quadrants along the X axis and 3 along the Y axis we could used those parameters in the quadratcount() function. Then we just use standard plotting functions from R base.
+
+```{r}
+Q <- quadratcount(jitter_bur, nx = 4, ny = 3)
+plot(jitter_bur)
+plot(Q, add = TRUE, cex = 2)
+
+```
+
+In the video lectures by Luc Anselin would were exposed to the notion of complete spatial randomness (CSR). When we look at a point pattern process the first step in the process is whether it has been generated in a random manner. Under CSR, points are independent of each other and have the same propensity to be found at any location. We can generate data that conform to complete spatial randomness using the *rpoispp()* function. The r at the beginning is used to denote we are simulating data (you will this is common in R) and we are using a Poisson point process. Let's generate 223 points in a random manner:
+
+```{r}
+plot(rpoispp(223))
+```
+
+You will notice that the points in a homogeneous Poisson process are not ‘uniformly spread’: there are empty gaps and clusters of points. Run the previous command a few times. You will see the map generated is different each time.
+
+In classical literature, the homogeneous Poisson process (CSR) is usually taken as the appropriate ‘null’ model for a point pattern. Our basic task in analysing a point pattern is to find evidence against CSR. We can run a Chi Square test to check this. So, for example:
+
+```{r}
+quadrat.test(jitter_bur, nx = 3, ny = 2)
+
+```
+
+Observing the results we see that the p value is well below convential standards for rejection of the null hypothesis. Observing data as the one we have for burglary in Fallowfield would be extremely rare if the null hypothesis was true. We can then conclude that the burglary data is not randomly distributed in the observed space. But no cop nor criminologist would really question this. We do know that crime is not randomly distributed in space. 
+
+## Density estimates
+
+In the presentations by Luc Anselin and the recommended reading materials we introduced the notion of density maps. Kernel density estimation involves applying a function (known as a “kernel”) to each data point, which averages the location of that point with respect to the location of other data points. 
+
+```{r}
+ds <- density(jitter_bur)
+class(ds)
+plot(ds, main='Burglary density in Fallowfield')
+```
+
+The density function is estimating a kernel density estimate. Density is nothing but the number of points per unit area. This method computes the intensity continuously across the study area and the object return is a raster image. To perform this analysis in R we need to define the bandwidth of the density estimation, which basically determines the area of influence of the estimation. There is no general rule to determine the correct bandwidth; generally speaking if h is too small the estimate is too noisy, while if h is too high the estimate may miss crucial elements of the point pattern due to oversmoothing (Scott, 2009). 
+
+The key argument to pass to the density method for point patterm objects is sigma=, which determines the bandwidth of the kernel. In spatstat the functions bw.diggle, bw.ppl, and bw.scott can be used to estimate the bandwidth according to difference methods. The helpfiles recommend the use of the first two. These functions run algorithms that aim to select an appropriate bandwith.
+
+```{r}
+bw.diggle(jitter_bur)
+bw.ppl(jitter_bur)
+bw.scott(jitter_bur)
+```
+
+You can see the Diggle algorithm gives you the narrower bandwith. We can test how they work with our dataset using the following code:
+
+```{r}
+
+par(mfrow=c(2,2))
+plot(density.ppp(jitter_bur, sigma = bw.diggle(jitter_bur),edge=T),
+     main = paste("h = 0.000003"))
+
+plot(density.ppp(jitter_bur, sigma = bw.ppl(jitter_bur),edge=T),
+     main=paste("h =0.0005"))
+
+plot(density.ppp(jitter_bur, sigma = bw.scott(jitter_bur)[2],edge=T),
+     main=paste("h = 0.0008"))
+
+plot(density.ppp(jitter_bur, sigma = bw.scott(jitter_bur)[1],edge=T),
+     main=paste("h = 0.004"))
+
+```
+
+Baddeley et (2016) suggest the use of the bw.ppl algorithm because in their experience it tends to produce the more appropriate values when the pattern consists predominantly of tight clusters. But they also insist that to detect a single tight cluster in the midst of random noise the bw.diggle method seems to work best.
+
+## Adding some context
+
+Often it is convenient to use a basemap to provide context. In order to do that we first need to turn the image object generated by the spatstat package into a raster object, a more generic format for raster image used in R. 
+```{r}
+library(raster)
+dmap1 <- density.ppp(jitter_bur, sigma = bw.ppl(jitter_bur),edge=T)
+r1 <- raster(dmap1)
+#remove very low density values
+r1[r1 < 0.0001 ] <- NA
+class(r1)
+```
+
+Now that we have the raster we can add it to a basemap. 
+
+Two-dimensional RasterLayer objects (from the raster package) can be turned into images and added to Leaflet maps using the addRasterImage function.
+
+The addRasterImage function works by projecting the RasterLayer object to EPSG:3857 and encoding each cell to an RGBA color, to produce a PNG image. That image is then embedded in the map widget.
+
+It’s important that the RasterLayer object is tagged with a proper coordinate reference system. Many raster files contain this information, but some do not. Here is how you’d tag a raster layer object “r” which contains WGS84 data:
+
+```{r}
+library(leaflet)
+
+#make sure we have right CRS. We need the sp package for setting CRS to this raster: 
+library(sp)
+crs(r1) <- sp::CRS("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs")
+
+#we also create a colour palet
+pal <- colorNumeric(c("#0C2C84", "#41B6C4", "#FFFFCC"), values(r1),
+  na.color = "transparent")
+
+#and then make map!
+leaflet() %>% 
+  setView(lng = -2.225814, lat = 53.441315, zoom = 14) %>% 
+  addTiles() %>%
+  addRasterImage(r1, colors = pal, opacity = 0.8) %>%
+  addLegend(pal = pal, values = values(r1),
+    title = "Burglary map")
+
+```
+
+And therw you have it. Perhaps those familiar with Fallowfield have some guesses as to what may be going on there?
+
+### Homework 1
+Ok, so see if you can do something like what we have done today, but for violent crime in the city centre. Produce the density estimates and then plot the density plot. In addition add a layer of points with the licenced premises we looked at last week.
+
+### Homework 2
+Produce a kernel density estimate for burglary across the whole of the city. Where is burglary more concentrated?

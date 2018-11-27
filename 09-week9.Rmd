@@ -1,0 +1,134 @@
+# Week 9 {-}
+
+## Introduction
+
+Last week we provided you with an introduction to regression analysis with R. the data we used had a spatial component. We were modelling the geographical distribution of homicide across US counties. However, we did not incorporated this spatial component into our models. As we have explained througout the semester criminal events often cluster geographically in space. So if we want to develop a regression model for crime we may have to recognise this spatial component. Remember as well, from last week, that regression models assume independence between the observations. That is, a regression model is formally assuming that what happens in area Xi is not in any way related (it is independent) of what happens in area Xii. But if those two areas are adjacent in geographical space we know that there is a good chance that this assumption may be violated. In previous weeks we covered formal tests for spatial autocorrelation, which allow us to test whether this assumption is met or not. So before we fit a regression model with spatial data we need to explore the issue of autocorrelation. We already know how to do this. In this session, we will examine the data from last week, explore whether autocorrelation is an issue, and then introduce models that allow us to take into account spatial autocorrelation. We will see that there are two basic ways of adjusting for spatial autocorrelation: through a spatial lag model or through a spatial error model.
+
+Before we do any of this, we need to load the libraries we will use today:
+
+```{r}
+library(sf)
+library(tmap)
+library(sp)
+library(spdep)
+```
+
+
+Then we will bring back the data from last week:
+
+```{r}
+##R in Windows have some problems with https addresses, that's why we need to do this first:
+urlfile<-'https://s3.amazonaws.com/geoda/data/ncovr.zip'
+download.file(urlfile, 'ncovr.zip')
+#Let's unzip and create a new directory (ncovr) in our working directory to place the files
+unzip('ncovr.zip', exdir = 'ncovr')
+
+```
+
+Last week we did not treated the data as spatial and, consequently, relied on the csv file. But notice that in the unzip ncovr file there is also a shapefile that we can load as a spatial object into R:
+
+```{r}
+shp_name <- "ncovr/ncovr/NAT.shp"
+ncovr_sf <- st_read(shp_name)
+```
+
+We can indeed represent our variable of interest using a choropleth map.
+
+```{r}
+current_style <- tmap_style("col_blind")
+
+tm_shape(ncovr_sf) + 
+  tm_fill("HR90", title = "Homicide Rate (Quantiles)", style="quantile", palette = "Reds") +
+  tm_borders(alpha = 0.1) +
+  tm_layout(main.title = "Homicide Rate across US Counties, 1990", main.title.size = 0.7 ,
+            legend.position = c("right", "bottom"), legend.title.size = 0.8)
+```
+
+Do you think there is spatial patterning to homicide?
+
+## Looking at the residuals
+
+Residuals, as we have explained, give you an idea of the distance between our observed Y values and the predicted Y values. So in essence they are deviations of reality from your model. Your regression line or hyperplane is optimised to be the one that best represent your data if those assumptions are met. Residuals are very helpful to diagnose, then, whether your model is a good representation of reality or not. Most diagnostics of the assumptions for OLS regression, which is if you remember from last year the technique we are using, rely on exploring the residuals. 
+
+In order to explore the residuals we need to fit our model first. Let's look at one of the models from last week.
+
+```{r}
+
+fit_1 <- lm(HR90 ~ RD90 + SOUTH + DV90 + MA90 + PS90 +UE90, data=ncovr)
+
+```
+
+Now that we have fitted the model we can extract the residuals. If you look at the fit_1 object in your RStudio environment or if you run the str() function to look inside this object you will see that this object is a list with differet elements, one of which is the residuals. An element of this object then includes the residual for each of your observations (the difference between the observed value and the value predicted by your model). We can extract the residuals using the residuals() function and add them to our spatial data set.
+
+```{r}
+ncovr_sf$res_fit1 <- residuals(fit_1)
+```
+
+If you now look at the dataset you will see that there is a new variable with the residuals. In those cases where the residual is negative this is telling us that the observed value is lower than the predicted (that is, our model is overpredicting the level of homicide for that observation) when the residual is positive the observed value is higher than the predicted (that is, our model is underpredicting the level of homicide for that observation).
+
+We could also extract the predicted values if we wanted. We would use the fitted() function.
+
+```{r}
+ncovr_sf$fitted_fit1 <- fitted(fit_1)
+```
+
+Now look at the second county in the dataset. It has a homice rate in 1990 of 15.88. This is the observed value. If we look at the new column we have created (fitted_fit1), our model predicts a homicide rate of 2.41. That is, knowing the level unemployment, whether the county is North or South, the level of resource deprivation, etc., we are predicting a homicide rate of 2.41. Now, this is lower than the observed value, so our model is underpredicting the level of homicide in this case. If you observed the residual you will see that it has a value of 13.46, which is simply the difference between the observed and the predicted value.
+
+With spatial data one useful thing to do is to look at any spatial patterning in the distribution of the residuals. Notice that the residuals are the difference between the observed values for homicide and the predicted values for homicide, so you want your residual to NOT display any spatial patterning. If, on  the  other  hand,  your  model  display  a  patterning  in  the  areas of  the  study  region  where  it performs  predicts  badly,  then  you  may have  a  problem.  This  is  telling  your  model  is  not  a  good representation  of  the  social  phenomena  you  are  studying  across  the full  study  area:  there  is systematically more distortion in some areas than in others. 
+
+We are going to produce a choropleth map for the residuals, but we will use a common classification method we haven't covered yet: standard deviations. Standard deviation is a statistical technique type of map based on how much the data differs from the mean. You measure the mean and standard deviation for your data. Then, each standard deviation becomes a class in your choropleth maps.
+
+In order to do that we will compute the mean and the standard deviation for the variable we want to plot and break the variable according to these values. The following code creates a new variable in which we will express the residuals in terms of standard deviations away from the mean. So, for each observation, we substract the mean and divide by the standard deviation. 
+
+```{r}
+ncovr_sf$sd_breaks <- (ncovr_sf$res_fit1 - mean(ncovr_sf$res_fit1))/sd(ncovr_sf$res_fit1)
+summary(ncovr_sf$sd_breaks)
+```
+
+Next we use a new style, fixed, within the tm_fill function. When we break the variable into classes using the fixed argument we need to specify the boundaries of the classes. We do this using the breaks argument. In this case we are going to ask R to create 6 classes from 
+
+```{r}
+my_breaks <- c(-14,-3,-2,-1,1,2,3,14)
+
+tm_shape(ncovr_sf) + 
+  tm_fill("sd_breaks", title = "Residuals", style = "fixed", breaks = my_breaks, palette = "-RdBu") +
+  tm_borders(alpha = 0.1) +
+  tm_layout(main.title = "Residuals", main.title.size = 0.7 ,
+            legend.position = c("right", "bottom"), legend.title.size = 0.8)
+```
+
+Notice  the  spatial  patterning  of  areas  of  over-prediction  (negative residuals,  or  blue  tones)  and under-prediction (positive residuals, or brown tones). This visual inspection of the residuals is telling you that spatial autocorrelation may be present here. This, however, would require a more formal test. We can start doing this by running a Moran scatterplot for the residuals. You conduct this in the usual  fashion  than  we discussed  in  the  session  on  spatial  clustering-  only  now  you  are using  the variable with the residuals.
+
+Remember from week 6 that in order to do this first we need to turn our sf object into a sp class object and then create the spatial weight matrix. If the code below and what it does is not clear to you, revise the notes from week 6 -when we first introduced it.
+
+```{r}
+#We coerce the sf object into a new sp object
+ncovr_sp <- as(ncovr_sf, "Spatial")
+#Then we create a list of neighbours using the Queen criteria
+w <- poly2nb(ncovr_sp, row.names=ncovr_sp$FIPSNO)
+summary(w)
+```
+
+This should give you an idea of the distribution of connectedness across the data, with counties having on average nearly 6 neighbours. Now we can generate the row standardise spatial weight matrix and the Moran Scatterplot.
+
+```{r}
+wm <- nb2mat(w, style='B')
+rwm <- mat2listw(wm, style='W')
+moran.plot(ncovr_sp$res_fit1, rwm)
+
+```
+
+We can also obtain the Moran's test.
+
+```{r}
+moran(ncovr_sp$res_fit1, rwm, n=length(rwm$neighbours), S0=Szero(rwm))
+```
+
+And we can test for statistical significance.
+
+```{r}
+moran.mc(ncovr_sp$res_fit1, rwm, nsim=999)
+```
+
+You will notice we obtain a statistically significant value for Moran’s I. The value of the Moran’s I test is not too high, but we still need to keep it in mind. If we diagnose that spatial autocorrelation is an issue, that is, that the errors (the residuals) are related systematically among themselves, then we have a problem and need to use a more appropriate approach: a spatial regression model.
+
