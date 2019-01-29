@@ -1,4 +1,5 @@
-# Week 1 - A first lesson about R
+
+# A first lesson about R (Week 1)
 
 ## Install R & RStudio
 
@@ -42,13 +43,13 @@ Luckily you don't need to memorise or know all these words. As with any language
 
 The advantage of doing analysis this way is that once you have written your instructions and saved them in a file, you will be able to share it with others and run it every time you want in a matter of seconds. This creates a *reproducible* record of your analysis: something that your collaborators or someone else anywhere (including your future self, the one that will have forgotten how to do the stuff) could run and get the same results than you did at some point earlier. This makes science more transparent and transparency brings with it many advantages. For example, it makes your research more trustworthy. Don't underestimate how critical this is. **Reproducibility** is becoming a key criteria to assess good quality research. And tools like R allow us to enhance it. You may want to read more about reproducible research [here](http://theconversation.com/the-science-reproducibility-crisis-and-what-can-be-done-about-it-74198).
 
-## Customising the RStudio look
+##Customising the RStudio look
 
 R Studio allows you to customise the way it looks. Working with white backgrounds is not generally a good idea if you care about your eyesight. If you don't want to end up with dry eyes not only it is good you follow the 20-20-20 rule (every 20 minutes look for 20 seconds to an object located 20 feet away from you), but it may also be a good idea to use more eye friendly screen displays. 
 
 Click in the *Tools* menu and select *Global options*. This will open up a pop up window with various options. Select *Appearance*. In this section you can change the font type and size, but also the kind of theme background that R will use in the various windows. I suffer from poor sight, so I often increase the font type. I also use the *Tomorrow Night Bright* theme to prevent my eyes to go too dry from the effort of reading a lightened screen, but you may prefer a different one. You can preview them and then click apply to select the one you like. This will not change your results or analysis. This is just something you may want to do in order to make things look better and healthier for your.
 
-## Getting organised: R Projects
+##Getting organised: R Projects
 
 We finished the previous section talking about sharing your analytic code. Let's face it. You would not bring a new partner or somebody that you want to impress to your place before tidying a little bit first, wouldn't you? In the same way, if you know you may have to share your code, if you know you may have guests, you may want to keep your analysis, data, and results tidy. R Studio helps a little bit with that. R Studio helps with this by virtue of something called **R Projects**.
 
@@ -60,15 +61,15 @@ When a project is reopened, R Studio opens every file and data view that was ope
 
 That will open a dialog box where you ask to specify what kind of directory you want to create. Select new working directory in this dialog box.
 
-![](img/newproject2.png)
+![](img/newproject2.PNG)
 
 Now you get another dialog box (at least you have an older version of R Studio) where you have to specify what kind of project you want to create. Select the first option *New Project*.
 
-![](img/newproject3.png)
+![](img/newproject3.PNG)
 
 Finally, you get to select a name for your project (in the image below I use the code for this course unit, but you can use any sensible name you prefer) and you will need to specify the folder in which to place this directory. If you are using a cluster machine use the P: drive, otherwise select what you prefer in your laptop (preferably not your desktop in Windows machines).
 
-![](img/newproject4.png)
+![](img/newproject4.PNG)
 
 With simple projects a single script file and a data file is all you may have. But with more complex projects, things can rapidly become messy. So you may want to create subdirectories within this project folder. I typically use the following structure in my own work to put all files of a certain type in the same subdirectory:
 
@@ -86,7 +87,7 @@ With simple projects a single script file and a data file is all you may have. B
 
 If you come to my office, you will see it is a very messy place. But my computer is, in contrast, a very tidy environment. You should aim for your computer workspace to be very organised as well. You can create these subdirectories using Windows Explorer or the Files window in R Studio. Why don't you have a go?
 
-## Talk to your computer
+##Talk to your computer
 
 Enough background, let's write some very simple code to talk to your computer. First open a new script within the project you just created. Type the following instructions in the script window. After you are done click in the top right corner where it says *Run* (if you prefer quick shortcuts, you can select the text and then press Ctrl +  Enter):
 
@@ -106,10 +107,10 @@ In R, you can pass a number of **arguments** to any function. These arguments co
 
 Every R function admits different kind of arguments. Learning R involves not only learning different functions but also learning what are the valid arguments you can pass to each function.
 
-![](imgs/consoleresults.png)
+![](img/consoleresults.png)
 As indicated above, the window in the bottom left corner is the main **console**.You will see that the words "I hate computers" appear printed there.  If rather than using R Studio you were working directly from R, that's all you would get: the main console where you can write code interactively (rather than all the different windows you see in R Studio). You can write your code directly in the main console and execute it line by line in an interactive fashion. However, we will be running code from scripts, so that you get used to the idea of properly documenting all the steps you take,
 
-## More on packages
+##More on packages
 
 Before we described packages as elements that add the functionality of R. What most packages do is they introduce new functions that allow you to ask R to do new different things.
 
@@ -178,7 +179,7 @@ say("I hate computers", "cow")
 
 Remember, you only have to install a package that is not already installed once. But if you want to use it in a given session you will have to load it within that session using the `library` function. Once you load it within a session the package will remain loaded until you terminate your session (for example, by closing R Studio).
 
-## Using objects
+##Using objects
 
 We have seen how the first argument that the "say" function takes is the text that we want to convert into speech for our given animal. We could write the text directly into the function, but now we are going to do something different. We are going to create an object to store the text.
 
@@ -200,11 +201,11 @@ Once we put things into these boxes or objects we can use them as arguments in o
 say(my_text, "cow")
 ```
 
-## More on objects 
+##More on objects 
 
 Isn't this a course on data analysis? Yes, of course, but before we get there, you need to get used to the basics of R and R Studio, which is what we will be doing in these early sessions. Let's go through some of these basics a bit more slowly to ensure you get them and then we will bring some data you can look at.
 
-Some of you might be used to seeing your data in spreadsheet format. For example if you open a data set in Excel you are used to see your data in a spreadsheet format with variables as column and observations as rows. If you did the prep for this session, you should have reviewed some of the materials that are covered as part of *Making Sense of Criminological Data* an intro data course taught in 2nd year of BA Crim programme. Whether you took this or not, or have other experience using data, what we need from you is the following: you should be familiar with the notion of a data set, levels of measurement, and tidy data. If you are not, have a look at the material on [this link](https://rawgit.com/maczokni/MSCD/master/book/bookdown-demo-master/bookdown-demo-master/docs/week1.html#data-variables-and-observations).
+In Excel you are used to see your data in a spreadsheet format. If you did the prep for this session, you should have reviewed some of the materials we covered in *Making Sense of Criminological Data* last semester. You should be familiar with the notion of a data set, levels of measurement, and tidy data. If you have not. This is your chance to do it in [this link](https://rawgit.com/maczokni/MSCD/master/book/bookdown-demo-master/bookdown-demo-master/docs/week1.html#data-variables-and-observations).
 
 R is considerably more flexible than Excel. Most of the work we do here will use data sets or **dataframes** as they are called in R. But as you have seen earlier you can have *objects* other than data frames in R. These objects can relate to external files or simple textual information ("I hate computers"). This flexibility is a big asset because among other things it allow us to break down data frames or the results from doing analysis on them to its constitutive parts (this will become clearer as we go along).
 
@@ -242,7 +243,7 @@ When you get an error message or implausible results, you want to look back at y
 
 A handy tip is to cut and paste the error message into Google and find a solution. If anybody had given me a penny for every time I had to do that myself, I would be Bill Gates by now. People make mistakes all the time. It's how we learn. Don't get frustrated, don't get stuck. Instead look for a solution. These days we have Google. We didn't back in the day. Now you have the answer to your frustration within quick reach. Use it to your advantage.
 
-## Vectors
+##Vectors
 
 Now that you are a bit more familiar with the idea of an object, we can start talking about a particular type of objects, specifically we are going to discuss **vectors**. 
 
@@ -299,7 +300,7 @@ class(my_8th_vector) #The class() function will tell us the class of the vector
 
 ```
 
-## On comments
+##On comments
 
 In the bits of code above you will have noticed parts that were grayed out. See for example in the last example provided. You can see that after the hash-tag all the text is being grayed out. What is this? What's going on? 
 
@@ -314,7 +315,7 @@ Just keep in mind:
 
 + You can use spaces after (its not like a hash-tag on twitter). 
 
-## Factors
+##Factors
 
 An important thing to understand in R is that categorical (ordered, also called ordinal, or unordered, also called nominal) data are typically encoded as **factors**, which are just a special type of vector.  A factor is simply an integer vector that can contain *only predefined values* (this bit is very important), and is used to store categorical data. Factors are treated specially by many data analytic and visualisation functions. This makes sense because they are essentially different from quantitative variables.
 
@@ -341,7 +342,7 @@ levels(the_smiths)
 
 Notice that the levels appear printed by alphabetical order. There will be situations when this is not the most convenient order. Later on we will discuss in these tutorials how to reorder your factor levels when you need to.
 
-## Naming conventions for objects in R
+##Naming conventions for objects in R
 
 You may have noticed the various names I have used to designate objects (`my_1st_vector`, `the_smiths`, etc.). You can use almost any names you want for your objects. Objects in R can have names of any length consisting of letters, numbers, underscores ("_") or the period (".") and should begin with a letter. In addition, when naming objects you need to remember: 
 
@@ -365,7 +366,7 @@ If you want, give it a try. Try to create a variable called 12 and assign it the
 
 You get an error!
 
-## Dataframes
+##Dataframes
 
 Ok, so now that you understand some of the basic types of objects you can use in R, let's start taking about data frames. One of the most common objects you will work with in this course are **data frames**. Data frames can be created with the `data.frame()` function. 
 
@@ -424,7 +425,7 @@ Go now to the global environment panel and left click on the data frame hate_cri
 
 ![](img/dataview.png)
 
-## Exploring data
+##Exploring data
 
 Ok, let's now have a quick look at the data. There are so many different ways of producing summary stats for data stored in R that is impossible to cover them all! We will just introduce a few functions that you may find useful for summarising data. Before we do any of that it is important you get a sense for what is available in this data set. Go to the help tab and in the search box input the name of the data frame, this will take you to the documentation for this data frame. Here you can see a list of the available variables.
 
@@ -495,7 +496,7 @@ ggplot(hate_crimes, aes(x=share_vote_trump, y=avg_hatecrimes_per_100k_fbi)) +
 
 What do you think this graphic is telling you? 
 
-## Quitting RStudio
+##Quitting RStudio
 
 At some point, you will quit your R/R Studio session. I know, hard to visualise, right? Why would you want to do that? Anyhow, when that happens R Studio will ask you a hard question: "Save work space image to bla bla bla/.RData?" What to do? What does that even mean?
 
@@ -507,7 +508,5 @@ Keep in mind though that you should not then panic if you open your next R Studi
 
 What is more. I would suggest you go to the Tools drop down menu, select Global Options, and make sure you select "Never" where it says "Save workspace". Then click "Apply". This way you will never be asked to save what is in your global environment when you terminate a session.
 
-![](img/neversave.png) 
-
-
+![](img/neversave.PNG) 
 
