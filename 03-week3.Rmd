@@ -33,13 +33,13 @@ st_write(manchester_lsoa, "data/BoundaryData/manchester_crime_lsoa.shp")
 
 Notice how four files have appeared in your working directory, in your "BoundaryData"" subdirectory or whatever you called it. Remember what we said last week about shapefiles, there are a collection of files that need to be kept together.
 
-If you wanted to bring this shapfile back into R at any future point, you would only need to use the *st_read()* function.
+If you wanted to bring this shapefile back into R at any future point, you would only need to use the *st_read()* function.
 
 *Homework 1: What is different between manchester_lsoa.shp and manchester_crime_lsoa.shp?*
 
 ## Creating choropleth maps
 
-The *tmap* package was developed to easily produce thematic maps. It is inspired by the ggplot2 packaged and the layered grammar of graphics (if you did the optional ggplot2 training this will make sense to you). It was written by Martjin Tennekes a Dutch data scientist. There are a number of [vignettes in the CRAN repository](https://cran.r-project.org/web/packages/tmap/index.html) that you can explore and the [GitHub repo for this package](https://github.com/mtennekes/tmap), GitHub is a collaborative website used by software developers and data scientist, also contains a useful readme section with additional resources to familiarise youself with this package. Each map can be plotted as a static map (*plot mode*) and shown interactively (*view mode*). We will start by focusing on static maps.
+The *tmap* package was developed to easily produce thematic maps. It is inspired by the ggplot2 packaged and the layered grammar of graphics (if you did the optional ggplot2 training this will make sense to you). It was written by Martjin Tennekes a Dutch data scientist. There are a number of [vignettes in the CRAN repository](https://cran.r-project.org/web/packages/tmap/index.html) that you can explore and the [GitHub repo for this package](https://github.com/mtennekes/tmap), GitHub is a collaborative website used by software developers and data scientist, also contains a useful readme section with additional resources to familiarise yourself with this package. Each map can be plotted as a static map (*plot mode*) and shown interactively (*view mode*). We will start by focusing on static maps.
 
 Every time you use this package you will need a line of code that specifies the spatial object you will be using. Although originally developed to handle *sp* objects only, it now also has support for *sf* objects. For specifying the spatial object we use the *tm_shape()* function and inside we specify the name of the spatial object we are using. On its own, this will do nothing apparent. No map will be created. We need to add additional functions to specify what we are doing with that spatial object. If you try to run this line on its own, you'll get an error telling you you must "Specify at least one layer after each tm_shape". 
 
@@ -47,7 +47,7 @@ Every time you use this package you will need a line of code that specifies the 
 tm_shape(manchester_lsoa)
 ```
 
-The main plotting method consists of elements that we can add. The first element is the *tm_shape()* function specifying the spatial object, and then we can add a series of elements speficying layers in the visualisation. They can include polygons, symbols, polylines, raster, and text labels as base layers. We will add a polygon using *tm_polygon()*. With tmap you can produce both static and interactive maps. The interactive maps rely on leaflet. You can control whether the map is static or interactive with the *tmap_mode()* function. If you want a static map you pass *plot* as an argument, if you want an interactive map you pass *view* as an argument. Let's create a static map first. 
+The main plotting method consists of elements that we can add. The first element is the *tm_shape()* function specifying the spatial object, and then we can add a series of elements specifying layers in the visualisation. They can include polygons, symbols, polylines, raster, and text labels as base layers. We will add a polygon using *tm_polygon()*. With tmap you can produce both static and interactive maps. The interactive maps rely on leaflet. You can control whether the map is static or interactive with the *tmap_mode()* function. If you want a static map you pass *plot* as an argument, if you want an interactive map you pass *view* as an argument. Let's create a static map first. 
 
 ```{r}
 tmap_mode("plot")
@@ -64,7 +64,7 @@ tm_shape(manchester_lsoa) +
 
 Notice how this map is different from last week. What do you think the reason for this is? You may remember last week we used one additional argument *style* specifying the classification method we were going to use. If you remember we used quantiles. We will in a second look at how a map of the counts of crime looks different when we use different classification systems. But before we get to that, let's think about aesthetics a bit more. 
 
-We have been using *tm_polygons()* but we can also add the elements of a polygon map using different functions that break down what we represent here. In the map above you see the polygons hava a dual representation, the borders are represented by lines and the colour is mapped to the intensity of the quantitative variable we are representing. With darker colours representing more of the variable, the areas with more crimes. Instead of using *tm_polygon()* we can use the related functions *tm_fill()*, for the colour inside the polygons, and *tm_borders()*, for the aesthetics representing the border of the polygons. Say we find the borders distracting and we want to set them to be transparent. In that case we could just use *tm_fill()*.
+We have been using *tm_polygons()* but we can also add the elements of a polygon map using different functions that break down what we represent here. In the map above you see the polygons have a dual representation, the borders are represented by lines and the colour is mapped to the intensity of the quantitative variable we are representing. With darker colours representing more of the variable, the areas with more crimes. Instead of using *tm_polygon()* we can use the related functions *tm_fill()*, for the colour inside the polygons, and *tm_borders()*, for the aesthetics representing the border of the polygons. Say we find the borders distracting and we want to set them to be transparent. In that case we could just use *tm_fill()*.
 
 ```{r}
 tm_shape(manchester_lsoa) + 
@@ -99,7 +99,7 @@ current_style <- tmap_style("col_blind")
 
 For comparing the effects of using different methods we can use small multiples. Small multiples is simply a way of reproducing side by sides similar maps for comparative purposes. To be more precise small multiples are sets of charts of the same type, with the same scale, presented together at a small size and with minimal detail, usually in a grid of some kind. The term was at least popularized by Edward Tufte, appearing first in his *Visual Display of Quantitative Information* in 1983.
 
-There are different ways of creating small multiples with *tmap* as you could see in the vignettes for the package, some of which are quicker but a bit more restricted. Here we are going to use *tmap_arrange()*. With *tmap_arrange()* first we need to create the maps we want and then we arrange them togeter.
+There are different ways of creating small multiples with *tmap* as you could see in the vignettes for the package, some of which are quicker but a bit more restricted. Here we are going to use *tmap_arrange()*. With *tmap_arrange()* first we need to create the maps we want and then we arrange them together.
 
 Let's make four maps, each one using a different classification method: Equal interval, Natural breaks (Jenks), Quantile, and Unclassed (no classification). 
 
@@ -215,7 +215,7 @@ tm_shape(manchester_lsoa) +                         #use tm_shape function to sp
 
 Last week you learned how to obtain crime data from the police UK website and you also develop the skills to obtain shapefiles with the boundaries for the UK census geographies. Specifically you learnt how to obtain LSOAs boundaries. Then we taught you how to join these data tables using dplyr. If you open your "manchester_lsoa" object you will see that at the moment you only have one field in this dataframe providing you with statistical information. However, there is a great deal of additional information that you could add to these data frame. Given that you are using census geographies you could add to it all kind of socio demographic variables available from the census. 
 
-You may want to watch [this 4 minute video](https://www.youtube.com/watch?v=AzK04BOFd_s#t=17) to get a sense for how to obtain the data. If you don't have headphones make sure you read [this brief tutorial](http://infuse.ukdataservice.ac.uk/help/tutorial.html) before carrying on. We are going to get some data for Manchester city LSOAs. Let me warn you though, the census data portal is one of the closest things to hell you are going to come across on the internet. Using it will be a good reminder of wy point and click interfaces can suck the life out of you.  
+You may want to watch [this 4 minute video](https://www.youtube.com/watch?v=AzK04BOFd_s#t=17) to get a sense for how to obtain the data. If you don't have headphones make sure you read [this brief tutorial](http://infuse.ukdataservice.ac.uk/help/tutorial.html) before carrying on. We are going to get some data for Manchester city LSOAs. Let me warn you though, the census data portal is one of the closest things to hell you are going to come across on the internet. Using it will be a good reminder of why point and click interfaces can suck the life out of you.  
 
 From the main Infuse portal select the 2011 census data then when queried pick selection by geography:
 
@@ -225,7 +225,7 @@ Expand the local authorities and select Manchester. Expand Manchester and select
 
 ![](img/infuse2.PNG)
 
-At the bottom of the page click in *Add* and then where it says *Next*. Now big tip. Do not press back in your browswer. If you need to navigate back once you get to that point use the *previous* button at the bottom of the screen. You will regret it if you don't do this. 
+At the bottom of the page click in *Add* and then where it says *Next*. Now big tip. Do not press back in your browser. If you need to navigate back once you get to that point use the *previous* button at the bottom of the screen. You will regret it if you don't do this. 
 
 Now you will need to practice navigating the Infuse system to generate a data table that has a number of relevant fields we are going to use today and at a later point this semester. I want you to create a file with information about: the resident population, the workday population, and the number of deprivation households. This will involve some trial and error but you should end up with a selection like the one below:
 
@@ -285,13 +285,13 @@ Ok, so now we have a field that provides us with the number of crimes and two al
 
 But first we need to create new variables. For this we can use the *mutate()* function from the *dplyr* package. This is a very helpful function to create new variables in a dataframe based on transformations or mathematical operations performed in other variables within the dataframe. In this function, the first argument is the name of the data frame, and then we can pass as arguments all new variables we want to create as well as the instructions as to how we are creating those variables. 
 
-First we want to create a rate using the usual residents, since crime rates are often expresed by 100,000 inhabitants we will multiply the division of the number of crimes by the number of usual residents by 100,000. We will then create another variable, "crimr2", using the workday population as the denominator. We will store this new variables in our existing "manchester_lsoa" dataset. You can see that below then I specify the name of a new variable "crimr1" and then I tell the function I want that variable to equal (for each case) the division of the values in the variable "count" (number of crimes) by the variable "respop" (number of people residing in the area) and then we multiply the result of this division by 100,000 to obtain a rate expressed in those terms. Then we do likewise for the alternative measure of crime.
+First we want to create a rate using the usual residents, since crime rates are often expressed by 100,000 inhabitants we will multiply the division of the number of crimes by the number of usual residents by 100,000. We will then create another variable, "crimr2", using the workday population as the denominator. We will store this new variables in our existing "manchester_lsoa" dataset. You can see that below then I specify the name of a new variable "crimr1" and then I tell the function I want that variable to equal (for each case) the division of the values in the variable "count" (number of crimes) by the variable "respop" (number of people residing in the area) and then we multiply the result of this division by 100,000 to obtain a rate expressed in those terms. Then we do likewise for the alternative measure of crime.
 
 ```{r}
 manchester_lsoa <- mutate(manchester_lsoa, crimr1 = (count/respop)*100000, crimr2 = (count/wkdpop)*100000)
 ```
 
-It should not be dificult for you to produce now a choropleth map like the one below. Clue: to change the colors for the fill of the polygons you can use the palette argument within the tm_fill calls. You can explore different palettes running the following code:
+It should not be difficult for you to produce now a choropleth map like the one below. Clue: to change the colors for the fill of the polygons you can use the palette argument within the tm_fill calls. You can explore different palettes running the following code:
 
 ```{r, eval = FALSE}
 
@@ -466,7 +466,7 @@ It might take a while to get this data, as it is quite a large set of data, bein
 Now you can use the `qtm()` function to draw a quick thematic map. Any ideas as to why it's called qtm yet? Let's try again. You can draw a **Q**uick **T**hematic **M**ap. 
 
 
-Again we use the `tm_shape()` and `tm_dots()` functions to specify the presentation of the map, with `tm_shape()` specitying the shape object (in this case crime_sf), and `tm_dots()` to draw symbols, including specifying the color, size, and shape of the symbols. In this case we adjust the tranparency with the `alpha` parameter. 
+Again we use the `tm_shape()` and `tm_dots()` functions to specify the presentation of the map, with `tm_shape()` specifying the shape object (in this case crime_sf), and `tm_dots()` to draw symbols, including specifying the color, size, and shape of the symbols. In this case we adjust the transparency with the `alpha` parameter. 
 
 
 ```{r}
@@ -510,6 +510,6 @@ qtm(UoM_osm) +
 ```
 
 
-We could do some further tweaking around for ensuring things look a bit neater. But we have covered a lot of ground today, and you should all give yourself a congratulory "well done".
+We could do some further tweaking around for ensuring things look a bit neater. But we have covered a lot of ground today, and you should all give yourself a congratulatory "well done".
 
 
