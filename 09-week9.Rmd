@@ -1,4 +1,4 @@
-# Week 9 
+# Week 9 : Spatial regression models
 
 ## Introduction
 
