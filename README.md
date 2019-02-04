@@ -1,3 +1,1 @@
-This is a minimal example of a book based on R Markdown and **bookdown** (https://github.com/rstudio/bookdown). Please see the page "Get Started" at https://bookdown.org/ for how to compile this example.
-
-You can find the preview of this example at https://bookdown.org/yihui/bookdown-demo/
+This is the repository where you will find the teaching materials for our course unit in Crime Mapping offered at the University of Manchester to final year UG and PG students. This is work in progress. We expect to have a polished draft of the materials towards April 2019. If you consult the Issues section you will get a sense of what remains to be done. You can find the link to the bookdown webpage here (https://maczokni.github.io/crimemapping_textbook_bookdown/). As of this writing section 5 to 10 still need a lof ot reorganisation and work. 
