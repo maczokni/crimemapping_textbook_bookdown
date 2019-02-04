@@ -1,4 +1,6 @@
+
 # Week 5 : Studying spatial point patterns
+
 
 ## What we'll do today
 

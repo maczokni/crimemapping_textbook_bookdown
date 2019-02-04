@@ -85,7 +85,9 @@ There are various ways of defining a neighbour. We can say that two areas are ne
 
 When defining neighbours by contiguity we may also specify the *order* of contiguity. **First order contiguity** means that we are focusing on areas immediately contiguous. **Second order** means that we consider neighbours only those areas that are immediately contiguous to our first order neighbours (only the yellow areas in the figure below) and you could go on and on. Look at the graphic below for clarification:
 
-![Figure 1](https://raw.githubusercontent.com/jjmedinaariza/CrimeMapping/master/img/neighbours.jpg) [Source](https://www.slideshare.net/CoreySparks/spatial-statistics-presentation-texas-am-census-rdc) 
+![Figure 1](img/neighbours.jpg)
+
+[Source](https://www.slideshare.net/CoreySparks/spatial-statistics-presentation-texas-am-census-rdc) 
 
 Alternatively we may define neighbours **by distance**. You can consider neighbours those areas that distant-wise are close to each other (regardless of whether boundaries are shared). In other words, areas will be defined as neighbours if they are within a specified radius.
 
@@ -123,7 +125,8 @@ tm_shape(cc_burglary) +
 
 So now we have a new spatial object cc_burglary with the 23 LSOA units that compose the City Centre of Manchester. By focusing in a smaller subset of areas we can understand perhaps a bit better what comes next. But again we carry on. Do you perceive here some degree of spatial autocorrelation?
 
-**Homework 1**
+### Homework 1
+
 *The id argument in the tm_fill ensures that when you click over any of the areas you get not only the count of burglaries in that LSOA (the quantity we are mapping) gets displayed within a bubble, but you also get to see the code that identifies that LSOA.*
 
 *Move your cursor over the LSOA covering Beswick. You will see this area had 58 burglaries in 2017 and that the LSOA identifier is E01033688. Using the rook criteria identify the first order neighbors of this LSOA. List their identifiers. Are things different if we use the queen criteria? If so, how does it change? Now. Think and think hard about what the lecture by Luc Anseling discussed. Have you identified all the neighbours of this area? (there are multiple ways of answering this question, just make sure you reason your answer).*
@@ -188,7 +191,7 @@ wm
 
 This matrix has values of 0 or 1 indicating whether the elements listed in the rows are adjacent (using our definition, which in this case was the Queen criteria) with each other. The diagonal is full of zeroes. An area cannot be a neighbour of itself. So, if you look at the first two and the second column you see a 1. That means that the LSOA with the code E01005065 is a neighbour of the second LSOA (as listed in the rows) which is E01005066. You will zeroes for many of the other columns because this LSOA only has 4 neighbours.
 
-**Homework 2**
+### Homework 2
 *Looking at this matrix identify the other 3 neigbours of E01005065*
 
 In many computations we will see that the matrix is row standardised. We can obtain a row standardise matrix changing the code:
@@ -263,5 +266,6 @@ It is very important to understand that global statistics like the spatial autoc
 But don't just take our word for how important this is, or how it's commonly applied in criminological research. Instead, now that you've gone through on how to do this, and have begun to get a sense of understanding, read the following paper on [https://link.springer.com/article/10.1023/A:1007592124641](https://link.springer.com/article/10.1023/A:1007592124641) where the authors make use of Moran's I to explain spatial characteristics of homicide. You will likely see this in other papers as well, and now you will know what it means and why it's important. 
 
 
-**Homework 3 (Optional Practice)**
+### Homework 3 (Optional Practice)
+
 *You know what is coming, don't you? Yes, you need to compute the Moran's I for burglary again. But this time, you need to do it for the whole of Manchester city. I won't mark you down if you don't try this. But why wouldn't you?*

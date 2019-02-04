@@ -1,3 +1,4 @@
+
 # Week 2: Making your first maps in R
 
 
@@ -33,7 +34,7 @@ In spatial analysis it is customary to refer to places as objects. These objects
 - Areas (polygons)
     + Areas are ordered rings of points, also connected by straight lines to form polygons. It can contain holes, or be linked with separate islands. 
     
-![](http://neondataskills.org/images/dc-spatial-vector/pnt_line_poly.png)
+![](img/ptlinepoly.png)
 
 
 Objects can also be Raster data. Raster data is made up of pixels (or cells), and each pixel has an associated value. Simplifying slightly, a digital photograph is an example of a raster dataset where each pixel value corresponds to a particular colour. In GIS, the pixel values may represent elevation above sea level, or chemical concentrations, or rainfall etc. The key point is that all of this data is represented as a grid of (usually square) cells. 
@@ -51,7 +52,7 @@ A traditional method of representing the earth’s shape is the use of globes. W
 
 The process of creating map projections can be visualised by positioning a light source inside a transparent globe on which opaque earth features are placed. Then project the feature outlines onto a two-dimensional flat piece of paper. Different ways of projecting can be produced by surrounding the globe in a cylindrical fashion, as a cone, or even as a flat surface. Each of these methods produces what is called a map projection family. Therefore, there is a family of planar projections, a family of cylindrical projections, and another called conical projections [see figure_projection_families](http://docs.qgis.org/2.8/en/_images/projection_families.png)
 
-![figure_projection_families](https://raw.githubusercontent.com/maczokni/2018_labs/master/img/projection_families.png)
+![figure_projection_families](img/projection_families.png)
 
 
 With the help of **coordinate reference systems** (CRS) every place on the earth can be specified by a set of three numbers, called coordinates. In general CRS can be divided into **projected coordinate reference systems** (also called Cartesian or rectangular coordinate reference systems) and **geographic coordinate reference systems**.
@@ -60,7 +61,7 @@ The use of Geographic Coordinate Reference Systems is very common. They use degr
 
 Working with data in the UK, on the other hand, you are most likely to be using **British National Grid (BNG)**. The Ordnance Survey National Grid reference system is a system of geographic grid references used in Great Britain, different from using Latitude and Longitude. In this case, points will be defined by "Easting" and "Northing" rather than "Longitude" and "Latitude".  It basically divides the UK into a series of squares, and uses references to these to locate something. The most common usage is the six figure grid reference, employing three digits in each coordinate to determine a 100 m square. For example, the grid reference of the 100 m square containing the summit of Ben Nevis is NN 166 712. Grid references may also be quoted as a pair of numbers: eastings then northings in meters, measured from the southwest corner of the SV square. For example, the grid reference for Sullom Voe oil terminal in the Shetland Islands may be given as HU396753 or 439668,1175316
 
-![BNG](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Ordnance_Survey_National_Grid.svg/500px-Ordnance_Survey_National_Grid.svg.png)
+![BNG](img/Ordnance_Survey_National_Grid.svg.png)
 
 
 This will be important later on when we are linking data from different projections, or when you look at your map and you try to figure out why it might look "squished". 
@@ -317,8 +318,8 @@ It's not the nicest map, but it's our first one, so that's exciting! We'll refin
 ### HOMEWORK 1
 
 Think about this visualisation. 
-1. How could you characterise the basemap as a vector map or as a raster image?
-2. How could you characterise the layer representing the crimes as a vector map or as a raster image?
+1. How could you characterise the basemap: is it a vector map or a raster image?
+2. How could you characterise the layer representing the crimes: is it a vector map or a raster image?
 3. Is the resulting visualisation clear? Is it helpful? If you could change anything, what would it be? Write your thoughts up. 
 
 This is going to be your first assignment to be submitted as part of next week. Export the image file into a Word document and write your answers there.
@@ -334,7 +335,7 @@ We are going to learn here how to obtain shapefiles for British census geographi
 
 You can read more about census boundary data [here](https://census.ukdataservice.ac.uk/use-data/guides/boundary-data). "Boundary data are a digitised representation of the underlying geography of the census". Census Geography is often used in research and spatial analysis because it is divided into units based on population counts, created to form comparable units, rather than other administrative boundaries such as wards or police force areas. However depending on your research question and the context for your analysis, you might be using different units. The hierarchy of the census geographies goes from Country to Local Authority to Middle Layer Super Output Area (MSOA) to Lower Layer Super Output Area (LSOA) to Output Area: 
 
-![](https://census.ukdataservice.ac.uk/media/98325/maps_geography_types.png)
+![](img/maps_geography_types.png)
 
 Here we will get some boundaries for Manchester. Let's use the LSOA level. These are geographical regions designed to be more stable over time and consistent in size than existing administrative and political boundaries. LSOAs comprise, on average, 600 households that are combined on the basis of spatial proximity and homogeneity of dwelling type and tenure. 
 
@@ -346,13 +347,13 @@ For now, let's focus on the selector options. Here you can choose the country yo
 
 ***
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/boundary_selector_1.png) 
+![](img/boundary_selector_1.png) 
 
 Once you have selected these options, click on the "Find" button. That will populate the box below: 
 
 ***
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/boundary_selector_2.png)
+![](img/boundary_selector_2.png)
 
 ***
 
@@ -362,7 +363,7 @@ Once you've made your choice, click on "List Areas". This will now populate the 
 
 ***
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/boundary_selector_3.png) 
+![](img/boundary_selector_3.png) 
 
 ***
 
@@ -370,7 +371,7 @@ Once you've made your decision click on the "Extract Boundary Data" button. You 
 
 ***
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/wait.png)
+![](img/wait.png)
 
 
 ***
@@ -383,7 +384,7 @@ When your data is read, you will see the following message:
 ***
 
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/download.png)  
+![](img/download.png)  
 
 
 ***
@@ -395,7 +396,7 @@ You have to right click on the "BoundaryData.zip", and hit Save Target as on a P
 ***
 
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/save_link_as.png) 
+![](img/save_link_as.png) 
 
 
 ***
@@ -412,7 +413,7 @@ You should end up with a folder called "BoundaryData". Have a look at its conten
 
 ***
 
-![](https://raw.githubusercontent.com/maczokni/QSTEP/master/imgs/folder_contents.png)
+![](img/folder_contents.png)
 
 
 ***
@@ -441,7 +442,7 @@ Traditionally spatial analysis in R were done using the `sp` package which creat
 ### **HOMEWORK 2**
 
 Read Section 2.1 of the Geocomputation book linked above. Answer the following questions:
-1. Why is sf better?
+1. What are some strengths/advantages of the sf package?
 2. What code do you need to transform a sf object into a sp object.
 3  What is simply a sf object?
  
@@ -564,19 +565,19 @@ left_join() will return all rows from x, and all columns from x and y. Rows in x
 
 So we've already identified that both our crimes data, and the spatial data contain a column with matching values, the codes for the LSOA that each row represents. 
 
-![](https://raw.githubusercontent.com/maczokni/MSCD/master/imgs/fn2187.png)
+![](img/fn2187.png)
 
 **You need a unique identifier to be present** for each row in all the data sets that you wish to join. This is how R knows what values belong to what row! What you are doing is matching each value from one table to the next, using this unique identified column, that exists in both tables. For example, let's say we have two data sets from some people in Hawkins, Indiana. In one data set we collected information about their age. In another one, we collected information about their hair colour. If we collected some information that is unique to each observation, and this is the *same* in both sets of data, for example their names, then we can link them up, based on this information.  Something like this: 
 
 
-![](https://raw.githubusercontent.com/maczokni/MSCD/master/imgs/merge_logic_1.png)
+![](img/merge_logic_1.png)
 
 
 
 And by doing so, we produce a final table that contains all values, lined up *correctly* for each individual observation, like this: 
 
 
-![](https://raw.githubusercontent.com/maczokni/MSCD/master/imgs/merge_logic_2.png)
+![](img/merge_logic_2.png)
 
 This is all we are doing, when merging tables, is we are making use that we line up the correct value for all the variables, for all our observations. 
 

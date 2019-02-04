@@ -1,4 +1,5 @@
 # Week 8 : Regression analysis (a refresher)
+=======
 
 
 ## Introduction
@@ -29,7 +30,7 @@ The dataset contains information about 3085 counties in the US and if you view i
 
 The purpose of this and next session is to help you choose a model to represent the relationship between homicide and various predictors. You can think of a model as a map. A map aims to represent a given reality, but as you may have already discovered there are many ways of presenting the same information through a map. As an analyst you decide what the most appropriate representation for your needs is. Each representation you choose will involve an element of distortion. Maps (and models) are not exact representations of the real word, they are simply good approximations that may serve well a particular functional need. Look at the map of the metro in London that we reproduce below:
 
-![**Figure 1**](https://tfl.gov.uk/cdn/static/cms/images/tube-map.gif)
+![**Figure 1**](img/tube-map.gif)
 
 London doesn’t quite look like this. Yet, if you want to use the Metro system, this map will be extremely helpful to you. It serves a need in a good way. Same happens with models. They may not be terribly good reflections of the world, but may give us approximations that allows us to develop useful insights.
 
@@ -191,7 +192,7 @@ This is the expected value of Y, homicide rate, when X, resource deprivation is 
 
 In the output above we saw there was something called the residuals. The residuals are the differences between the observed values of Y for each case minus the predicted or expected value of Y, in other words the distances between each point in the dataset and the regression line (see the visual example below). 
 
-![drawing](http://www.shodor.org/media/M/T/l/mYzliZjY4ZDc0NjI3YWQ3YWVlM2MzZmUzN2MwOWY.jpg)
+![drawing](img/mYzliZjY4ZDc0NjI3YWQ3YWVlM2MzZmUzN2MwOWY.jpg)
 
 
 
@@ -206,11 +207,11 @@ The residuals capture how much variation is unexplained, how much we still have 
 
 We can use information from the residuals to produce a measure of effect size, of how good our model is in predicting variation in our dependent variables. Remember our game where we try to guess homicide (Y)? If we did not have any information about X our best bet for Y would be the mean of Y. The regression line aims to improve that prediction. By knowing the values of X we can build a regression line that aims to get us closer to the actual values of Y (look at the Figure below). 
 
-![r squared](https://people.richland.edu/james/ictcm/2004/weight2.png)
+![r squared](img/weight2.png)
 
 The distance between the mean (our best guess without any other piece of information) and the observed value of Y is what we call the **total variation**. The residual is the difference between our predicted value of Y  and the observed value of Y. This is what we cannot explain (i.e, variation in Y that is *unexplained*). The difference between the mean value of Y and the expected value of Y (the value given by our regression line) is how much better we are doing with our prediction by using information about X (i.e., in our previous example it would be variation in Y that can be *explained* by knowing about resource deprivation). How much closer the regression line gets us to the observed values. We can then contrast these two different sources of variation (explained and unexplained) to produce a single measure of how good our model is. The formula is as follows:
 
-![formula](http://docs.oracle.com/cd/E40248_01/epm.1112/cb_statistical_11123500/images/graphics/r_squared_constant.gif)
+![formula](img/r_squared_constant.gif)
 
 All this formula is doing is taking a ratio of the explained variation (the squared differences between the regression line and the mean of Y for each observation) by the total variation (the squared differences of the observed values of Y for each observation from the mean of Y). This gives us a measure of the **percentage of variation in Y that is "explained" by X**. If this sounds familiar is because it is a measure similar to eta squared in ANOVA.
 
@@ -233,11 +234,11 @@ In real applications, we have access to a set of observations from which we can 
 
 We can compute standard errors for the regression coefficients to quantify our uncertainty about these estimates. These standard errors can in turn be used to produce confidence intervals. This would require us to assume that the residuals are normally distributed. As seen in the image, and for a simple regression model, you are assuming that the values of Y are approximately normally distributed for each level of X:
 
-![normalityresiduals](http://reliawiki.org/images/2/28/Doe4.3.png)
+![normalityresiduals](img/Doe4.3.png)
 
 In those circumstances we can trust the confidence intervals that we can draw around the regression line as in the image below:
 
-![estimated](http://2.bp.blogspot.com/-5e1_FibUjg4/Uv5BItdZqmI/AAAAAAAAA00/o1EfWZ0fk-g/s1600/SimpleLinearRegressionJags-ICON-FREQ-EST.png "Image taken from John Krushcke blog http://doingbayesiandataanalysis.blogspot.co.uk/")
+![estimated](img/SimpleLinearRegressionJags-ICON-FREQ-EST.png "Image taken from John Krushcke blog http://doingbayesiandataanalysis.blogspot.co.uk/")
 
 The dark-blue line marks the best fit. The two dark-pink lines mark the limits of the confidence interval. The light-pink lines show the sampling distributions around each of the confidence-interval limits (the many regression lines that would result from repeated sampling); notice that the best-fit line falls at the extreme of each sampling distribution.
 
@@ -479,7 +480,7 @@ So these are the assumptions of linear regression, and today we will go through 
 
 You may have noticed the second of this assumption is independence of errors. This is an issue with spatial data. If you have spatial autocorrelation basically you are syaing that your observations are not independent. What happens in area X is likely to be similar to what happens in its surrounding neighbors (if you have positive spatial autocorrelation). What do you do? Well, that's what we will cover next week. We will learn how to fit regression models where you have spatial dependency.
 
-**HOMEWORK**
+### HOMEWORK
 Fit a regression model with a few relevant explanatory variables for the homicide rate in 1970. Make sure you interpret your results.
 
 

@@ -173,13 +173,13 @@ We can, at the most basic, geocode the postcode. This will put all the establism
 
 Here is a map of the postcode areas in Greater Manchester: 
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/M_postcode_area_map.svg/750px-M_postcode_area_map.svg.png)
+![](img/750px-M_postcode_area_map.svg.png)
 
 
 Now the centroid of the post code area represents the central point of the shapefile. For example, here you can see some polygons with their centroids illustrated by points: 
 
 
-![](https://i.stack.imgur.com/6R9sn.png)
+![](img/6R9sn.png)
 
 
 
@@ -317,7 +317,7 @@ m
 
 You might of course want to add some content to your map. 
 
-##Adding points manually:
+## Adding points manually:
 
 You can add a point manually:
 

@@ -1,5 +1,6 @@
 # Week 9 : Spatial regression models
 
+
 ## Introduction
 
 Last week we provided you with an introduction to regression analysis with R. the data we used had a spatial component. We were modelling the geographical distribution of homicide across US counties. However, we did not incorporated this spatial component into our models. As we have explained througout the semester criminal events often cluster geographically in space. So if we want to develop a regression model for crime we may have to recognise this spatial component. Remember as well, from last week, that regression models assume independence between the observations. That is, a regression model is formally assuming that what happens in area Xi is not in any way related (it is independent) of what happens in area Xii. But if those two areas are adjacent in geographical space we know that there is a good chance that this assumption may be violated. In previous weeks we covered formal tests for spatial autocorrelation, which allow us to test whether this assumption is met or not. So before we fit a regression model with spatial data we need to explore the issue of autocorrelation. We already know how to do this. In this session, we will examine the data from last week, explore whether autocorrelation is an issue, and then introduce models that allow us to take into account spatial autocorrelation. We will see that there are two basic ways of adjusting for spatial autocorrelation: through a spatial lag model or through a spatial error model.
@@ -46,7 +47,7 @@ tm_shape(ncovr_sf) +
 
 Do you think there is spatial patterning to homicide?
 
-##Looking at the residuals and testing for spatial autocorrelation in regression
+## Looking at the residuals and testing for spatial autocorrelation in regression
 
 Residuals, as we have explained, give you an idea of the distance between our observed Y values and the predicted Y values. So in essence they are deviations of reality from your model. Your regression line or hyperplane is optimised to be the one that best represent your data if those assumptions are met. Residuals are very helpful to diagnose, then, whether your model is a good representation of reality or not. Most diagnostics of the assumptions for OLS regression, which is if you remember from last year the technique we are using, rely on exploring the residuals. 
 
@@ -126,7 +127,7 @@ lm.morantest(fit_1, rwm, alternative="two.sided")
 
 You will notice we obtain a statistically significant value for Moran's I. The value of the Moran's I test is not too high, but we still need to keep it in mind. If we diagnose that spatial autocorrelation is an issue, that is, that the errors (the residuals) are related systematically among themselves, then we have a problem and need to use a more appropriate approach: a spatial regression model.
 
-##What to do now?
+## What to do now?
 
 If the test is significant (as in this case), then we possibly need 
 to  think  of  a  more  suitable  model  to  represent  our  data:  a  spatial  regression  model.  Remember spatial  dependence  means  that  there  will  be  areas  of  spatial  clustering  for  the  residuals  in  our regression  model.  So our  predicted  line  (or  hyperplane)  will systematically  under-predict  or  over-predict in areas that are close to each other. That's not good. We want a better model that does not 
@@ -143,7 +144,7 @@ characteristic  is  that  it  includes  a  spatially  lagged  "dependent"  varia
  
 *"If so the behaviour is likely to be highly social in nature, and understanding the interactions between interdependent units is critical to understanding the behaviour in question. For example, citizens may discuss politics across adjoining neighbours such that an increase in support for a candidate in one neighbourhood  directly  leads  to  an  increase  in  support  for  the  candidate  in    adjoining neighbourhoods"* (Darmofal, 2015: 4)
 
-##Spatial Regimes
+## Spatial Regimes
 
 Before  we  proceed  to  a  more  detailed  description  of  these  two models  it  is  important  that  we examine another aspect of our model that also links to geography. Remember that when we brought up our data into R, we decided to test for the presence of an interaction. We looked at whether the role of unemployment was different in Southern and Northern states. We found that this interaction was indeed significant. Unemployment had a more significant effect in Southern than in Northern states.  This was  particularly  obvious  during  the  1970s,  when  unemployment  did not  affected homicide rates in the Northern states, but it did led to a decrease in homicide in the Southern states. 
 
@@ -154,11 +155,14 @@ If you have read the Ballen et al. (2001) paper that we are replicating in last 
 So  how  can  we  assess  whether  this  is  an  issue  in  our  data?  As with  many  other  diagnostics  of regression,  you  may  want  to  start  by  looking  at  your  residuals.  Look  at  the  residual  map  we produced earlier. Do you think that the residuals look different in the South and in the North? If the pattern is not clear to you, you may want to run other forms of visualisation. 
  
 ```{r}
+library(ggplot2)
+
 ggplot(ncovr_sf, aes(x = res_fit1, colour = as.factor(SOUTH))) + 
   geom_density() 
 ```
 
-**HOMEWORK 1**
+### HOMEWORK 1
+
 *What do you see in this plot? And, critically, what does it mean? What is this telling you about the predicted values that result from our model? (Remember what a residual is: the difference between the observed values and the predicted values).* 
 
 There are formal tests that one can use to further explore these issues. The paper by Bollen et al. (2001) mentions them (Chow tests). But those are beyond the scope of this course. Sufficient to say that,  as  Bollen  et  al.  (2001),  we  are  going  to  split  our  analysis  and  run  them  separately  for  the Southern and the Northern states. We have covered the filter() function from dplyr to split datasets based on values of a variable. But to split sf objects it is better to rely on the more generic subset function, since filter() doesn't accommodate well the column with the geographic information that sf provides.
@@ -169,7 +173,7 @@ ncovr_n_sf <- subset(ncovr_sf, SOUTH == 0)
 ```
 
 
-##Lagrange multipliers
+## Lagrange multipliers
 
 The Moran's I test statistic has high power against a range of spatial alternatives. However, it does not provide much help in terms of which alternative model would be most appropriate. The Lagrange Multiplier test statistics do allow a distinction between spatial error models and spatial lag models. 
 
@@ -210,10 +214,10 @@ By other specification errors Prof. Anselin refers to problems with some of the 
  
 Ok, so let's go back to our results and keep this criteria in mind. Both Robust LM are significant, but we can see that the test for the lag model is several orders more significant than for the error model (p < 0.0000251 vs p < 0.004). Notice as well that the test value is higher for the lag model (18 versus 8). In this case we would say that the Lagrange Multiplier tests suggest we estimate a spatial lag model rather than a spatial error model.
 
-**HOMEWORK 2**
+### HOMEWORK 2
 *???Run  a  OLS regression  model  for  homicide  rate  in  1980  for  the  Southern  states  using  the covariates we have been using so far and make sure that you ask for the spatial dependence tests and the Lagrange Multipliers (attach the results). What model do you think need to be estimated in this case? The spatial lag or the spatial error model?*
 
-##Fitting and interpreting a spatially lagged model
+## Fitting and interpreting a spatially lagged model
 
 Maximum Likelihood (ML) estimation of the spatial lag model is carried out with the lagsarlm() function. The required arguments are a regression "formula", a data set and a listw spatial weights object. The default method uses Ord's eigenvalue decomposition of the spatial weights matrix. 
 
@@ -240,7 +244,7 @@ In  the  OLS  regression  model,  the  coefficients  for  any  of  the  explanat
 
 In, other words, in the spatial lag model, the coefficients only focus on the "short-run impact" of x~i on y~i , rather than the net effect. As Ward and Gleditsch (2008) explain "Since the value of  y~i  will influence the level of" homicide "in other" counties y~j  and these y~j , in turn, feedback on to y~i , we need to take into account the additional effects that the short impact of x~i  exerts on y~i  through its impact on the level of" homicide "in other" counties. You can still read the coefficients in the same way but need to keep in mind that they are not measuring the net effect. Part of their effect will be captured  by  the  spatial  lag.  Yet,  you  may  still  want  to  have  a  look  at  whether  things  change dramatically, particularly in terms of their significance (which is not the case in this example).
 
-##Fitting an interpreting a spatial error model
+## Fitting an interpreting a spatial error model
 
 We saw (well you should have seen!) that for the case of homicide in the 80s for Southern states the spatial error model was more appropriate when using the 1 st  order contiguity queen criteria. In this case then, we need to run a spatial error model.
 
@@ -262,4 +266,6 @@ The  spatial  lag  model  is  probably  the  most  common  specification  and  m
 
 As before the AIC is better for the spatial model (8786) than for the non spatial model (8845). In this case, you can compare the regression coefficients with those from the OLS model, since we don't have a spatial lag capturing some of their effect. Notice how one of the most notable differences is the fact that unemployment nearly halves its impact in the new model. You will see the table includes a new parameter  (lambda)  but  you  don't  need  to  worry about  this  for  the  purpose  of  the  course.  It  is something you would understand if you get into the mathematical estimation details.
 
-**HOMEWORK 3:** *Estimate an appropriate regression model for the homicide rate for the 1970s for the Northern States. Justify and interpret the model that you have selected.*
+### HOMEWORK 3
+
+*Estimate an appropriate regression model for the homicide rate for the 1970s for the Northern States. Justify and interpret the model that you have selected.*

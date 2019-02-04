@@ -1,4 +1,9 @@
+
 # Week 3: Thematic maps in R
+
+```{r, echo = FALSE}
+Sys.setlocale("LC_ALL","English")
+```
 
 ## Intro and recap
 
@@ -186,7 +191,9 @@ tmap_arrange(map1, map2, map3, map4)
 
 ```
 
-**Homework 1: Discuss which of these classification methods gives you the best visualisation of crime in Manchester city. Insert the produced maps in your answer.**
+### Homework 1
+
+Discuss which of these classification methods gives you the best visualisation of crime in Manchester city. Insert the produced maps in your answer.**
 
 ## Using graduated symbols
 
@@ -217,11 +224,11 @@ You may want to watch [this 4 minute video](https://www.youtube.com/watch?v=AzK0
 
 From the main Infuse portal select the 2011 census data then when queried pick selection by geography:
 
-![](img/infuse1.PNG)
+![](img/infuse1.png)
 
 Expand the local authorities and select Manchester. Expand Manchester and select LSOAs:
 
-![](img/infuse2.PNG)
+![](img/infuse2.png)
 
 At the bottom of the page click in *Add* and then where it says *Next*. Now big tip. Do not press back in your browser. If you need to navigate back once you get to that point use the *previous* button at the bottom of the screen. You will regret it if you don't do this. 
 
@@ -298,7 +305,9 @@ tmaptools::palette_explorer()
 ```
 
 
-*Homework 2: Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?* 
+### Homework 2 
+
+Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?* 
 
 ```{r, echo=FALSE}
 map5 <- tm_shape(manchester_lsoa) + 
@@ -337,9 +346,11 @@ You may find it useful to shift to the OpenStreetMap view by clicking in the box
 
 In the first lecture we spoke a bit about Open Street Map, but if you're interested it's definitely worth reading up on. As I mentioned, Open Street Map is a non-profit foundation whose aim is to support and enable the development of freely-reusable geospatial data, and relies heavily on volunteers participating in this project to map their local areas. You can have a look [here](https://www.hotosm.org/get-involved/disaster-mapping) for ongoing humanitarian projects, or read [here](https://wiki.openstreetmap.org/wiki/Mapping_parties) about the mapping parties I told you about. At the very least though, in the spirit of open source and crowdsourcing, take a moment to appreciate that all these volunteers of people just like you have contributed to creating such a detailed geographical database of our world. That's definitely something kinda cool to think about! 
 
-![](img/shiftingbasemap.PNG)
+![](img/shiftingbasemap.png)
 
-*Homework 3: What areas of the city seem to have the largest concentration of crime? Why? Does deprivation help you to understand the patterns? What's going on in the LSOA farthest to the South? Why does it look like a crime hotspot in this map and not in the one using the workday population?*
+### Homework 3
+
+What areas of the city seem to have the largest concentration of crime? Why? Does deprivation help you to understand the patterns? What's going on in the LSOA farthest to the South? Why does it look like a crime hotspot in this map and not in the one using the workday population?
 
 ## More on small multiples and point pattern maps
 

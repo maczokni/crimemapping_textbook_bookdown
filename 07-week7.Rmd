@@ -2,6 +2,7 @@
 
 
 
+
 ## Prelude
 
 Last week we learned about global measures of spatial association, in particular the Moran's I statistic, which provide a mechanism to make inferences about a population from a sample. While this is useful for us to be able to assess quantitatively whether crime events cluster in a non-random manner, in the words of [Jerry Ratcliffe](https://pdfs.semanticscholar.org/26d2/356618cd759d04348f1e51c8209b0175bfce.pdf) "this simply explains what most criminal justice students learn in their earliest classes." For example, consider the study of robberies in Philadelphia:
