@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Crime Mapping in R</title>
+  <meta name="description" content="Worksheets for labs of Crime Mapping course">
+  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+
+  <meta property="og:title" content="Crime Mapping in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Worksheets for labs of Crime Mapping course" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Crime Mapping in R" />
+  
+  <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
+  
+
+<meta name="author" content="Juanjo Medina and Reka Solymosi">
+
+
+<meta name="date" content="2019-02-05">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="week-4-performing-spatial-operations-in-r.html">
+<link rel="next" href="week-6-spatial-autocorrelation.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Crime mapping in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prelude</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#introduction"><i class="fa fa-check"></i><b>0.1</b> Introduction</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i><b>0.2</b> Disclaimer</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html"><i class="fa fa-check"></i><b>1</b> A first lesson about R (Week 1)</a><ul>
+<li class="chapter" data-level="1.1" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#install-r-rstudio"><i class="fa fa-check"></i><b>1.1</b> Install R &amp; RStudio</a></li>
+<li class="chapter" data-level="1.2" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#open-up-and-explore-rstudio"><i class="fa fa-check"></i><b>1.2</b> Open up and explore RStudio</a></li>
+<li class="chapter" data-level="1.3" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#customising-the-rstudio-look"><i class="fa fa-check"></i><b>1.3</b> Customising the RStudio look</a></li>
+<li class="chapter" data-level="1.4" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#getting-organised-r-projects"><i class="fa fa-check"></i><b>1.4</b> Getting organised: R Projects</a></li>
+<li class="chapter" data-level="1.5" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#talk-to-your-computer"><i class="fa fa-check"></i><b>1.5</b> Talk to your computer</a></li>
+<li class="chapter" data-level="1.6" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#more-on-packages"><i class="fa fa-check"></i><b>1.6</b> More on packages</a></li>
+<li class="chapter" data-level="1.7" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#using-objects"><i class="fa fa-check"></i><b>1.7</b> Using objects</a></li>
+<li class="chapter" data-level="1.8" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#more-on-objects"><i class="fa fa-check"></i><b>1.8</b> More on objects</a></li>
+<li class="chapter" data-level="1.9" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#vectors"><i class="fa fa-check"></i><b>1.9</b> Vectors</a></li>
+<li class="chapter" data-level="1.10" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#on-comments"><i class="fa fa-check"></i><b>1.10</b> On comments</a></li>
+<li class="chapter" data-level="1.11" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#factors"><i class="fa fa-check"></i><b>1.11</b> Factors</a></li>
+<li class="chapter" data-level="1.12" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#naming-conventions-for-objects-in-r"><i class="fa fa-check"></i><b>1.12</b> Naming conventions for objects in R</a></li>
+<li class="chapter" data-level="1.13" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#dataframes"><i class="fa fa-check"></i><b>1.13</b> Dataframes</a></li>
+<li class="chapter" data-level="1.14" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#exploring-data"><i class="fa fa-check"></i><b>1.14</b> Exploring data</a></li>
+<li class="chapter" data-level="1.15" data-path="a-first-lesson-about-r-week-1.html"><a href="a-first-lesson-about-r-week-1.html#quitting-rstudio"><i class="fa fa-check"></i><b>1.15</b> Quitting RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html"><i class="fa fa-check"></i><b>2</b> Week 2: Making your first maps in R</a><ul>
+<li class="chapter" data-level="2.1" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#a-quick-introduction-of-terms"><i class="fa fa-check"></i><b>2.1</b> A quick introduction of terms</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#geospatial-perspective---the-basics"><i class="fa fa-check"></i><b>2.1.1</b> Geospatial Perspective - The Basics</a></li>
+<li class="chapter" data-level="2.1.2" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#summary"><i class="fa fa-check"></i><b>2.1.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#getting-some-spatial-data-to-put-on-a-map"><i class="fa fa-check"></i><b>2.2</b> Getting some spatial data to put on a map</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#a-first-look-at-basemaps"><i class="fa fa-check"></i><b>2.2.1</b> A first look at basemaps</a></li>
+<li class="chapter" data-level="2.2.2" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#find-some-relevant-data-to-show-obtaining-data-on-crime"><i class="fa fa-check"></i><b>2.2.2</b> Find some relevant data to show: obtaining data on crime</a></li>
+<li class="chapter" data-level="2.2.3" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#add-a-point-layer-to-your-basemap"><i class="fa fa-check"></i><b>2.2.3</b> Add a point layer to your basemap</a></li>
+<li class="chapter" data-level="2.2.4" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#homework-1"><i class="fa fa-check"></i><b>2.2.4</b> HOMEWORK 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#from-dataframes-to-spatial-objects-finding-shapefiles"><i class="fa fa-check"></i><b>2.3</b> From dataframes to spatial objects: finding shapefiles</a></li>
+<li class="chapter" data-level="2.4" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#reading-shapefiles-into-r-the-wonderful-world-of-sf-objects"><i class="fa fa-check"></i><b>2.4</b> Reading shapefiles into R: the wonderful world of sf objects</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#homework-2"><i class="fa fa-check"></i><b>2.4.1</b> <strong>HOMEWORK 2</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#add-some-data"><i class="fa fa-check"></i><b>2.5</b> Add some data</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#data-wrangling-with-dplyr"><i class="fa fa-check"></i><b>2.5.1</b> Data wrangling with dplyr</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#join-data-to-spatial-object"><i class="fa fa-check"></i><b>2.6</b> Join data to spatial object</a></li>
+<li class="chapter" data-level="2.7" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#so-left_join-eh"><i class="fa fa-check"></i><b>2.7</b> So left_join(), eh?</a></li>
+<li class="chapter" data-level="2.8" data-path="week-2-making-your-first-maps-in-r.html"><a href="week-2-making-your-first-maps-in-r.html#lets-make-this-prettier-a-quick-glance-at-tmap"><i class="fa fa-check"></i><b>2.8</b> Let’s make this prettier: a quick glance at tmap</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html"><i class="fa fa-check"></i><b>3</b> Week 3: Thematic maps in R</a><ul>
+<li class="chapter" data-level="3.1" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#intro-and-recap"><i class="fa fa-check"></i><b>3.1</b> Intro and recap</a></li>
+<li class="chapter" data-level="3.2" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#creating-choropleth-maps"><i class="fa fa-check"></i><b>3.2</b> Creating choropleth maps</a></li>
+<li class="chapter" data-level="3.3" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#producing-small-multiples-to-compare-the-effect-of-different-classification-systems"><i class="fa fa-check"></i><b>3.3</b> Producing small multiples to compare the effect of different classification systems</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#homework-1-1"><i class="fa fa-check"></i><b>3.3.1</b> Homework 1</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#using-graduated-symbols"><i class="fa fa-check"></i><b>3.4</b> Using graduated symbols</a></li>
+<li class="chapter" data-level="3.5" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#bringing-additional-census-data-in"><i class="fa fa-check"></i><b>3.5</b> Bringing additional census data in</a></li>
+<li class="chapter" data-level="3.6" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#computing-and-mapping-crime-rates"><i class="fa fa-check"></i><b>3.6</b> Computing and mapping crime rates</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#homework-2-1"><i class="fa fa-check"></i><b>3.6.1</b> Homework 2</a></li>
+<li class="chapter" data-level="3.6.2" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#homework-3"><i class="fa fa-check"></i><b>3.6.2</b> Homework 3</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="week-3-thematic-maps-in-r.html"><a href="week-3-thematic-maps-in-r.html#more-on-small-multiples-and-point-pattern-maps"><i class="fa fa-check"></i><b>3.7</b> More on small multiples and point pattern maps</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html"><i class="fa fa-check"></i><b>4</b> Week 4: Performing spatial operations in R</a><ul>
+<li class="chapter" data-level="4.1" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#getting-some-more-data"><i class="fa fa-check"></i><b>4.1</b> Getting some (more) data</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#reading-data-in-from-the-web"><i class="fa fa-check"></i><b>4.1.1</b> Reading data in from the web</a></li>
+<li class="chapter" data-level="4.1.2" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#subsetting-using-pattern-matching"><i class="fa fa-check"></i><b>4.1.2</b> Subsetting using pattern matching</a></li>
+<li class="chapter" data-level="4.1.3" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#geocoding-from-an-address"><i class="fa fa-check"></i><b>4.1.3</b> Geocoding from an address</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#making-interactive-maps-with-leaflet"><i class="fa fa-check"></i><b>4.2</b> Making interactive maps with leaflet</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#making-a-map"><i class="fa fa-check"></i><b>4.2.1</b> Making a map</a></li>
+<li class="chapter" data-level="4.2.2" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#adding-some-content"><i class="fa fa-check"></i><b>4.2.2</b> Adding some content:</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#adding-points-manually"><i class="fa fa-check"></i><b>4.3</b> Adding points manually:</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#change-the-basemap"><i class="fa fa-check"></i><b>4.3.1</b> Change the basemap</a></li>
+<li class="chapter" data-level="4.3.2" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#adding-data-from-elsewhere"><i class="fa fa-check"></i><b>4.3.2</b> Adding data from elsewhere</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#spatial-operations"><i class="fa fa-check"></i><b>4.4</b> Spatial operations</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#coordinate-reference-systems-revisited"><i class="fa fa-check"></i><b>4.4.1</b> Coordinate reference systems revisited</a></li>
+<li class="chapter" data-level="4.4.2" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#meet-a-new-format-of-shapefile-geojson"><i class="fa fa-check"></i><b>4.4.2</b> Meet a new format of shapefile: geojson</a></li>
+<li class="chapter" data-level="4.4.3" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#subset-points-to-those-within-a-polygon"><i class="fa fa-check"></i><b>4.4.3</b> Subset points to those within a polygon</a></li>
+<li class="chapter" data-level="4.4.4" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#spatial-operations-two-building-buffers"><i class="fa fa-check"></i><b>4.4.4</b> Spatial operations two: building buffers</a></li>
+<li class="chapter" data-level="4.4.5" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#points-in-polygon"><i class="fa fa-check"></i><b>4.4.5</b> Points in Polygon</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#recap"><i class="fa fa-check"></i><b>4.5</b> Recap</a></li>
+<li class="chapter" data-level="4.6" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#homework"><i class="fa fa-check"></i><b>4.6</b> Homework</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="week-4-performing-spatial-operations-in-r.html"><a href="week-4-performing-spatial-operations-in-r.html#geocode-the-addresses"><i class="fa fa-check"></i><b>4.6.1</b> <strong>Geocode the addresses:</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html"><i class="fa fa-check"></i><b>5</b> Week 5 : Studying spatial point patterns</a><ul>
+<li class="chapter" data-level="5.1" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#what-well-do-today"><i class="fa fa-check"></i><b>5.1</b> What we’ll do today</a></li>
+<li class="chapter" data-level="5.2" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#getting-the-data"><i class="fa fa-check"></i><b>5.2</b> Getting the data</a></li>
+<li class="chapter" data-level="5.3" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#getting-the-data-into-spatstat-the-problem-with-duplicates"><i class="fa fa-check"></i><b>5.3</b> Getting the data into spatstat: the problem with duplicates</a></li>
+<li class="chapter" data-level="5.4" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#inspecting-our-data-with-spatstat"><i class="fa fa-check"></i><b>5.4</b> Inspecting our data with spatstat</a></li>
+<li class="chapter" data-level="5.5" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#density-estimates"><i class="fa fa-check"></i><b>5.5</b> Density estimates</a></li>
+<li class="chapter" data-level="5.6" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#adding-some-context"><i class="fa fa-check"></i><b>5.6</b> Adding some context</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#homework-1-2"><i class="fa fa-check"></i><b>5.6.1</b> Homework 1</a></li>
+<li class="chapter" data-level="5.6.2" data-path="week-5-studying-spatial-point-patterns.html"><a href="week-5-studying-spatial-point-patterns.html#homework-2-2"><i class="fa fa-check"></i><b>5.6.2</b> Homework 2</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html"><i class="fa fa-check"></i><b>6</b> Week 6 : Spatial autocorrelation</a><ul>
+<li class="chapter" data-level="6.1" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#get-data"><i class="fa fa-check"></i><b>6.1</b> Get data</a></li>
+<li class="chapter" data-level="6.2" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#what-is-a-neighbour"><i class="fa fa-check"></i><b>6.2</b> What is a neighbour?</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#homework-1-3"><i class="fa fa-check"></i><b>6.2.1</b> Homework 1</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#creating-a-list-of-neighbours"><i class="fa fa-check"></i><b>6.3</b> Creating a list of neighbours</a></li>
+<li class="chapter" data-level="6.4" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#generating-the-weight-matrix"><i class="fa fa-check"></i><b>6.4</b> Generating the weight matrix</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#homework-2-3"><i class="fa fa-check"></i><b>6.4.1</b> Homework 2</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#compute-morans-i"><i class="fa fa-check"></i><b>6.5</b> Compute Moran’s I</a><ul>
+<li class="chapter" data-level="6.5.1" data-path="week-6-spatial-autocorrelation.html"><a href="week-6-spatial-autocorrelation.html#homework-3-optional-practice"><i class="fa fa-check"></i><b>6.5.1</b> Homework 3 (Optional Practice)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="week-7-local-spatial-autocorrelation.html"><a href="week-7-local-spatial-autocorrelation.html"><i class="fa fa-check"></i><b>7</b> Week 7 : Local spatial autocorrelation</a><ul>
+<li class="chapter" data-level="7.1" data-path="week-7-local-spatial-autocorrelation.html"><a href="week-7-local-spatial-autocorrelation.html#prelude-1"><i class="fa fa-check"></i><b>7.1</b> Prelude</a></li>
+<li class="chapter" data-level="7.2" data-path="week-7-local-spatial-autocorrelation.html"><a href="week-7-local-spatial-autocorrelation.html#get-data-and-built-the-weight-matrix"><i class="fa fa-check"></i><b>7.2</b> Get data and built the weight matrix</a></li>
+<li class="chapter" data-level="7.3" data-path="week-7-local-spatial-autocorrelation.html"><a href="week-7-local-spatial-autocorrelation.html#generating-and-visualising-the-lisa-measures"><i class="fa fa-check"></i><b>7.3</b> Generating and visualising the LISA measures</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html"><i class="fa fa-check"></i><b>8</b> # Week 8 : Regression analysis (a refresher)</a><ul>
+<li class="chapter" data-level="8.1" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#introduction-1"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#motivating-regression"><i class="fa fa-check"></i><b>8.2</b> Motivating regression</a></li>
+<li class="chapter" data-level="8.3" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#fitting-a-simple-regression-model"><i class="fa fa-check"></i><b>8.3</b> Fitting a simple regression model</a></li>
+<li class="chapter" data-level="8.4" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#residuals-revisited-r-squared"><i class="fa fa-check"></i><b>8.4</b> Residuals revisited: R squared</a></li>
+<li class="chapter" data-level="8.5" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#inference-with-regression"><i class="fa fa-check"></i><b>8.5</b> Inference with regression</a></li>
+<li class="chapter" data-level="8.6" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#fitting-regression-with-categorical-predictors"><i class="fa fa-check"></i><b>8.6</b> Fitting regression with categorical predictors</a></li>
+<li class="chapter" data-level="8.7" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#motivating-multiple-regression"><i class="fa fa-check"></i><b>8.7</b> Motivating multiple regression</a></li>
+<li class="chapter" data-level="8.8" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#fitting-and-interpreting-a-multiple-regression-model"><i class="fa fa-check"></i><b>8.8</b> Fitting and interpreting a multiple regression model</a></li>
+<li class="chapter" data-level="8.9" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#presenting-your-regression-results."><i class="fa fa-check"></i><b>8.9</b> Presenting your regression results.</a></li>
+<li class="chapter" data-level="8.10" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#rescaling-input-variables-to-assist-interpretation"><i class="fa fa-check"></i><b>8.10</b> Rescaling input variables to assist interpretation</a></li>
+<li class="chapter" data-level="8.11" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#testing-conditional-hypothesis-interactions"><i class="fa fa-check"></i><b>8.11</b> Testing conditional hypothesis: interactions</a></li>
+<li class="chapter" data-level="8.12" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#model-building-and-variable-selection"><i class="fa fa-check"></i><b>8.12</b> Model building and variable selection</a></li>
+<li class="chapter" data-level="8.13" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#regression-assumptions"><i class="fa fa-check"></i><b>8.13</b> Regression assumptions</a><ul>
+<li class="chapter" data-level="8.13.1" data-path="week-8-regression-analysis-a-refresher.html"><a href="week-8-regression-analysis-a-refresher.html#homework-4"><i class="fa fa-check"></i><b>8.13.1</b> HOMEWORK</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html"><i class="fa fa-check"></i><b>9</b> Week 9 : Spatial regression models</a><ul>
+<li class="chapter" data-level="9.1" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#introduction-2"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression"><i class="fa fa-check"></i><b>9.2</b> Looking at the residuals and testing for spatial autocorrelation in regression</a></li>
+<li class="chapter" data-level="9.3" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#what-to-do-now"><i class="fa fa-check"></i><b>9.3</b> What to do now?</a></li>
+<li class="chapter" data-level="9.4" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#spatial-regimes"><i class="fa fa-check"></i><b>9.4</b> Spatial Regimes</a><ul>
+<li class="chapter" data-level="9.4.1" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#homework-1-4"><i class="fa fa-check"></i><b>9.4.1</b> HOMEWORK 1</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#lagrange-multipliers"><i class="fa fa-check"></i><b>9.5</b> Lagrange multipliers</a><ul>
+<li class="chapter" data-level="9.5.1" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#homework-2-4"><i class="fa fa-check"></i><b>9.5.1</b> HOMEWORK 2</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#fitting-and-interpreting-a-spatially-lagged-model"><i class="fa fa-check"></i><b>9.6</b> Fitting and interpreting a spatially lagged model</a></li>
+<li class="chapter" data-level="9.7" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#fitting-an-interpreting-a-spatial-error-model"><i class="fa fa-check"></i><b>9.7</b> Fitting an interpreting a spatial error model</a><ul>
+<li class="chapter" data-level="9.7.1" data-path="week-9-spatial-regression-models.html"><a href="week-9-spatial-regression-models.html#homework-3-1"><i class="fa fa-check"></i><b>9.7.1</b> HOMEWORK 3</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="week-10.html"><a href="week-10.html"><i class="fa fa-check"></i><b>10</b> Week 10</a><ul>
+<li class="chapter" data-level="10.1" data-path="week-10.html"><a href="week-10.html#introduction-3"><i class="fa fa-check"></i><b>10.1</b> Introduction</a><ul>
+<li class="chapter" data-level="10.1.1" data-path="week-10.html"><a href="week-10.html#pro-tip-do-i-need-to-install-this-package"><i class="fa fa-check"></i><b>10.1.1</b> Pro-tip: do I need to install this package?</a></li>
+<li class="chapter" data-level="10.1.2" data-path="week-10.html"><a href="week-10.html#data"><i class="fa fa-check"></i><b>10.1.2</b> Data</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="week-10.html"><a href="week-10.html#interpreting-spatial-lag-coefficiences"><i class="fa fa-check"></i><b>10.2</b> Interpreting Spatial Lag Coefficiences</a></li>
+<li class="chapter" data-level="10.3" data-path="week-10.html"><a href="week-10.html#mapping-rates-learning-from-disease-mapping"><i class="fa fa-check"></i><b>10.3</b> Mapping rates, learning from disease mapping</a></li>
+<li class="chapter" data-level="10.4" data-path="week-10.html"><a href="week-10.html#binning"><i class="fa fa-check"></i><b>10.4</b> Binning</a><ul>
+<li class="chapter" data-level="10.4.1" data-path="week-10.html"><a href="week-10.html#the-binning-process"><i class="fa fa-check"></i><b>10.4.1</b> The Binning Process</a></li>
+<li class="chapter" data-level="10.4.2" data-path="week-10.html"><a href="week-10.html#different-binning-techniques"><i class="fa fa-check"></i><b>10.4.2</b> Different Binning Techniques</a></li>
+<li class="chapter" data-level="10.4.3" data-path="week-10.html"><a href="week-10.html#homework-10.3"><i class="fa fa-check"></i><b>10.4.3</b> Homework 10.3</a></li>
+<li class="chapter" data-level="10.4.4" data-path="week-10.html"><a href="week-10.html#multivariate-binning"><i class="fa fa-check"></i><b>10.4.4</b> Multivariate binning</a></li>
+<li class="chapter" data-level="10.4.5" data-path="week-10.html"><a href="week-10.html#benefits-of-binning"><i class="fa fa-check"></i><b>10.4.5</b> Benefits of Binning</a></li>
+</ul></li>
+<li class="chapter" data-level="10.5" data-path="week-10.html"><a href="week-10.html#a-final-note-of-caution-maup"><i class="fa fa-check"></i><b>10.5</b> A final note of caution: MAUP</a><ul>
+<li class="chapter" data-level="10.5.1" data-path="week-10.html"><a href="week-10.html#what-is-maup"><i class="fa fa-check"></i><b>10.5.1</b> What is MAUP?</a></li>
+<li class="chapter" data-level="10.5.2" data-path="week-10.html"><a href="week-10.html#why-does-maup-matter"><i class="fa fa-check"></i><b>10.5.2</b> Why does MAUP matter?</a></li>
+<li class="chapter" data-level="10.5.3" data-path="week-10.html"><a href="week-10.html#what-can-we-do"><i class="fa fa-check"></i><b>10.5.3</b> What can we do?</a></li>
+<li class="chapter" data-level="10.5.4" data-path="week-10.html"><a href="week-10.html#homework-10.4"><i class="fa fa-check"></i><b>10.5.4</b> Homework 10.4</a></li>
+</ul></li>
+<li class="chapter" data-level="10.6" data-path="week-10.html"><a href="week-10.html#references-and-further-reading"><i class="fa fa-check"></i><b>10.6</b> References and further reading</a><ul>
+<li class="chapter" data-level="10.6.1" data-path="week-10.html"><a href="week-10.html#binning-1"><i class="fa fa-check"></i><b>10.6.1</b> Binning</a></li>
+<li class="chapter" data-level="10.6.2" data-path="week-10.html"><a href="week-10.html#maup"><i class="fa fa-check"></i><b>10.6.2</b> MAUP</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Crime Mapping in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="week-5-studying-spatial-point-patterns" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Week 5 : Studying spatial point patterns</h1>
+<div id="what-well-do-today" class="section level2">
+<h2><span class="header-section-number">5.1</span> What we’ll do today</h2>
+<p>We have now covered quite a bit. You’ve learnt about spatial objects and various formats in which they come and are stored by R, how to produce maps using a variety of packages, and also provided you with a brief introduction to common spatial operations. In what remains of the semester we are going to shift the emphasis and start focusing a bit more on spatial statistics. First we will focus on techniques that are used to explore and analyse points in a geographical space and in subsequent sessions we will cover techniques that are used to analyse spatial data when our unit of analysis are polygons (e.g., postal code areas, census areas, police beats, etc).</p>
+<p>We will introduce a new R package called <strong>spatstat</strong>, that was developed for spatial point pattern analysis and modelling. It was written by Adrian Baddeley and Rolf Turner. There is a <a href="http://spatstat.org">webpage</a> dedicated to this package. The <a href="https://www.crcpress.com/Spatial-Point-Patterns-Methodology-and-Applications-with-R/Baddeley-Rubak-Turner/p/book/9781482210200">thickest book</a> in my library, at 810 pages, is dedicated to this package. So as you can imagine the theory and practice of spatial pattern analysis is something one could devote an entire course to. You can get a pdf document used in a course the authors of this package develop <a href="https://research.csiro.au/software/wp-content/uploads/sites/6/2015/02/Rspatialcourse_CMIS_PDF-Standard.pdf">here</a>. In our course we are only going to provide you with an introductory practical entry into this field of techniques. If this package is not installed in your machine, make sure you install it before we carry on.</p>
+<div class="sourceCode" id="cb451"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb451-1" title="1"><span class="kw">library</span>(sf)</a>
+<a class="sourceLine" id="cb451-2" title="2"><span class="kw">library</span>(tmap)</a>
+<a class="sourceLine" id="cb451-3" title="3"><span class="kw">library</span>(dplyr)</a>
+<a class="sourceLine" id="cb451-4" title="4"><span class="kw">library</span>(spatstat)</a></code></pre></div>
+</div>
+<div id="getting-the-data" class="section level2">
+<h2><span class="header-section-number">5.2</span> Getting the data</h2>
+<p>We will using the crime data from Greater Manchester police we have been using so far. Let’s focus on burglary in the Fallowfield area. The code below has already been explained and used in previous sessions, so we won’t go over the detail again. But rather than cut and paste automatically, try to remember what each line of code is doing.</p>
+<p>By the way, the police data for Manchester we have used in previous sessions correspond to only one month of the year. Here we are using a full year worth of data, so the data import will take a bit longer.</p>
+<div class="sourceCode" id="cb452"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb452-1" title="1"><span class="co">#Read a geojson file with Manchester wards</span></a>
+<a class="sourceLine" id="cb452-2" title="2">manchester_ward &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&quot;</span>)</a></code></pre></div>
+<pre><code>## Reading layer `OGRGeoJSON&#39; from data source `https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&#39; using driver `GeoJSON&#39;
+## Simple feature collection with 215 features and 12 fields
+## geometry type:  POLYGON
+## dimension:      XY
+## bbox:           xmin: 351664 ymin: 381168.6 xmax: 406087.5 ymax: 421039.8
+## epsg (SRID):    27700
+## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs</code></pre>
+<div class="sourceCode" id="cb454"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb454-1" title="1"><span class="co">#Create a new object that only has the city centre ward</span></a>
+<a class="sourceLine" id="cb454-2" title="2">df1 &lt;-<span class="st"> </span>manchester_ward <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb454-3" title="3"><span class="st">  </span><span class="kw">filter</span>(wd16nm <span class="op">==</span><span class="st"> &quot;Fallowfield&quot;</span>)</a>
+<a class="sourceLine" id="cb454-4" title="4"><span class="co">#Change coordinate systems</span></a>
+<a class="sourceLine" id="cb454-5" title="5">fallowfield &lt;-<span class="st"> </span><span class="kw">st_transform</span>(df1, <span class="dv">4326</span>)</a>
+<a class="sourceLine" id="cb454-6" title="6"><span class="co">#Get rid of objects we no longer need</span></a>
+<a class="sourceLine" id="cb454-7" title="7"><span class="kw">rm</span>(manchester_ward)</a>
+<a class="sourceLine" id="cb454-8" title="8"><span class="kw">rm</span>(df1)</a>
+<a class="sourceLine" id="cb454-9" title="9"></a>
+<a class="sourceLine" id="cb454-10" title="10"><span class="co">#Read Greater Manchester police data</span></a>
+<a class="sourceLine" id="cb454-11" title="11">crimes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/jjmedinaariza/CrimeMapping/master/gmpcrime.csv&quot;</span>)</a>
+<a class="sourceLine" id="cb454-12" title="12">burglary &lt;-<span class="st"> </span><span class="kw">filter</span>(crimes, crime_type <span class="op">==</span><span class="st"> &quot;Burglary&quot;</span>)</a>
+<a class="sourceLine" id="cb454-13" title="13"></a>
+<a class="sourceLine" id="cb454-14" title="14"><span class="co">#Transform the dataframe with crime information into a sf object</span></a>
+<a class="sourceLine" id="cb454-15" title="15">burglary_spatial =<span class="st"> </span><span class="kw">st_as_sf</span>(burglary, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;lat&quot;</span>), </a>
+<a class="sourceLine" id="cb454-16" title="16">                 <span class="dt">crs =</span> <span class="dv">4326</span>, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)</a>
+<a class="sourceLine" id="cb454-17" title="17"></a>
+<a class="sourceLine" id="cb454-18" title="18"><span class="co">#Select only the crimes that take place within the space defined by the Ward boundaries</span></a>
+<a class="sourceLine" id="cb454-19" title="19"><span class="co"># intersection</span></a>
+<a class="sourceLine" id="cb454-20" title="20">bur_fal &lt;-<span class="st"> </span><span class="kw">st_intersects</span>(fallowfield, burglary_spatial)</a></code></pre></div>
+<pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
+<div class="sourceCode" id="cb456"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb456-1" title="1"><span class="co"># subsetting</span></a>
+<a class="sourceLine" id="cb456-2" title="2">bur_fal &lt;-<span class="st"> </span>burglary_spatial[<span class="kw">unlist</span>(bur_fal),]</a>
+<a class="sourceLine" id="cb456-3" title="3"><span class="kw">rm</span>(crimes)</a>
+<a class="sourceLine" id="cb456-4" title="4"><span class="kw">rm</span>(burglary)</a>
+<a class="sourceLine" id="cb456-5" title="5"></a>
+<a class="sourceLine" id="cb456-6" title="6"><span class="co">#Let&#39;s see the results</span></a>
+<a class="sourceLine" id="cb456-7" title="7"><span class="kw">tm_shape</span>(fallowfield) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb456-8" title="8"><span class="st">  </span><span class="kw">tm_fill</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb456-9" title="9"><span class="st">  </span><span class="kw">tm_shape</span>(bur_fal) <span class="op">+</span></a>
+<a class="sourceLine" id="cb456-10" title="10"><span class="st">  </span><span class="kw">tm_dots</span>()</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>In the point pattern analysis literature each point is often referred to as an <strong>event</strong> and these events can have <strong>marks</strong>, attributes or characteristics that are also encoded in the data. In our spatial object one of these <em>marks</em> is the type of crime (altough in this case it’s of little interest since we have filtered on it).</p>
+</div>
+<div id="getting-the-data-into-spatstat-the-problem-with-duplicates" class="section level2">
+<h2><span class="header-section-number">5.3</span> Getting the data into spatstat: the problem with duplicates</h2>
+<p>So let’s start using spatstat.The first thing we need to do is to transform our sf object into a <strong>ppp</strong> object which is how spatstat likes to store its point patterns. Unfortunately, spatstat and many other packages for analysis of spatial data precede sf, so the transformation is a bit awkard. Also before we do that, it is important to realise that a point pattern is defined as a series of events in a given area, or window, of observation. It is therefore extremely important to precisely define this window. In <em>spatstat</em> the function <em>owin()</em> is used to set the observation window. However, the standard function takes the coordinates of a rectangle or of a polygon from a matrix, and therefore it may be a bit tricky to use. Luckily the package <em>maptools</em> provides a way to transform a SpatialPolygons into an object of class owin, using the function as.owin</p>
+<div class="sourceCode" id="cb457"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb457-1" title="1"><span class="co">#First we transform our Falllowfield polygon into a sp object</span></a>
+<a class="sourceLine" id="cb457-2" title="2">fallowfield_sp &lt;-<span class="kw">as</span>(fallowfield, <span class="st">&quot;Spatial&quot;</span>)</a>
+<a class="sourceLine" id="cb457-3" title="3"><span class="co">#Then we use the as.owin function to define the window</span></a>
+<a class="sourceLine" id="cb457-4" title="4">window &lt;-<span class="st"> </span>maptools<span class="op">::</span><span class="kw">as.owin.SpatialPolygons</span>(fallowfield_sp)</a>
+<a class="sourceLine" id="cb457-5" title="5"><span class="co">#Check that this worked</span></a>
+<a class="sourceLine" id="cb457-6" title="6"><span class="kw">class</span>(window)</a></code></pre></div>
+<pre><code>## [1] &quot;owin&quot;</code></pre>
+<div class="sourceCode" id="cb459"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb459-1" title="1">window</a></code></pre></div>
+<pre><code>## window: polygonal boundary
+## enclosing rectangle: [-2.2581074, -2.2141921] x [53.43904, 53.45145] units</code></pre>
+<p>Now that we have created the window as an owin object let’s get the points:</p>
+<div class="sourceCode" id="cb461"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb461-1" title="1"><span class="co">#First we will extract the coordinates from our sf point data into a matrix</span></a>
+<a class="sourceLine" id="cb461-2" title="2">sf_bur_fal_coords &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">unlist</span>(bur_fal<span class="op">$</span>geometry), <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> T)</a>
+<a class="sourceLine" id="cb461-3" title="3"><span class="co">#Then we use the ppp function to create the object using the information from our matrix and the window that we created</span></a>
+<a class="sourceLine" id="cb461-4" title="4">bur_ppp &lt;-<span class="st"> </span><span class="kw">ppp</span>(<span class="dt">x =</span> sf_bur_fal_coords[,<span class="dv">1</span>], <span class="dt">y =</span> sf_bur_fal_coords[,<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb461-5" title="5">                   <span class="dt">window =</span> window, <span class="dt">check =</span> T)</a></code></pre></div>
+<pre><code>## Warning: data contain duplicated points</code></pre>
+<div class="sourceCode" id="cb463"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb463-1" title="1"><span class="kw">plot</span>(bur_ppp)</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Notice the warning message about duplicates. In spatial point pattern analysis an issue of significance is the presence of duplicates. The statistical methodology used for spatial point pattern processes is based largely on the assumption that processes are simple, that is, that the points cannot be coincident. That assumption may be unreasonable in many contexts (for example, the literature on repeat victimisation indeed suggests that we should expect the same households to be at a higher risk of being hit again). Even so the point (no pun intended) is that “when the data has coincidence points, some statistical procedures will be severely affected. So it is always strongly advisable to check for duplicate points and to decide on a strategy for dealing with them if they are present” (Baddeley et al., 2016: 60).</p>
+<p>We can check the duplication in a ppp object with the following syntax:</p>
+<div class="sourceCode" id="cb464"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb464-1" title="1"><span class="kw">any</span>(<span class="kw">duplicated</span>(bur_ppp))</a></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<p>To count the number of coincidence points we use the multiplicity() function. This will return a vector of integers, with one entry for each observation in our dataset, giving the number of points that are identical to the point in question (including itself).</p>
+<div class="sourceCode" id="cb466"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb466-1" title="1"><span class="kw">multiplicity</span>(bur_ppp)</a></code></pre></div>
+<p>If you want to know how many locations have more than one event you can use:</p>
+<div class="sourceCode" id="cb467"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb467-1" title="1"><span class="kw">sum</span>(<span class="kw">multiplicity</span>(bur_ppp) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>)</a></code></pre></div>
+<pre><code>## [1] 190</code></pre>
+<p>That’s quite something. 190 points out of 223 here share coordinates.</p>
+<div class="sourceCode" id="cb469"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb469-1" title="1"><span class="kw">tm_shape</span>(fallowfield) <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb469-2" title="2"><span class="st">  </span><span class="kw">tm_fill</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb469-3" title="3"><span class="st">  </span><span class="kw">tm_shape</span>(bur_fal) <span class="op">+</span></a>
+<a class="sourceLine" id="cb469-4" title="4"><span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.4</span>, <span class="dt">size=</span><span class="dv">1</span>)</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>In the case of crime, as we have hinted some of this may be linked to the nature of crime itself. Hint: repeat victimisation. However, this pattern of duplication is fairly obvious across all crime categories in the police.uk website and, although I have not explored this in detail, I strongly suspect it is a function of the anonimisation process used to create these maps. The coordinates provided in the open data are not the exact locations of crimes, but they come from a list of points generated for purposes of data publication. You can see the details <a href="https://data.police.uk/about/#anonymisation">here</a>. This process is likely inflating the amount of duplication we observe. So keep in mind when analysing and working with this data that it is not the same as working with the real locations.</p>
+<p>What to do about duplicates in spatial point pattern analysis is not always clear. You could simply delete the duplicates, but of course that may ignore issues such as repeat victimisation. You could also use jittering, which will add a small perturbation to the duplicate points so that they do not occupy the exact same space. Which again, may ignore things like repeat victimisation. Another alternative is to make each point “unique” and then attach the multiplicites of the points to the patterns as <em>marks</em>, as attributes of the points. Then you would need analytical techniques that take into account these marks.</p>
+<p>If you were to be doing this for real you would want access to the real thing, not this public version of the data and then go for the second solution suggested above. We don’t have access to the source data, so for the sake of simplicity and so that we can illustrate how spatstat works we will add some jittering to the data. The first argument for the function is the object, retry asks whether we want the algorithm to have another go if the jittering places a point outside the window (we want this so that we don’t loose points), and the drop argument is used to ensure we get a ppp object as a result of running this function.</p>
+<div class="sourceCode" id="cb470"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb470-1" title="1">jitter_bur &lt;-<span class="st"> </span><span class="kw">rjitter</span>(bur_ppp, <span class="dt">retry=</span><span class="ot">TRUE</span>, <span class="dt">nsim=</span><span class="dv">1</span>, <span class="dt">drop=</span><span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb470-2" title="2"><span class="kw">plot</span>(jitter_bur)</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Notice the difference with the original plot. Can you see how the circumferences do not overlap perfectly now?</p>
+</div>
+<div id="inspecting-our-data-with-spatstat" class="section level2">
+<h2><span class="header-section-number">5.4</span> Inspecting our data with spatstat</h2>
+<p>This package supports all kind of exploratory point pattern analysis. One example of this is quadrant counting. One could divide the window of observation into quadrants and count the number of points into each of these quadrants. For example, if we want four quadrants along the X axis and 3 along the Y axis we could used those parameters in the quadratcount() function. Then we just use standard plotting functions from R base.</p>
+<div class="sourceCode" id="cb471"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb471-1" title="1">Q &lt;-<span class="st"> </span><span class="kw">quadratcount</span>(jitter_bur, <span class="dt">nx =</span> <span class="dv">4</span>, <span class="dt">ny =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb471-2" title="2"><span class="kw">plot</span>(jitter_bur)</a>
+<a class="sourceLine" id="cb471-3" title="3"><span class="kw">plot</span>(Q, <span class="dt">add =</span> <span class="ot">TRUE</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>In the video lectures by Luc Anselin would were exposed to the notion of complete spatial randomness (CSR). When we look at a point pattern process the first step in the process is whether it has been generated in a random manner. Under CSR, points are independent of each other and have the same propensity to be found at any location. We can generate data that conform to complete spatial randomness using the <em>rpoispp()</em> function. The r at the beginning is used to denote we are simulating data (you will this is common in R) and we are using a Poisson point process. Let’s generate 223 points in a random manner:</p>
+<div class="sourceCode" id="cb472"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb472-1" title="1"><span class="kw">plot</span>(<span class="kw">rpoispp</span>(<span class="dv">223</span>))</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>You will notice that the points in a homogeneous Poisson process are not ‘uniformly spread’: there are empty gaps and clusters of points. Run the previous command a few times. You will see the map generated is different each time.</p>
+<p>In classical literature, the homogeneous Poisson process (CSR) is usually taken as the appropriate ‘null’ model for a point pattern. Our basic task in analysing a point pattern is to find evidence against CSR. We can run a Chi Square test to check this. So, for example:</p>
+<div class="sourceCode" id="cb473"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb473-1" title="1"><span class="kw">quadrat.test</span>(jitter_bur, <span class="dt">nx =</span> <span class="dv">3</span>, <span class="dt">ny =</span> <span class="dv">2</span>)</a></code></pre></div>
+<pre><code>## 
+##  Chi-squared test of CSR using quadrat counts
+##  Pearson X2 statistic
+## 
+## data:  jitter_bur
+## X2 = 113.09, df = 5, p-value &lt; 2.2e-16
+## alternative hypothesis: two.sided
+## 
+## Quadrats: 6 tiles (irregular windows)</code></pre>
+<p>Observing the results we see that the p value is well below convential standards for rejection of the null hypothesis. Observing data as the one we have for burglary in Fallowfield would be extremely rare if the null hypothesis was true. We can then conclude that the burglary data is not randomly distributed in the observed space. But no cop nor criminologist would really question this. We do know that crime is not randomly distributed in space.</p>
+</div>
+<div id="density-estimates" class="section level2">
+<h2><span class="header-section-number">5.5</span> Density estimates</h2>
+<p>In the presentations by Luc Anselin and the recommended reading materials we introduced the notion of density maps. Kernel density estimation involves applying a function (known as a “kernel”) to each data point, which averages the location of that point with respect to the location of other data points.</p>
+<div class="sourceCode" id="cb475"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb475-1" title="1">ds &lt;-<span class="st"> </span><span class="kw">density</span>(jitter_bur)</a>
+<a class="sourceLine" id="cb475-2" title="2"><span class="kw">class</span>(ds)</a></code></pre></div>
+<pre><code>## [1] &quot;im&quot;</code></pre>
+<div class="sourceCode" id="cb477"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb477-1" title="1"><span class="kw">plot</span>(ds, <span class="dt">main=</span><span class="st">&#39;Burglary density in Fallowfield&#39;</span>)</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>The density function is estimating a kernel density estimate. Density is nothing but the number of points per unit area. This method computes the intensity continuously across the study area and the object return is a raster image. To perform this analysis in R we need to define the bandwidth of the density estimation, which basically determines the area of influence of the estimation. There is no general rule to determine the correct bandwidth; generally speaking if h is too small the estimate is too noisy, while if h is too high the estimate may miss crucial elements of the point pattern due to oversmoothing (Scott, 2009).</p>
+<p>The key argument to pass to the density method for point patterm objects is sigma=, which determines the bandwidth of the kernel. In spatstat the functions bw.diggle, bw.ppl, and bw.scott can be used to estimate the bandwidth according to difference methods. The helpfiles recommend the use of the first two. These functions run algorithms that aim to select an appropriate bandwith.</p>
+<div class="sourceCode" id="cb478"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb478-1" title="1"><span class="kw">bw.diggle</span>(jitter_bur)</a></code></pre></div>
+<pre><code>##       sigma 
+## 5.46379e-05</code></pre>
+<div class="sourceCode" id="cb480"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb480-1" title="1"><span class="kw">bw.ppl</span>(jitter_bur)</a></code></pre></div>
+<pre><code>##      sigma 
+## 0.00050307</code></pre>
+<div class="sourceCode" id="cb482"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb482-1" title="1"><span class="kw">bw.scott</span>(jitter_bur)</a></code></pre></div>
+<pre><code>##      sigma.x      sigma.y 
+## 0.0040690343 0.0008436845</code></pre>
+<p>You can see the Diggle algorithm gives you the narrower bandwith. We can test how they work with our dataset using the following code:</p>
+<div class="sourceCode" id="cb484"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb484-1" title="1"><span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</a>
+<a class="sourceLine" id="cb484-2" title="2"><span class="kw">plot</span>(<span class="kw">density.ppp</span>(jitter_bur, <span class="dt">sigma =</span> <span class="kw">bw.diggle</span>(jitter_bur),<span class="dt">edge=</span>T),</a>
+<a class="sourceLine" id="cb484-3" title="3">     <span class="dt">main =</span> <span class="kw">paste</span>(<span class="st">&quot;h = 0.000003&quot;</span>))</a>
+<a class="sourceLine" id="cb484-4" title="4"></a>
+<a class="sourceLine" id="cb484-5" title="5"><span class="kw">plot</span>(<span class="kw">density.ppp</span>(jitter_bur, <span class="dt">sigma =</span> <span class="kw">bw.ppl</span>(jitter_bur),<span class="dt">edge=</span>T),</a>
+<a class="sourceLine" id="cb484-6" title="6">     <span class="dt">main=</span><span class="kw">paste</span>(<span class="st">&quot;h =0.0005&quot;</span>))</a>
+<a class="sourceLine" id="cb484-7" title="7"></a>
+<a class="sourceLine" id="cb484-8" title="8"><span class="kw">plot</span>(<span class="kw">density.ppp</span>(jitter_bur, <span class="dt">sigma =</span> <span class="kw">bw.scott</span>(jitter_bur)[<span class="dv">2</span>],<span class="dt">edge=</span>T),</a>
+<a class="sourceLine" id="cb484-9" title="9">     <span class="dt">main=</span><span class="kw">paste</span>(<span class="st">&quot;h = 0.0008&quot;</span>))</a>
+<a class="sourceLine" id="cb484-10" title="10"></a>
+<a class="sourceLine" id="cb484-11" title="11"><span class="kw">plot</span>(<span class="kw">density.ppp</span>(jitter_bur, <span class="dt">sigma =</span> <span class="kw">bw.scott</span>(jitter_bur)[<span class="dv">1</span>],<span class="dt">edge=</span>T),</a>
+<a class="sourceLine" id="cb484-12" title="12">     <span class="dt">main=</span><span class="kw">paste</span>(<span class="st">&quot;h = 0.004&quot;</span>))</a></code></pre></div>
+<p><img src="05-week5_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p>Baddeley et (2016) suggest the use of the bw.ppl algorithm because in their experience it tends to produce the more appropriate values when the pattern consists predominantly of tight clusters. But they also insist that to detect a single tight cluster in the midst of random noise the bw.diggle method seems to work best.</p>
+</div>
+<div id="adding-some-context" class="section level2">
+<h2><span class="header-section-number">5.6</span> Adding some context</h2>
+<p>Often it is convenient to use a basemap to provide context. In order to do that we first need to turn the image object generated by the spatstat package into a raster object, a more generic format for raster image used in R.</p>
+<div class="sourceCode" id="cb485"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb485-1" title="1"><span class="kw">library</span>(raster)</a></code></pre></div>
+<pre><code>## Loading required package: sp</code></pre>
+<pre><code>## 
+## Attaching package: &#39;raster&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:spatstat&#39;:
+## 
+##     area, rotate, shift</code></pre>
+<pre><code>## The following object is masked from &#39;package:nlme&#39;:
+## 
+##     getData</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<div class="sourceCode" id="cb491"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb491-1" title="1">dmap1 &lt;-<span class="st"> </span><span class="kw">density.ppp</span>(jitter_bur, <span class="dt">sigma =</span> <span class="kw">bw.ppl</span>(jitter_bur),<span class="dt">edge=</span>T)</a>
+<a class="sourceLine" id="cb491-2" title="2">r1 &lt;-<span class="st"> </span><span class="kw">raster</span>(dmap1)</a>
+<a class="sourceLine" id="cb491-3" title="3"><span class="co">#remove very low density values</span></a>
+<a class="sourceLine" id="cb491-4" title="4">r1[r1 <span class="op">&lt;</span><span class="st"> </span><span class="fl">0.0001</span> ] &lt;-<span class="st"> </span><span class="ot">NA</span></a>
+<a class="sourceLine" id="cb491-5" title="5"><span class="kw">class</span>(r1)</a></code></pre></div>
+<pre><code>## [1] &quot;RasterLayer&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;raster&quot;</code></pre>
+<p>Now that we have the raster we can add it to a basemap.</p>
+<p>Two-dimensional RasterLayer objects (from the raster package) can be turned into images and added to Leaflet maps using the addRasterImage function.</p>
+<p>The addRasterImage function works by projecting the RasterLayer object to EPSG:3857 and encoding each cell to an RGBA color, to produce a PNG image. That image is then embedded in the map widget.</p>
+<p>It’s important that the RasterLayer object is tagged with a proper coordinate reference system. Many raster files contain this information, but some do not. Here is how you’d tag a raster layer object “r” which contains WGS84 data:</p>
+<div class="sourceCode" id="cb493"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb493-1" title="1"><span class="kw">library</span>(leaflet)</a>
+<a class="sourceLine" id="cb493-2" title="2"></a>
+<a class="sourceLine" id="cb493-3" title="3"><span class="co">#make sure we have right CRS. We need the sp package for setting CRS to this raster: </span></a>
+<a class="sourceLine" id="cb493-4" title="4"><span class="kw">library</span>(sp)</a>
+<a class="sourceLine" id="cb493-5" title="5"><span class="kw">crs</span>(r1) &lt;-<span class="st"> </span>sp<span class="op">::</span><span class="kw">CRS</span>(<span class="st">&quot;+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs&quot;</span>)</a>
+<a class="sourceLine" id="cb493-6" title="6"></a>
+<a class="sourceLine" id="cb493-7" title="7"><span class="co">#we also create a colour palet</span></a>
+<a class="sourceLine" id="cb493-8" title="8">pal &lt;-<span class="st"> </span><span class="kw">colorNumeric</span>(<span class="kw">c</span>(<span class="st">&quot;#0C2C84&quot;</span>, <span class="st">&quot;#41B6C4&quot;</span>, <span class="st">&quot;#FFFFCC&quot;</span>), <span class="kw">values</span>(r1),</a>
+<a class="sourceLine" id="cb493-9" title="9">  <span class="dt">na.color =</span> <span class="st">&quot;transparent&quot;</span>)</a>
+<a class="sourceLine" id="cb493-10" title="10"></a>
+<a class="sourceLine" id="cb493-11" title="11"><span class="co">#and then make map!</span></a>
+<a class="sourceLine" id="cb493-12" title="12"><span class="kw">leaflet</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb493-13" title="13"><span class="st">  </span><span class="kw">setView</span>(<span class="dt">lng =</span> <span class="fl">-2.225814</span>, <span class="dt">lat =</span> <span class="fl">53.441315</span>, <span class="dt">zoom =</span> <span class="dv">14</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb493-14" title="14"><span class="st">  </span><span class="kw">addTiles</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb493-15" title="15"><span class="st">  </span><span class="kw">addRasterImage</span>(r1, <span class="dt">colors =</span> pal, <span class="dt">opacity =</span> <span class="fl">0.8</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb493-16" title="16"><span class="st">  </span><span class="kw">addLegend</span>(<span class="dt">pal =</span> pal, <span class="dt">values =</span> <span class="kw">values</span>(r1),</a>
+<a class="sourceLine" id="cb493-17" title="17">    <span class="dt">title =</span> <span class="st">&quot;Burglary map&quot;</span>)</a></code></pre></div>
+<pre><code>## Warning in colors(.): Some values were outside the color scale and will be
+## treated as NA</code></pre>
+<div id="htmlwidget-500cd3ceec2cd8e937e6" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-500cd3ceec2cd8e937e6">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[53.441315,-2.225814],14,[]],"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAgAElEQVR4nO19W4itW3bWN+b816ral7NPt33STaLdIYIdQuxzwIAmGjreHiSgKGgj4osPvghiNKKS+OLDaaOhm8a7IuKTDxHBJ1/Eax5C0CDpRLyBLZ0Y2rYb99lnX2qt/59z+DCu/1+rqtaqvfY5VWfX2FSt2lX/Zf5zjDnGN27zJ2bGHb2+VD7sAdzRh0t3AvCa050AvOZ0JwC3gN743LuvDKjdCcANp1fJfOBOAG40vWrmA3cC8NoT3cUBbh5dtPLf/6WfpGPf604DvOZ0JwA3jD4Iu59p+CBv9kHQ9/zur/C0bdhuJmzHjt4Z7331J46uOj8qdKMFwFYDEVAL4WQ94OT+gGFdwY3RG6NUQhlEkXFnAPMFdMf8y+nGmoClKmQAnRnchfG9M3rv8nPr8tUZzADjdgLbq9T/qzAPN1YAZqQLm5mD4Z3BHUkIRDj82A97zIk+aLt+CN1oE7AkZqB3RtGV3plBHQA6QATT9Tdptm8y84FbIgBm2Vm1AHdV82yCIDiBXQJuhgo4hPkflqDcCgEA4BJgQgAygQCIWL8ofu9i88HTTV/1mW4HBlASGVhAPDZAyIoL2MHgh0GvmvnHvv6t0QAMBjMBsvhBRCACOoTpTGIGiFRDqHb4IOnRLVr5RrdGAGZEQCkkjG6BDYriAO7y/8e/+MHFAD72zhcZhGtZnQ/TZNwqEwDAmU+FUEqRFY/wCrjr50ve5rt/5Mt7X+I7fuCnmG5puOnWCQCRML8OBaWSAD+G2n5lvn5dlz79w19i7MnQ7/zBv85EBDVMFx53U4HhrRIAsf2iAUpNAoAAiB4NvOZ0f/qHv8SCJQi/8fd+5dKrfOcP/jSLQCr+uN4tD6ZjCtPtwgDKmFILykBgFJSiAsCAiIEY4uvM0G/6fX+DTcpMCC6jUvTYLseDALoZIYi96XYJAHSlFUkAMcvPsvQ4CQEO5sJv+ZP/mIXxxszLl/R3/dBPcylyPOsn3cIsxK0TACgGKLWAO4v6BXmk0OgQVvyOv/LPGBxuJChczV30mc9/mf24AtUAFDDgACnYR52TfXsF2uX2YQDIqqdKoFpCA/jC54OY/9v/8j/lPnYHjUSJmQC+9/f/7dnFPvujf0sRP/mxVAAZxtUo4I3Pvcv2tfcgKT6PjTNulQAAUBwQgSCaJYFiTp989er6uXf++D/kdjaBtw3ceHZ9v136+Tf/kb/PZh58wRdyt5R8qe6mJdP3Wv0mbPrPLn8sIHj7BMAeOzOfdvz9CvruH/kyt21DP2vomwZuXS67tANKn/uj/0B0RBYQE8ZCKEkojk15SMemW4UBjLfm5l13CXzm819i7kDbNrSzCTQU9En0B+mSoFAr+P4//PeYCs1BRjIDpahZouO7AbruZTwmgUcEm7dOA7AGfbhLHviiiXj09hcvnKOn72/Re0fbdrSzCe1sQp+65BkWGIAR9+MsdeZxKijNsYBjLVTTbo41jn0D3EoBUGa0rhVAixWnYIwIePOd80Lw6O13mZnRGqONDdPZhLaZ0EdNKlCsZvEu7X76lbSAe4uGA44dD6Z0j1dkYm6VAERByKI0bHngBQvFsnVWWdTGjmnT0M4a+tQ9rhCALjSOlZxZoslv5RqAXo2dtuBXEgKjYwDBWyUAFuzpraNPXZmyNM0yWbYiP6Za4NHb787i+9wZbepomyZCoCZAwsyk7qXYfRe2SQpRZ0onq2jsAKUvSfY8AjTtN8e7we0BgRwrtzeWFWtYYLYibcUQmCRB9OYCDzAkadRaxzQ2FC0nl5VcJMrYREBYaw7tFrvMzhylHxgJuoTMlNnzdAKIjhsKuj0CoMTKuDJ1rway4i+bsKI22ZNCxCDOy19+bwJQu5ST1ZXlGQo6Majpik8A8MJqIzrmujx3aQGZryDOfGtMgDFZTACHCeA5Q8QtI1QHZhlIIdC9qvY2dUyT9BUAAFVCXVeUoYCK2X9R/817D/jVOPw7iLKJofM442VxwI0VgJ2dsBkEphpAV7k6WVWTRaUUDdAsooaUgKAJUxemlqGgrEQLgCgEpanANfayNAAhgEcoQjlHdMHnEelWmQDXAMoUrQXJ/EcpQKkFtRYQOlojUDcDATDIK4Y6A6QhYDlGNEBZVXB3DKidSF1vYoGZyEGYdzAbzLHpFWmcG6sBdhNHXwDvUv9AIUIdtGJokHqBoiCqpIANoGbAi0hUABQElkFTvdqC1hrP1L9EDCk0Eh+WhLrGo19IL2MGbpUGAAwLnAdipN8tVVxXBQAH0xUgerWwaQFd+XY9KgQaCDQVNRVhapiA6hlAuZ40qXQJEplLeiw54Cs+j0C3TgCi3JsDeeuKnpWLDVovkABUKQC6MJ2g3hxFgAl2rRwK7vBaQ8P5FvkD5pjkVey24sGv9HlMumUmYE40/+a8K5X8S3L1FIJRyizWb8Ay3Iy4fkw6z1Z2oQgUBSDtSL2pRyWJRuJS5l/XDNxqATBgN8vgpoohj+kXEYqqX6VENM3sdiSZTJ1HAihXGc9CvzB3MrmHR+S+mTrDKq4JjniTGy0AV4bWZwdEwQQVkiebqX+rJFZgWOJcwxWdGTwxeOrytQw1W0BG07/ZnXxVexPIuDQe8Qquf6MF4HIJCHdsd8FEROZmAjCoFsiRO4vuakygbRv6KMEhTtynpGG8HN1NAF4JBoBrABxdwwA3XQCsEIpmvzonE7ksDIAZ70D2lkyphJq0gCVw5BTWDGFD2zQRgpZrBecROTkpNIA3re7BoL1desMUGQheco/r4IAb7QV4rIVNGZzPttnqnzHF8vcJuZkAsHcVFZQmwM0Z2Rht21GGKYWal/eJey8R+j5Vu3a+PddlxIAWGCVX9cga4GYLAHTSWTJ7AHzVhuk3oMehLtO+QRwBPFAtKAD6qqCOhDIRqHFEGLskh2hDKgBaI5BXf/Eo0gwg7mP/I6IrHQT75A3ZSo/cwzguCrjRAmC+NpG0hrv3luy9uX3M5EDMkjy9sfrvcpJpgYEr2tgxbpuHewGN+Y8dRA2s0T+A58wP/qcCkT1XJyGAqgn1Pty84LDkyV6bbrQA+B4AzCBbibn0SgM/BAIXgLlrvUAHjfCaAVBKE68qQIS6bZIvIAnie3JoarLgtO5AxiE5BjIGIoE/0wB7rcwArKJ19tABDNd+9n999FgEuNqcXEQ3WgBk0gmlk+Tnkapw06q0vQK6rsamqV1L3xar9C2EuhZPoG2qNpfK3xhaJDIxgDaLDp4ryrTVvyMfcRFFvCLuSbgaN6gBOHct+ybDufbWBDddAHIqN1aix/eLoHpSAWiTaQAJnXm62ExJIZR1BQAMZ6YBCFZpwQy03sGT5BEk2kwppazxf09KJebvpf7h5V127j5KwCnHI5I7dJA5WdAHKgBXuSlEsiPoej3g5LTi9N5K7fQ8Bl+KFGsUy/tX0j5BklKu1h0TdGYUU5ta7EGV0F5MUvQRi9q1iOSC1euwwI97AOY2pq89n9/d0ULoAGiPk8+5jDau5JEYiN3bvUx0NAF49Pa7vI8bdDXRbKJsDwDZBQzC/BrHVC3gEFWvTaI9XLNIHKkXcFJBQ0E9qbG/gCoBi7l3YsUXttLScQs3EHuocX2qCEipRuo9VPjuc/K3xOGFKQF45ikdQsfVADaRL3sZj7gVlNJRCOiUkjolg7qCuqroU1cXTVYxOSzTCAIRyiAmgFYVZVUlX6BupfvaUI9D/uOqex57SPh77+UPF4Bazbu5YsLSamd1BQFo1XOMo3fzlPYcS6KjRQLdM6cEeK51Hf30Ao5sf8OVsw7hUqOEK6dobb8gcePEVaShgNYVZV3k5xKq1O07mxBcwBd1Qd0j2OMhzWu1cnXPR1D8bfc5VsCiJeFprCZIVvBiFzk0Gng0DUAEgHUlJVV1sDqw5UYASjBGVH5sEAXoz8pYW81AMBEAqq5+qlbpo8yvmfl67wym0iLPn6bKRapMCHgvzSe7m5DHLS7tJNJbVBV6FjcFgNQ8VhUi80ToCnNyER1VACR0GQ/1Mu6JrQzSb7kXP+IAKTXrQRoCax2/KlrHEmVVgLow5CYgNt4FIw1gqUPujLGV5yDysgdNgmYglguH8O04l2CrXBjdRQIAiDYbFPzazunX7Rc4ogAQiBm5/P5a7olOdj5lrqZDVee/h1qGxUzjd/pOAVP7WLhwzoQeVQIzM89yMffCSsQfPDC1VzAgzFi0oe84DCEswyoYbQOoQ8GwriiF0IpELIm6Y7BD6GgCIJ04WHDm8AiVLbaczQPgq3+2ZCwGb+HY2XUscBRgkaq+WMLy/VYJrBqgFwY1zBgzqz9MEkPJlhseuFz9hudiMYxwK88tf1H/tWC1rqirijZFcGowAagEbAmldlx3j6LjaYBCKGD0nqXaOnIOG5i4cuHOUfIASJe4BGJIK3g6vB5rOS6zu2r3ubPk+seuu4JwaJduWEZuaj9yB1CiLMxAZa4taMfeF4Bk9a/vrzCcVEwbbVfrjGFdMZwOIgCYMG3pImVyJR1PAxQosGHHccxJJ+09Oey5efLGDwJVeD2fJWI6tGGzLos3giJ2IBv58MToZ5Pn++WYBSB0jCHj7hCQ5S1iQIDKWkClg9r1MO8uIgV6q3XFycM1hgcr1OejJKrGhmFdsbo3gHSjLK9z3IPMS7DGm70F4M13vsjvXbL3bikFLA64g/h+KAhM0bXeO0rT/YAJ2u0jyBtJO/SxoZe5jRRSCEjmLqp1n2RbmLZpGjFEHOdmOSqAc3Qr1wYWDULVIczALF6z9CLMtbQMomOQXWpLNMzqdMD6YydYvXmC+qRifDGBCBhOBgwPVii1oE8dpW5nGuAQV3AmALtOtIcpe0iY1N/DbS+6BHAOBQJWkNlaD5Wrk02F0Lq2ckHi/1Ssv58D+HECj4XECWeAbVeQzeQFH1Yf6GDSgi8KvAUDRrIJUGCJijo0jT8I94P5WRrswXIOgS+cF4La/3sDTt66j9V33ENZv8D6yQbcGcO9AasHa6AShrNJtNC1oi5JAC6UGp2Qq4hZQrGWQHG3sPMeAEmvoV+dJadv5sNWW1lJIgdj9xXUxi7apmXQaHonJ5NUheu+QJOZAEX4xj5xpwJraLIYzNEFBBahih7EZINtvlQITGOEZmNQTy+4sodOIzeMsXqwxupT91F/w0NgKFh98znatqHeG1DfWMtieDaCKrnmPZT2MwGEK22MT7QFa0wALvBzLyRFuq0z0LoHcepKkK/ZbavEpTHAmmkLypNhzIeg/7bRbWG24j4tF6Ixj+wBEKo6SsWhgSRCXRVPK9tCsTHIaSnMzNbTyN7ZfNFc1qFg9XCF+l0P8f2fPMF/BrD6X+9hej5iuLdSAQDKe/O09qG0hwBQBGQuOyq1X0WOPtyTfWXAV1tnif/rteqqoq4rMOpxmvZt1J3hEfvXMcVClA2lpo6+mcT+Ty1189A8aaQup/HHPnMfoeQWyiyf4Bornd+JVQhUs3UGaZ3CzkYSChMwvLHGp99a452PFzxva/zXRyeojzeoDwbUR2vBRieDurcvaQJ2kS0kk+hP/da/xvcervHwrftYPVhjejHi7PEG42bCoAkZy9dbuHMf7LAkK4NGBwqx5vElk5ffF9Q7g6aORrl8LDHensK8hlE1wLbJngDKAQF35JyIoJMHADQ0QbFDCKkWqBafSOq7hADkwhLzboCoJN65KlS46sM1vveNgs9+jPDtTcH/eLQW9X9/hfJoDQAoJ3Vugg6kyzWAgaIcij0naXM3L+Ld1pt3oBmQBQNzKLiqWRkqylqzfkSzybQW74uuzwC4dfSt7g042v5CJkw0U8chQOlpORhoAaRZiNrP1edPcfpcOzAXgN0REo8z3B/w6+8TPvOo4FeeMurDNerpgPJgBXq0BjqDTqS+4bp0pQkIDZDdJPgSk5WRFFlS2z3X7+1JpomtI8ZAZRlokfEzhqgm0FYtY1xIgzCsTwzqwvw2abu3gvRc1mUhWtcACdF7jUGHheUXWEPb07X/YPYyq3Su1JxcjAEANaOnAz5xSvjkfcInTgl0f0C9N6A8XOET9yqed8Z2XWOOD3O2AOyRDjbmFwNGy9Vs0t0N9EXKNlTToRIapdqWXbT0r5V3wf7eEzjbeSX4voISAdSGj35+dZ4DkRS4Ju6nbytN9w1DTu6xDOuKYVWi7AzJw0n2f+ec6zxiKLg/AA9WwIMBwElFOR1QHqzxyRPg1w2SCc3Te6gMXKEBZBY8hj2D18l+aumVu1SUM3TXsE82p7PMxvwiuVPGyr6Io6xjdq3OvhOo1w1GgN8FYGbq7KtA304qx9r7i3M+IXcPSaauiscyEaYpQKppNhk/diDAnVOh1xZm02kFvbHCx1eSIaRy6OTO6WoQOMMA6UEM3KRV6OfNCjkOH5TickHPjJmgIYEnTzebj56AnF/LBFQ3grT06Qx/GSOs+ELHzhwFF5LiYHfl+qQaRQNQjACAdVUwnFS0IuXnsnCSaLrS2M19N6tTx4sJeDYCLyY5tpwOeHCv4tGa8KzhuuDfaa84wDkgp/rZ7Zoxh5YnvcTIFAw685usON+x045BGoOtMMOECXhJqDhF4fSgbKFmiSNABaCgVEbhiAR6A0ltscFUOr+uq7hnJJXH1ogqhaCY1w5cAI65S87i22eMbz5n/L+NzAGdVHxyTXg4SGnD/JkOp70xQHgA7L130JXvb+vyjZLs2a4vBDMwaBm8bUef2uyBHSsYDul5CCn02ub7/cn4bJTkK7/W4vsL1UECUMZEwLyPLk2kyaOQudLzVQPIdnMUO5DPHi58jKWWdE31fMKvPmN8/UnHN54zsBUB+PiacOq5jXltw75kkd+r3cDFzwa8ZqpUV4cUJs6m/1rINBMzpG177GjbSYTAInj5uM7oZY4NKI3XsorL8UidPjyCWVdFAk5AyiFIXoIs/KytZyDBFJEggmuAspaYhQeKyCHSYopFqGaKgLVN/ekW/+1px6ceE772lMGbBrpX8WhFWBVg7Ih9DK4x1W987l0+KB3MbgM7SuuxqvKKzBP+sszX+7XWMW0bqBCmbdMQblb1Zv93ZNhsPIxw61Tvm80upYjrNkiF8XAiAtAti8iMaZQNJc2ktFFBZVuaAE0Tr6uo7OQJnSvbMq6TNouyD1me+f0tfvVbG/zS6hS//LSDzybQozXuS3cbXjQRishp7B9uMdpfAGxwtvpV9WUtYCpy5ppdRzTzbc3maiNn9O3Ph+YFIgbIACiU9PGFGYuYRqm6rZxuD1dPKurpIDa7KdpnoG4aaEvu17fWxTw1E6600bQVndo7jZDBcEQqTBgl8hl1/cxAnxjj0xHt157hl4eC/ngjAlAJ6yru5JMJ6JtJXnZxyRxfJhSXCwDHp69wRdSSg+8zAOYouTPKLrR9DTLUPY0NADCNza+78Ej1/jHuiI+kQVCA2qI2e9CY/qAJp+F0kICWYh1mxvbFKDV4LbQSJy+lKAA0pudO4shJkDPeU87YXdffWsf4bIvx/zwDAPSzSVGkXOOsAd8cWba6z8UwhFlhq82BmcMlXakBAunLlaz3vk0Ue+ggaYBuqDttnHRdEUgo3lXuZKBr/nZXzm4D4HZXvTedhfidgz4vsBT1X04q6mnVIgEGmgDIYaie1zCtNJMrq+C1rebtsbPgAV7Dbz2HMmtaxZymqXfG+GLC5lsvvICk3hvEHDEwjgx+OqK9mBSHJK2nZeougLh4P4K9TEAIgQ5uYlCJogxjFGDbuEqCxsHJ9fkv9rCzP2RvPQVx5gh6vp0LInKJxYMbMyphWEnQhrTBpK4KysmgFcTiVQxjR11HIwmzPKesyAj/WnYQQHgebCYiMAeBFHTKsROA0ptXVBNEAKbNhO17G+97JDoFjx3PJ+CsMfjJVl53o+bIny1vqKEPe1GF9qUCICDM7Lr8rkPUEzU6534wzC1MW63bAde1Ayp8Ervvfn0gJhUI5tssRAtZdl9iOZrLNqwLhtPB07u0qqBV0RYyYVDfTNJKVihWkSocAmJ3UrX9gKDzPqXCUwTgdI9jKH6x3ggpxwQwMI0d26dbqftbFQz3V8Cm4fGW8XhkdBeANB8mChwuppmaXfsRXG0CIADFJq9klG+DTba4s7ptCAzwMiRxAKBRR2FCT3y0/ril62f2PadJPVaQJtlctuFUpsEjmLWIEJwOQCGUZ2Oq/SNQmkRK8X/bZt7cuNhpTG4ox6nwDbadrYypTB2Fg5Eg0XbjmZSDD+uKdjaBn0/4xobxaxtGe7JB2zRdEIRCoehjLmIObNyZJ1ebAFP/Wu7tiFtRtQOb9DdRj3NA9jJkQIkpon22AbT02mPWkxDu3cw+zKKA5rJZ1M5q9Nx8DEVSrUN0FHtNf7fw0SJ+sJLmE2aAJw0UqRmQMRXfz0CCReJtcGeM24LiXclyde5w8AtAmP10i//9tIGfbDG9v8W0bZ52N15Yc6xoHV0kFwDyK70AW/xe4btYRXbj2TmJWU6HOqjpevKxkF5CVB4h9v+VcUVG0s6X9wFwbPyYNEA5qTJBY0uAVoVAmWrZTW/ENCCX1H/VjmMwo2971B1wdhPlWuZtEATY1mGSdnGaC64Vx5aJ0LcN7f0tyrfP0J9sML2/Rds2xxizvJCabFskFoZequQrMIC5FDpjMZ8eHvb+OIKvRDs++7ovFQtQSUy8dxVfqz6cGc7k31tRipdiIwJUpO8VKGrveWrh2UzJnlgnsqajixZgmhvnfYe6TwFVkreLTBIuNhNQ0vnFAk6nEtEZdL+iVtivByDyK+pat23D9P4W5Vsv0J5uMT0bBRzDdk6xyH7Ew3MzrSySeYHuXhhAoxVp+uErML9izc6ABT4IKD1yCNeiua8X905MBqQxA9aWQAECzYuwlLUB00LF7X0ZCL0XgJsnnbiZf2v3TLuTUKjcLAAWAMKW0UctPmnsKsdiBRIpLJIwKrpbSS2otXsOAgp8TVgBoI8d09MRZXWG6dkW43MRAFH1eh7Eq2CORtKi26TbfgTZGdgvEpgQr87FPGc+W+bzfDrbBg8LyduHaPGTne/ax2sPZbevnFwxE2DIuku0ZfaeQTMV1qgvKVhhHk8daB1oxVciKYizLetg7lwtUR+o9rZP3WsPTJlks1UMWxTS/Q0IpUlQqmoegcy/1/nurWN6Jk0g0/MJ09mkLiKkTU2LQ8x7A8P7FwFCm5RLBI8T7AcC7a1bJgSGLK0Y1SUjBitgR1wPanRh795VEkAzFRDikG0q956ibYF8TeItmAT3TDhdSJ8xRf14VC0wMVAaoG6W2XpmzAox8iYWUX+wDIbBhQameVaihez9RrV28UpOqoy5NL+XmbLpuTC9nUlxq4Fxy0KaIJtraBlOB+2Lud3DBMy1cGZyLpfKzBEJ1z74DhTq14cClM5LJzvQK7L9aw762N9trIBt/mT7+qXr98R8TW71sYsQKALvo6rTgVCHKl5IsdfSxcQyq3q1aGlKWgX+YhdgdzmrgVZNP59IxK9ZnWMhwRTbhmkj29g2NTHMls8QzWFQyOomLDpZegGVpn8nH8PeJsCWl0k6dGLzZLr9rTJRpZIWbJq3gIMkwI2Ln2dmxJhrAA3nBNGH7v5/4ID4PUt38WTFJlKx2e3/W00Bj83VaV2FOfDNJE2L6LazvUWirPc0tjQWnzF9QCrwF1bVkyq2v7YQkrNJU+IdDd1D4uZellUIADNQ7e9qmkpLiTAHy3togBlDknoF0qrk+THmF5ehSOq4HM79pTqXW81fAOlC5Vgk7rBMF/uO3j6EpKp1e3ie9Bh7UfS2ARO5BqChoOiKJ0+Gyd+8TpBFgJqlys2D0diJeyVWlq6aCUgNp+sqlmKSzGJZCWPHFxPaps8ELBZc8XA1M1BHQcUGAnvpLm9qhVDKvrkAm2cgqoPtoVkfMgG0UpMAjIveuX0pFoe7eLta8DME8ZVoateDPyYEIkQFqcV8auhjkc+2YObYwCDwGIiaUF0DgODvEuyta8JKEldeeKq+tOEQYV7RVHMDUDRcLA9Lg25lUwgYJBpZ1hVgRtG8QBsjH1LsLWcr2UiChgJ0oG1Fi1iTiuM2BYAGogdgz3birHKJXJ3Nwr2EUEn2AkZvnboG6T3Ni1imTHdFtuz3kY+Ile8pbYqV3seOXlUDdIXcZi62+nrasQFgLcFmt9+C0Ju4l5NuMm1h4EUizLRQFJQ2NTGxp7G9u5jUpQSA4eEK5XQAty7vM3T3UNT7LA5hoejOqLqhROyqkqaVLI5S9iwKxUIll3ioXF/vEuYRr+Ku0XUkgEDx5uzO6Ca+SAydhSdSXqBHF89sCxlniK5IC9ho1K5UPVaFA9pPAEXj7gUVSOwBSGXxMqbm5eLxLD6m1iXxM3a0zQRqZS4ABN/TCJVQH65RHqzQt839fCuKHZDmWjWHlaJV7aKakSuaCKIdjgFUonySFg9qnsH53bsOI7+ORht7gbzdM4y8T2o2UfInzRi2UMXzUvLsrvWw553BWgPITcBf16wemEGlADVNRjYlHALn/r+ZR45X0PYSUcK2aaBJIny9R0kYiIBK0vf3QPoA6/NRTAMSiNRglrnDpFoXPKCuZReUXJ6XL2+44ZwAXAbVZv0BSE0Si2DH7Oslyffq7ZnBsaIsieODR/b7569z8XwCsgbQ2oYW17KVihERFHLNlwVajrdXy1oQqE3dX0+LNGZ7VzGR2PFp01Bq5AxKjTEQkaSmtQ+wPNmKaSAKgXdXMkLVtKoogG+e6VvmG0ZDsv+rJADOPOA82DLVrieDKErC7UFF0N0rcKk7wO07x3xaCF2ae4l2WYw/DT5NNpAwysJbsTH2rrUN6gK6cKn2aBoUIg3P5hVilTq9R5VSrpj2uTAQyLI5RGuSAGqbCb0WtLHFq+rMO4B4HXRfGkHevzfoC63z/OSAlwrBQABiK1y7VsZAVgpXV1UEIDPf53LBuMAA8rM3OOa3ZXFmDEcTx3WkILyCcL4AAAUWSURBVA3K7pkdPdEAOHdtE0ZjQLzQYQ4X2KKCjcGlx7VYAkJdt4yXXkJGJYAHCik3IVEvoE3hQbTeFXOEZnRTQQBBNUDtKNVMRgf34i4oAHmF7b0Bb60JT7ULmOwhbbHG5KgQFGBgBZIahdUIpYdQzASsijaG2MUi9HK126YTa5E1njGG3XayZsOuKwPkui7GKSqc/csOnmmHnkxURn9+fjIDPa7lJk2RetP2L2M0t65uX6zWXCncunUQZQQo9+zpfq0JDpi2za9vbiJPHT/3V78w58C6eq+lP+8uM6sBJd8+t8Sk+QIwz8E0gFyP5pN4BcNcVS7MRe6dAyIk+TJE6XvcCHOptkP0Vh3wRo7zd5eTXIAcT0QbGZGFhSUeXwqh2zazeo69mGouRHCNc268YNh7DFpjlAxAGbOeQwD42T//B/yhf9fP/NvLJzGtMscDhg3yY8M0QAkQ6My3ieSYzeVdbfUFA2KGHVxp7xwzEiK+dPiHEWO2ipf9FmwTYh9L+5/OzVu2OaZoHQ1wQAeWJhHScKo9/2zlJgHwAFCalyx0IpyCBaiLQOQikP/0j/7EOf37b77wOwlfAL7n93xlpzxbWxwY2uSK6EsgG46MweM5LgB6u5JUAGed4ZMKIEt5PsQelsUGmi8c3bOHS4CdsVTh/kf//Q7tEKYau+/ObsaC+Sy7kzQGcfc3iQJAnzQmj8ToKcUaHJDOTeI+9I2f/wt7+0tf+1c/5sd+5vNfUllXLWvdq2yGnnQHMYrVj/AeiscBzMTqRk8dPO9i5TSZSQhiKkPGZxpAs1gZER9GyX7z7CMYa5NNBhLl/5QqiHZfOeQn44neATLV3PUlUgRQYw8B7ENPvvqTR3CCL6ev//sfJwD4vj/4d2Idpu31lrmbmJDQAm4C8sHUaYcvmFaJJTAWGoIQdrRp91DLzSOHPB3HZ2hUnv+R58fNT1+qr8W1w2TuRf/zX/6ZV87Q69J/+ed/ysf2Qz/xM2H7VAsIpYdNXsPMBETkTcOuO9SuI//zf/X7GsoV+9bDJh5IM1Ozg1suFHw93vzf//gXbyxTr0s/90XxHn7bn/snMWGWvLP/puMHQBhWa5RZSU4kCghd5dqqUZUeF0q+MWUknfsDryEB6b770uNL9jN+nejnv/zHfB6+7w/93dkMcvqJ3nxbNwqwjRGK2PDRd9KSwwsRhoGwXlcMWhUzjR1bbdfOx5UC1BLlSfb3Qxhp7VbDUPDN//DRW6kfBr31Az/FYODk3oAHb57g3ifuY/BlTHPQsCsQFF7fOe0Sx0B9XRYgmfM3V5FtYX5Hr4a+9Qt/yef3sz/6N2XhLyPAsyROggHmQ5oPHOjyPGD0uHc6PtMdoz98+u//4k8TsKwIojlAWJIHVezY5GK4rDC0CzWk572v3tnlm0qDx1Ly54UUyt/MhCmMfAmLJj6+Y/yNp7J0l/cCar76yesDl3S36m8HuQkInzvZ7fNhgCCKVGQu+b6z77eLCmC2+4IYfyYVCvJQ4twLuGP+7aOSbfe5HHum5a88WS/0QcS+7+j4NEQWD6nKBpdn8DTx8vV/92fvmH7LaQAQ4V62RpWLA7f2+6/96x+7Y/5HgAZntWfHeO7v76Bf+dkfv2P+R4QGyxoaBpBo327+3yVaPnokbmBKr880gP7+Dt1/dEkxgH2nJAzywx3zP9o0zwVoCJ9w59a9LhQCoEmcJ794x/jXiWZvDLlb9a8fDcCdnX+d6f8DKD8JaomPlyEAAAAASUVORK5CYII=",[[53.4514517532155,-2.25810740373087],[53.4390428798791,-2.21419214050653]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["#0C2C84 , #2B5498 15.2416605111007%, #397EAB 30.4833210229658%, #40A9BF 45.7249815348309%, #79C6C6 60.966642046696%, #B2DCC9 76.2083025585611%, #E4F2CB 91.4499630704262%, #FFFFCC "],"labels":["2,000,000","4,000,000","6,000,000","8,000,000","10,000,000","12,000,000"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Burglary map","extra":{"p_1":0.152416605111007,"p_n":0.914499630704262},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[53.4390428798791,53.4514517532155],"lng":[-2.25810740373087,-2.21419214050653]}},"evals":[],"jsHooks":[]}</script>
+<p>And therw you have it. Perhaps those familiar with Fallowfield have some guesses as to what may be going on there?</p>
+<div id="homework-1-2" class="section level3">
+<h3><span class="header-section-number">5.6.1</span> Homework 1</h3>
+<p>Ok, so see if you can do something like what we have done today, but for violent crime in the city centre. Produce the density estimates and then plot the density plot. In addition add a layer of points with the licenced premises we looked at last week.</p>
+</div>
+<div id="homework-2-2" class="section level3">
+<h3><span class="header-section-number">5.6.2</span> Homework 2</h3>
+<p>Produce a kernel density estimate for burglary across the whole of the city. Where is burglary more concentrated?</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="week-4-performing-spatial-operations-in-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="week-6-spatial-autocorrelation.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-week5.Rmd",
+"text": "Edit"
+},
+"download": ["CrimeMapping.pdf", "CrimeMapping.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
