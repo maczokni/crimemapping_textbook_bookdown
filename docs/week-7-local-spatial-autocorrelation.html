@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Crime Mapping in R</title>
+  <title>Chapter 7 Week 7 : Local spatial autocorrelation | Crime Mapping in R</title>
   <meta name="description" content="Worksheets for labs of Crime Mapping course">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Crime Mapping in R" />
+  <meta property="og:title" content="Chapter 7 Week 7 : Local spatial autocorrelation | Crime Mapping in R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Crime Mapping in R" />
+  <meta name="twitter:title" content="Chapter 7 Week 7 : Local spatial autocorrelation | Crime Mapping in R" />
   
   <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-02-05">
+<meta name="date" content="2019-02-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="week-8-regression-analysis-a-refresher.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -337,18 +338,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Aggregated to the police districts, this returns a global Moran’s I value (range 1 to 1) of 0.56, which suggests that police sectors with high robbery counts adjoin sectors that also have high robbery counts, and low crime sectors are often neighbors of other low crime sectors, something that should hardly be surprising given the above map <a href="https://pdfs.semanticscholar.org/26d2/356618cd759d04348f1e51c8209b0175bfce.pdf">(Ratcliffe, Jerry. “Crime mapping: spatial and temporal challenges.” Handbook of quantitative criminology. Springer, New York, NY, 2010. 5-24.)</a>.</p>
 <p>In today’s session we will learn about local indicators of spatial association (LISA) and show how they allow for the decomposition of global indicators, such as Moran’s I, into the contribution of each observation. The LISA statistics serve two purposes. On one hand, they may be interpreted as indicators of local pockets of nonstationarity, or hot spots. On the other hand, they may be used to assess the influence of individual locations on the magnitude of the global statistic and to identify “outliers” <a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1538-4632.1995.tb00338.x/full">(Anselin, Luc. “Local indicators of spatial association—LISA.” Geographical analysis 27.2 (1995): 93-115.)</a>.</p>
 <p>These are the packages we will use:</p>
-<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb542-1" title="1"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb542-2" title="2"><span class="kw">library</span>(dplyr)</a>
-<a class="sourceLine" id="cb542-3" title="3"><span class="kw">library</span>(sp)</a>
-<a class="sourceLine" id="cb542-4" title="4"><span class="kw">library</span>(sf)</a>
-<a class="sourceLine" id="cb542-5" title="5"><span class="kw">library</span>(spdep)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<span class="kw">library</span>(dplyr)
+<span class="kw">library</span>(sp)
+<span class="kw">library</span>(sf)
+<span class="kw">library</span>(spdep)</code></pre>
 </div>
 <div id="get-data-and-built-the-weight-matrix" class="section level2">
 <h2><span class="header-section-number">7.2</span> Get data and built the weight matrix</h2>
 <p>For this week we will be going back to the data from last week about burglary in Manchester city. Below is the code to build this. This is code we have already used and covered in previous sessions. If any of this is confusing, or you need a reminder just refer to last week’s notes!</p>
 <p>Get the boundary data:</p>
-<div class="sourceCode" id="cb543"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb543-1" title="1">shp_name &lt;-<span class="st"> &quot;data/BoundaryData/england_lsoa_2011.shp&quot;</span></a>
-<a class="sourceLine" id="cb543-2" title="2">manchester_lsoa &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">shp_name &lt;-<span class="st"> &quot;data/BoundaryData/england_lsoa_2011.shp&quot;</span>
+manchester_lsoa &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre>
 <pre><code>## Reading layer `england_lsoa_2011&#39; from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/data/BoundaryData/england_lsoa_2011.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 282 features and 3 fields
 ## geometry type:  POLYGON
@@ -357,68 +358,68 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## epsg (SRID):    NA
 ## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs</code></pre>
 <p>Transform the <em>CRS</em> to WGS84:</p>
-<div class="sourceCode" id="cb545"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb545-1" title="1">lsoa_WGS84 &lt;-<span class="st"> </span><span class="kw">st_transform</span>(manchester_lsoa, <span class="dv">4326</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">lsoa_WGS84 &lt;-<span class="st"> </span><span class="kw">st_transform</span>(manchester_lsoa, <span class="dv">4326</span>)</code></pre>
 <p>Read the crimes data into R:</p>
-<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb546-1" title="1">crimes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/jjmedinaariza/CrimeMapping/master/gmpcrime.csv&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">crimes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/jjmedinaariza/CrimeMapping/master/gmpcrime.csv&quot;</span>)</code></pre>
 <p>Subset the <a href="data:Filter" class="uri">data:Filter</a> out to select burglary:</p>
-<div class="sourceCode" id="cb547"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb547-1" title="1">burglary &lt;-<span class="st"> </span><span class="kw">filter</span>(crimes, crime_type <span class="op">==</span><span class="st"> &quot;Burglary&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">burglary &lt;-<span class="st"> </span><span class="kw">filter</span>(crimes, crime_type <span class="op">==</span><span class="st"> &quot;Burglary&quot;</span>)</code></pre>
 <p>Of course this is just a dataframe, and not (yet) a spatial object. To map, we must first transform into spatial object:</p>
-<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb548-1" title="1">burglary_spatial &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(burglary, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;lat&quot;</span>), </a>
-<a class="sourceLine" id="cb548-2" title="2">                 <span class="dt">crs =</span> <span class="dv">4326</span>,                                            <span class="co">#set the CRS to WGS84</span></a>
-<a class="sourceLine" id="cb548-3" title="3">                 <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)                                      <span class="co">#the &#39;agr&#39; attribute-geometry-relationship, specifies for each non-geometry attribute column how it relates to the geometry. &quot;constant&quot; is used for attributes that are constant throughout the geometry (e.g. land use)</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">burglary_spatial &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(burglary, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;long&quot;</span>, <span class="st">&quot;lat&quot;</span>), 
+                 <span class="dt">crs =</span> <span class="dv">4326</span>,                                            <span class="co">#set the CRS to WGS84</span>
+                 <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)                                      <span class="co">#the &#39;agr&#39; attribute-geometry-relationship, specifies for each non-geometry attribute column how it relates to the geometry. &quot;constant&quot; is used for attributes that are constant throughout the geometry (e.g. land use)</span></code></pre>
 <p>Now we want to select burglaries inside Manchester City. We can use <code>st_intersects()</code> to select those that intersect with the Manchester city LSOA map.</p>
-<div class="sourceCode" id="cb549"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb549-1" title="1"><span class="co">#intersets</span></a>
-<a class="sourceLine" id="cb549-2" title="2">bur_m &lt;-<span class="st"> </span><span class="kw">st_intersects</span>(lsoa_WGS84, burglary_spatial)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#intersets</span>
+bur_m &lt;-<span class="st"> </span><span class="kw">st_intersects</span>(lsoa_WGS84, burglary_spatial)</code></pre>
 <pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
-<div class="sourceCode" id="cb551"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb551-1" title="1"><span class="co">#subsetting</span></a>
-<a class="sourceLine" id="cb551-2" title="2">bur_m &lt;-<span class="st"> </span>burglary_spatial[<span class="kw">unlist</span>(bur_m),]</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#subsetting</span>
+bur_m &lt;-<span class="st"> </span>burglary_spatial[<span class="kw">unlist</span>(bur_m),]</code></pre>
 <p>Count the number of crimes in each LSOA by using the point in polygon spatial operation.</p>
 <p>(remember this might take a while, it’s checking every single crime point, which you can see is over 400,000 points!)</p>
-<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb552-1" title="1">burglaries_per_lsoa &lt;-<span class="st"> </span>bur_m <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb552-2" title="2"><span class="st">  </span><span class="kw">st_join</span>(lsoa_WGS84, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb552-3" title="3"><span class="st">  </span><span class="kw">count</span>(code)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">burglaries_per_lsoa &lt;-<span class="st"> </span>bur_m <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">st_join</span>(lsoa_WGS84, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(code)</code></pre>
 <pre><code>## although coordinates are longitude/latitude, st_intersects assumes that they are planar</code></pre>
 <p>You can see the column with the count of burglaries is called ‘n’. (You can View() your data or use the names() function to check what your variables are called). This is not great variable naming, so let’s rename n into something more meaningful:</p>
-<div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb554-1" title="1">burglaries_per_lsoa &lt;-<span class="st"> </span><span class="kw">rename</span>(burglaries_per_lsoa, <span class="dt">burglary =</span> n)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">burglaries_per_lsoa &lt;-<span class="st"> </span><span class="kw">rename</span>(burglaries_per_lsoa, <span class="dt">burglary =</span> n)</code></pre>
 <p>Now that’s all our data wrangling done. Woo!</p>
 <p>Let’s remove all the dataframes and objects we’ve read in but no longer need, now that we have arrived at our final dataset, <code>burglaries_per_lsoa</code>.</p>
-<div class="sourceCode" id="cb555"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb555-1" title="1"><span class="co">#Remove redundant objects</span></a>
-<a class="sourceLine" id="cb555-2" title="2"><span class="kw">rm</span>(burglary_spatial)</a>
-<a class="sourceLine" id="cb555-3" title="3"><span class="kw">rm</span>(manchester_lsoa)</a>
-<a class="sourceLine" id="cb555-4" title="4"><span class="co">#Remove redundant non spatial burglary objects</span></a>
-<a class="sourceLine" id="cb555-5" title="5"><span class="kw">rm</span>(burglary)</a>
-<a class="sourceLine" id="cb555-6" title="6"><span class="kw">rm</span>(crimes)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Remove redundant objects</span>
+<span class="kw">rm</span>(burglary_spatial)
+<span class="kw">rm</span>(manchester_lsoa)
+<span class="co">#Remove redundant non spatial burglary objects</span>
+<span class="kw">rm</span>(burglary)
+<span class="kw">rm</span>(crimes)</code></pre>
 <p>And finally, let’s see our map! Plot with tmap:</p>
-<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb556-1" title="1"><span class="kw">tm_shape</span>(burglaries_per_lsoa) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb556-2" title="2"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;burglary&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb556-3" title="3"><span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb556-4" title="4"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Burglary counts&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,</a>
-<a class="sourceLine" id="cb556-5" title="5">            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(burglaries_per_lsoa) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;burglary&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;quantile&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Burglary counts&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,
+            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</code></pre>
 <p><img src="07-week7_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Now that we have the data we need to coerce our newly created sf object into sp and then generate the wieght matrix. Again, what we do here is stuff we cover last week. In fact, if you did the optional homework you will also have run this code.</p>
-<div class="sourceCode" id="cb557"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb557-1" title="1"><span class="co">#Coerce sf into sp</span></a>
-<a class="sourceLine" id="cb557-2" title="2">burglary_m &lt;-<span class="st"> </span><span class="kw">as</span>(burglaries_per_lsoa, <span class="st">&quot;Spatial&quot;</span>)</a>
-<a class="sourceLine" id="cb557-3" title="3"><span class="co">#Generate list of neighbours using the Queen criteria</span></a>
-<a class="sourceLine" id="cb557-4" title="4">w &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(burglary_m, <span class="dt">row.names=</span>burglary_m<span class="op">$</span>lsoa_code)</a>
-<a class="sourceLine" id="cb557-5" title="5"><span class="co">#Generate list with weights using row standardisation</span></a>
-<a class="sourceLine" id="cb557-6" title="6">ww &lt;-<span class="st">  </span><span class="kw">nb2listw</span>(w, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Coerce sf into sp</span>
+burglary_m &lt;-<span class="st"> </span><span class="kw">as</span>(burglaries_per_lsoa, <span class="st">&quot;Spatial&quot;</span>)
+<span class="co">#Generate list of neighbours using the Queen criteria</span>
+w &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(burglary_m, <span class="dt">row.names=</span>burglary_m<span class="op">$</span>lsoa_code)
+<span class="co">#Generate list with weights using row standardisation</span>
+ww &lt;-<span class="st">  </span><span class="kw">nb2listw</span>(w, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</code></pre>
 </div>
 <div id="generating-and-visualising-the-lisa-measures" class="section level2">
 <h2><span class="header-section-number">7.3</span> Generating and visualising the LISA measures</h2>
 <p>The first step before we can generate the LISA map is to compute the local Moran’s I. The initial part of the video presentation by Luc Anselin that we expected you to watch explains the formula and logic underpinning these computations and we won’t reiterate here that detail. But at least a a general reminder:</p>
 <p><em>“global tests for spatial autocorrelation introduced last week are calculated from the local relationship between the values observed at a spatial entity and its neighbours, for the neighbourhood definition chosen. Because of this, we can break global measures down into their components, and by extension, construct localised tests intended to detect <strong>‘clusters’</strong> -observations with very similar neighbours- and”</em> <strong>spatial outliers</strong> <em>“observations with very different neighbours”</em> (Bivand et al. 201)</p>
 <p>Let’s first look at the Moran’s scatterplot:</p>
-<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb558-1" title="1"><span class="kw">moran.plot</span>(burglary_m<span class="op">$</span>burglary, ww)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">moran.plot</span>(burglary_m<span class="op">$</span>burglary, ww)</code></pre>
 <p><img src="07-week7_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>Notice how the plot is split in 4 quadrants. The top right corner belongs to areas that have high level of burglary and are surrounded by other areas that have above the average level of burglary. This are the high-high locations that Luc Anselin referred to. The bottom left corner belongs to the low-low areas. These are areas with low level of burglary and surrounded by areas with below average levels of burglary. Both the high-high and low-low represent clusters. A high-high cluster is what you may refer to as a hot spot. And the low-low clusters represent cold spots. In the opposite diagonal we have <em>spatial outliers</em>. They are not outliers in the standard sense, extreme observations, they are outliers in that they are surrounded by areas that are very unlike them. So you could have high-low spatial outliers, areas with high levels of burglary and low levels of surrounding burglary, or low-high spatial outliers, areas that have themselves low levels of burglary (or whatever else we are mapping) and that are surrounded by areas with above average levels of burglary.</p>
 <p>You can also see here that the positive spatial autocorrelation is more noticeable when we focus on the whole of Manchester city, unlike what we observed when only looked at Manchester city. You can check this running the global Moran’s I.</p>
-<div class="sourceCode" id="cb559"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb559-1" title="1"><span class="kw">moran</span>(burglary_m<span class="op">$</span>burglary, ww, <span class="dt">n=</span><span class="kw">length</span>(ww<span class="op">$</span>neighbours), <span class="dt">S0=</span><span class="kw">Szero</span>(ww))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">moran</span>(burglary_m<span class="op">$</span>burglary, ww, <span class="dt">n=</span><span class="kw">length</span>(ww<span class="op">$</span>neighbours), <span class="dt">S0=</span><span class="kw">Szero</span>(ww))</code></pre>
 <pre><code>## $I
 ## [1] 0.319477
 ## 
 ## $K
 ## [1] 33.59689</code></pre>
-<div class="sourceCode" id="cb561"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb561-1" title="1"><span class="kw">moran.mc</span>(burglary_m<span class="op">$</span>burglary, ww, <span class="dt">nsim=</span><span class="dv">99999</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">moran.mc</span>(burglary_m<span class="op">$</span>burglary, ww, <span class="dt">nsim=</span><span class="dv">99999</span>)</code></pre>
 <pre><code>## 
 ##  Monte-Carlo simulation of Moran I
 ## 
@@ -430,8 +431,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## alternative hypothesis: greater</code></pre>
 <p>You can see that the global Moran’s is 0.32 and that is highly significant. There is indeed global spatial autocorrelation. Knowing this we can try to decompose this, figure out what is driving this global measure.</p>
 <p>To compute the local Moran we can use a function from the <em>spdep</em> package.</p>
-<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb563-1" title="1">locm_bm &lt;-<span class="st"> </span><span class="kw">localmoran</span>(burglary_m<span class="op">$</span>burglary, ww)</a>
-<a class="sourceLine" id="cb563-2" title="2"><span class="kw">summary</span>(locm_bm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">locm_bm &lt;-<span class="st"> </span><span class="kw">localmoran</span>(burglary_m<span class="op">$</span>burglary, ww)
+<span class="kw">summary</span>(locm_bm)</code></pre>
 <pre><code>##        Ii                 E.Ii               Var.Ii       
 ##  Min.   :-1.933870   Min.   :-0.003559   Min.   :0.07787  
 ##  1st Qu.:-0.004654   1st Qu.:-0.003559   1st Qu.:0.14505  
@@ -449,8 +450,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The first column provides the summary statistic for the local moran statistic. Being local you will have one for each of the areas. The last column gives you a p value for this statistic. In order to produce the LISA map we need to do some previous work. First we are going to create some new variables that we are going to need:</p>
 <p>First we scale the variable of interest. When we scale burglary what we are doing is re-scaling the values so that the mean is zero. See an explanation of what this does <a href="http://www.gastonsanchez.com/visually-enforced/how-to/2014/01/15/Center-data-in-R/">here</a>.</p>
 <p>We use <code>scale()</code>, which is a generic function whose default method centers and/or scales the variable. Here centering is done by subtracting the mean (omitting NAs) the corresponding columns, and scaling is done by dividing the (centered) variable by their standard deviations:</p>
-<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb565-1" title="1"><span class="co">#scale the variable of interest and save it to a new column</span></a>
-<a class="sourceLine" id="cb565-2" title="2">burglary_m<span class="op">$</span>S_burglary &lt;-<span class="st"> </span><span class="kw">scale</span>(burglary_m<span class="op">$</span>burglary) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.vector</span>()</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#scale the variable of interest and save it to a new column</span>
+burglary_m<span class="op">$</span>S_burglary &lt;-<span class="st"> </span><span class="kw">scale</span>(burglary_m<span class="op">$</span>burglary) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">as.vector</span>()</code></pre>
 <p>We’ve also added <code>as.vector()</code> to the end, because</p>
 <p>Now we also want to account for the spatial dependence of our values. Remember how we keep saying about “The First Law of Geography”, according to <a href="https://en.wikipedia.org/wiki/Waldo_R._Tobler">Waldo Tobler</a>, is “everything is related to everything else, but near things are more related than distant things.”</p>
 <p>So what do we mean by this spatial dependence? When a value observed in one location depends on the values observed at neighboring locations, there is a <strong>spatial dependence</strong>. And spatial data may show spatial dependence in the variables and error terms.</p>
@@ -461,20 +462,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, becasuse near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighboring places.</p>
 <p>So to be able to account for the spatial lag in our model, we must create a variable to account for this. We can do this with the <code>lag.listw()</code> function. Remember from last week: a spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours.</p>
 <p>For this we need our listw object, which is the <code>ww</code> object created earlier, when we generated the list with weights using row standardisation. We then pass this listw object into the <code>lag.listw()</code> function, which computes the spatial lag of a numeric vector using a listw sparse representation of a spatial weights matrix.</p>
-<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb566-1" title="1"><span class="co">#create a spatial lag variable and save it to a new column</span></a>
-<a class="sourceLine" id="cb566-2" title="2">burglary_m<span class="op">$</span>lag_s_burglary &lt;-<span class="st"> </span><span class="kw">lag.listw</span>(ww, burglary_m<span class="op">$</span>S_burglary)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#create a spatial lag variable and save it to a new column</span>
+burglary_m<span class="op">$</span>lag_s_burglary &lt;-<span class="st"> </span><span class="kw">lag.listw</span>(ww, burglary_m<span class="op">$</span>S_burglary)</code></pre>
 <p>Make sure to check the summaries to ensure nothing weird is going on</p>
-<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb567-1" title="1"><span class="kw">summary</span>(burglary_m<span class="op">$</span>S_burglary)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(burglary_m<span class="op">$</span>S_burglary)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ## -1.2149 -0.6048 -0.1908  0.0000  0.2667  9.0256</code></pre>
-<div class="sourceCode" id="cb569"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb569-1" title="1"><span class="kw">summary</span>(burglary_m<span class="op">$</span>lag_s_burglary)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(burglary_m<span class="op">$</span>lag_s_burglary)</code></pre>
 <pre><code>##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -0.99700 -0.44086 -0.07464  0.06068  0.34738  3.38679</code></pre>
 <p>We can create a Moran scatter plot so that you see that nothing has changed apart from the scale in wich we are using the variables. The observations that are influential are higlighted in the plot as you can see.</p>
-<div class="sourceCode" id="cb571"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb571-1" title="1">x &lt;-<span class="st"> </span>burglary_m<span class="op">$</span>S_burglary</a>
-<a class="sourceLine" id="cb571-2" title="2">y &lt;-<span class="st"> </span>burglary_m<span class="op">$</span>lag_s_burglary</a>
-<a class="sourceLine" id="cb571-3" title="3">xx &lt;-<span class="st"> </span><span class="kw">data_frame</span>(x,y)</a>
-<a class="sourceLine" id="cb571-4" title="4"><span class="kw">moran.plot</span>(x, ww)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span>burglary_m<span class="op">$</span>S_burglary
+y &lt;-<span class="st"> </span>burglary_m<span class="op">$</span>lag_s_burglary
+xx &lt;-<span class="st"> </span><span class="kw">data_frame</span>(x,y)
+<span class="kw">moran.plot</span>(x, ww)</code></pre>
 <p><img src="07-week7_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>We are now going to create a new variable to identify the quadrant in which each observation falls within the Moran Scatter plot, so that we can tell apart the high-high, low-low, high-low, and low-high areas. We will only identify those that are significant according to the p value that was provided by the local moran function.</p>
 <p>Before we get started, let’s quickly review the tools we will use.</p>
@@ -486,39 +487,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>So let’s first initialise this variable. In this instance we are creating a new column in the <code>burglary_m</code> dataframe and calling it <code>quad_sig</code>.</p>
 <p>We are using the <code>mutate()</code> function from the tidyverse package to create our new variable, just as we have in previous labs.</p>
 <p>We also use nested ifelse() statements. Nested ifelse() just means that it’s an ifelse() inside and ifelse() statement. To help us with these sorts of situations is the <code>ifelse()</code> function. We saw this with the previous exercises, but I’ll describe it brielfy again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: “if this condition is true, do first thing, else, do the second thing”. It would look something like this:</p>
-<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb572-1" title="1">dataframe<span class="op">$</span>new_variable &lt;-<span class="st"> </span><span class="kw">ifelse</span>(dataframe<span class="op">$</span>some_numeric_var <span class="op">&lt;</span><span class="st"> </span><span class="dv">100</span>, <span class="st">&quot;smaller than 100&quot;</span>, <span class="st">&quot;not smaller than 100&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">dataframe<span class="op">$</span>new_variable &lt;-<span class="st"> </span><span class="kw">ifelse</span>(dataframe<span class="op">$</span>some_numeric_var <span class="op">&lt;</span><span class="st"> </span><span class="dv">100</span>, <span class="st">&quot;smaller than 100&quot;</span>, <span class="st">&quot;not smaller than 100&quot;</span>)</code></pre>
 <p>When nesting these, all you do is put another condition to check in the “thing to do if false”, so it checks all conditions. So in the first instance we check if the value for burglary is greater than zero, and the value for the lag is greater than zero, and the p-value is smaller than our threshol of 0.05. If it is, then this should belong to the “high-high” group. If any one of these conditions is not met, then we move into the ‘thing to do if false’ section, where we now check agains another set of criteria, and so on and so on. If none of these are met, we assign it the non-significant value:</p>
-<div class="sourceCode" id="cb573"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb573-1" title="1">burglary_m &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(burglary_m) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-2" title="2"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">quad_sig =</span> <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-3" title="3"><span class="st">                                         </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-4" title="4"><span class="st">                                         </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, </a>
-<a class="sourceLine" id="cb573-5" title="5">                     <span class="st">&quot;high-high&quot;</span>,</a>
-<a class="sourceLine" id="cb573-6" title="6">                     <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-7" title="7"><span class="st">                              </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-8" title="8"><span class="st">                              </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, </a>
-<a class="sourceLine" id="cb573-9" title="9">                     <span class="st">&quot;low-low&quot;</span>, </a>
-<a class="sourceLine" id="cb573-10" title="10">                     <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-11" title="11"><span class="st">                              </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-12" title="12"><span class="st">                              </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, </a>
-<a class="sourceLine" id="cb573-13" title="13">                     <span class="st">&quot;high-low&quot;</span>,</a>
-<a class="sourceLine" id="cb573-14" title="14">                     <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-15" title="15"><span class="st">                              </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb573-16" title="16"><span class="st">                              </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>,</a>
-<a class="sourceLine" id="cb573-17" title="17">                     <span class="st">&quot;low-high&quot;</span>, </a>
-<a class="sourceLine" id="cb573-18" title="18">                     <span class="st">&quot;non-significant&quot;</span>)))))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">burglary_m &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(burglary_m) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">quad_sig =</span> <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                                         </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                                         </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, 
+                     <span class="st">&quot;high-high&quot;</span>,
+                     <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                              </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                              </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, 
+                     <span class="st">&quot;low-low&quot;</span>, 
+                     <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                              </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                              </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>, 
+                     <span class="st">&quot;high-low&quot;</span>,
+                     <span class="kw">ifelse</span>(burglary_m<span class="op">$</span>S_burglary <span class="op">&lt;=</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                              </span>burglary_m<span class="op">$</span>lag_s_burglary <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span> <span class="op">&amp;</span><span class="st"> </span>
+<span class="st">                              </span>locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>,
+                     <span class="st">&quot;low-high&quot;</span>, 
+                     <span class="st">&quot;non-significant&quot;</span>)))))</code></pre>
 <p>(Note we had to wrap our data in a <code>st_as_sf()</code> function, to covert back to sf object).</p>
 <p>Now we can have a look at what this returns us:</p>
-<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb574-1" title="1"><span class="kw">table</span>(burglary_m<span class="op">$</span>quad_sig)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(burglary_m<span class="op">$</span>quad_sig)</code></pre>
 <pre><code>## 
 ##       high-high         low-low non-significant 
 ##              22               1             259</code></pre>
 <p>This looks like a lot of non-significant results. We want to be sure this isn’t an artefact of our code but is true, we can check how many values are under 0.05:</p>
-<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb576-1" title="1"><span class="kw">nrow</span>(locm_bm[locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>,])</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(locm_bm[locm_bm[,<span class="dv">5</span>] <span class="op">&lt;=</span><span class="st"> </span><span class="fl">0.05</span>,])</code></pre>
 <pre><code>## [1] 23</code></pre>
 <p>We can see that only 23 areas have p-values under 0.05 threshold. So this is in line with our results, and we can rest assured.</p>
 <p>Well, this is exciting, but where are these regions?</p>
 <p>Let’s put ’em on a map, just simply, using quick thematic map (<code>qtm()</code>):</p>
-<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb578-1" title="1"><span class="kw">qtm</span>(burglary_m, <span class="dt">fill=</span><span class="st">&quot;quad_sig&quot;</span>, <span class="dt">fill.title=</span><span class="st">&quot;LISA&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qtm</span>(burglary_m, <span class="dt">fill=</span><span class="st">&quot;quad_sig&quot;</span>, <span class="dt">fill.title=</span><span class="st">&quot;LISA&quot;</span>)</code></pre>
 <pre><code>## Some legend labels were too wide. These labels have been resized to 0.61. Increase legend.width (argument of tm_layout) to make the legend wider and therefore the labels larger.</code></pre>
 <p><img src="07-week7_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>Very nice!</p>
@@ -558,7 +559,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -570,6 +571,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/rstudio/bookdown-demo/edit/master/07-week7.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["CrimeMapping.pdf", "CrimeMapping.epub"],
 "toc": {

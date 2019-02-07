@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Crime Mapping in R</title>
+  <title>Chapter 9 Week 9 : Spatial regression models | Crime Mapping in R</title>
   <meta name="description" content="Worksheets for labs of Crime Mapping course">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Crime Mapping in R" />
+  <meta property="og:title" content="Chapter 9 Week 9 : Spatial regression models | Crime Mapping in R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Crime Mapping in R" />
+  <meta name="twitter:title" content="Chapter 9 Week 9 : Spatial regression models | Crime Mapping in R" />
   
   <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-02-05">
+<meta name="date" content="2019-02-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="week-10.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -334,25 +335,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">9.1</span> Introduction</h2>
 <p>Last week we provided you with an introduction to regression analysis with R. the data we used had a spatial component. We were modelling the geographical distribution of homicide across US counties. However, we did not incorporated this spatial component into our models. As we have explained througout the semester criminal events often cluster geographically in space. So if we want to develop a regression model for crime we may have to recognise this spatial component. Remember as well, from last week, that regression models assume independence between the observations. That is, a regression model is formally assuming that what happens in area Xi is not in any way related (it is independent) of what happens in area Xii. But if those two areas are adjacent in geographical space we know that there is a good chance that this assumption may be violated. In previous weeks we covered formal tests for spatial autocorrelation, which allow us to test whether this assumption is met or not. So before we fit a regression model with spatial data we need to explore the issue of autocorrelation. We already know how to do this. In this session, we will examine the data from last week, explore whether autocorrelation is an issue, and then introduce models that allow us to take into account spatial autocorrelation. We will see that there are two basic ways of adjusting for spatial autocorrelation: through a spatial lag model or through a spatial error model.</p>
 <p>Before we do any of this, we need to load the libraries we will use today:</p>
-<div class="sourceCode" id="cb645"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb645-1" title="1"><span class="kw">library</span>(sf)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre>
 <pre><code>## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3</code></pre>
-<div class="sourceCode" id="cb647"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb647-1" title="1"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb647-2" title="2"><span class="kw">library</span>(sp)</a>
-<a class="sourceLine" id="cb647-3" title="3"><span class="kw">library</span>(spdep)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<span class="kw">library</span>(sp)
+<span class="kw">library</span>(spdep)</code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre><code>## Loading required package: spData</code></pre>
 <pre><code>## To access larger datasets in this package, install the spDataLarge
 ## package with: `install.packages(&#39;spDataLarge&#39;,
 ## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;))`</code></pre>
 <p>Then we will bring back the data from last week:</p>
-<div class="sourceCode" id="cb651"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb651-1" title="1"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span></a>
-<a class="sourceLine" id="cb651-2" title="2">urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span></a>
-<a class="sourceLine" id="cb651-3" title="3"><span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)</a>
-<a class="sourceLine" id="cb651-4" title="4"><span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span></a>
-<a class="sourceLine" id="cb651-5" title="5"><span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span>
+urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span>
+<span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)
+<span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span>
+<span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</code></pre>
 <p>Last week we did not treated the data as spatial and, consequently, relied on the csv file. But notice that in the unzip ncovr file there is also a shapefile that we can load as a spatial object into R:</p>
-<div class="sourceCode" id="cb652"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb652-1" title="1">shp_name &lt;-<span class="st"> &quot;ncovr/ncovr/NAT.shp&quot;</span></a>
-<a class="sourceLine" id="cb652-2" title="2">ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">shp_name &lt;-<span class="st"> &quot;ncovr/ncovr/NAT.shp&quot;</span>
+ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre>
 <pre><code>## Reading layer `NAT&#39; from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/ncovr/ncovr/NAT.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
@@ -361,14 +362,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## epsg (SRID):    4326
 ## proj4string:    +proj=longlat +datum=WGS84 +no_defs</code></pre>
 <p>We can indeed represent our variable of interest using a choropleth map.</p>
-<div class="sourceCode" id="cb654"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb654-1" title="1">current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</code></pre>
 <pre><code>## tmap style set to &quot;col_blind&quot;</code></pre>
 <pre><code>## other available styles are: &quot;white&quot;, &quot;gray&quot;, &quot;natural&quot;, &quot;cobalt&quot;, &quot;albatross&quot;, &quot;beaver&quot;, &quot;bw&quot;, &quot;classic&quot;, &quot;watercolor&quot;</code></pre>
-<div class="sourceCode" id="cb657"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb657-1" title="1"><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb657-2" title="2"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR90&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Homicide Rate (Quantiles)&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb657-3" title="3"><span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb657-4" title="4"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Homicide Rate across US Counties, 1990&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,</a>
-<a class="sourceLine" id="cb657-5" title="5">            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR90&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Homicide Rate (Quantiles)&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Homicide Rate across US Counties, 1990&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,
+            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</code></pre>
 <p><img src="09-week9_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>Do you think there is spatial patterning to homicide?</p>
 </div>
@@ -376,37 +377,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">9.2</span> Looking at the residuals and testing for spatial autocorrelation in regression</h2>
 <p>Residuals, as we have explained, give you an idea of the distance between our observed Y values and the predicted Y values. So in essence they are deviations of reality from your model. Your regression line or hyperplane is optimised to be the one that best represent your data if those assumptions are met. Residuals are very helpful to diagnose, then, whether your model is a good representation of reality or not. Most diagnostics of the assumptions for OLS regression, which is if you remember from last year the technique we are using, rely on exploring the residuals.</p>
 <p>In order to explore the residuals we need to fit our model first. Let’s look at one of the models from last week.</p>
-<div class="sourceCode" id="cb658"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb658-1" title="1">fit_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH <span class="op">+</span><span class="st"> </span>DV90 <span class="op">+</span><span class="st"> </span>MA90 <span class="op">+</span><span class="st"> </span>PS90 <span class="op">+</span>UE90, <span class="dt">data=</span>ncovr_sf)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH <span class="op">+</span><span class="st"> </span>DV90 <span class="op">+</span><span class="st"> </span>MA90 <span class="op">+</span><span class="st"> </span>PS90 <span class="op">+</span>UE90, <span class="dt">data=</span>ncovr_sf)</code></pre>
 <p>Now that we have fitted the model we can extract the residuals. If you look at the fit_1 object in your RStudio environment or if you run the str() function to look inside this object you will see that this object is a list with differet elements, one of which is the residuals. An element of this object then includes the residual for each of your observations (the difference between the observed value and the value predicted by your model). We can extract the residuals using the residuals() function and add them to our spatial data set.</p>
-<div class="sourceCode" id="cb659"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb659-1" title="1">ncovr_sf<span class="op">$</span>res_fit1 &lt;-<span class="st"> </span><span class="kw">residuals</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sf<span class="op">$</span>res_fit1 &lt;-<span class="st"> </span><span class="kw">residuals</span>(fit_<span class="dv">1</span>)</code></pre>
 <p>If you now look at the dataset you will see that there is a new variable with the residuals. In those cases where the residual is negative this is telling us that the observed value is lower than the predicted (that is, our model is overpredicting the level of homicide for that observation) when the residual is positive the observed value is higher than the predicted (that is, our model is underpredicting the level of homicide for that observation).</p>
 <p>We could also extract the predicted values if we wanted. We would use the fitted() function.</p>
-<div class="sourceCode" id="cb660"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb660-1" title="1">ncovr_sf<span class="op">$</span>fitted_fit1 &lt;-<span class="st"> </span><span class="kw">fitted</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sf<span class="op">$</span>fitted_fit1 &lt;-<span class="st"> </span><span class="kw">fitted</span>(fit_<span class="dv">1</span>)</code></pre>
 <p>Now look at the second county in the dataset. It has a homice rate in 1990 of 15.88. This is the observed value. If we look at the new column we have created (fitted_fit1), our model predicts a homicide rate of 2.41. That is, knowing the level unemployment, whether the county is North or South, the level of resource deprivation, etc., we are predicting a homicide rate of 2.41. Now, this is lower than the observed value, so our model is underpredicting the level of homicide in this case. If you observed the residual you will see that it has a value of 13.46, which is simply the difference between the observed and the predicted value.</p>
 <p>With spatial data one useful thing to do is to look at any spatial patterning in the distribution of the residuals. Notice that the residuals are the difference between the observed values for homicide and the predicted values for homicide, so you want your residual to NOT display any spatial patterning. If, on the other hand, your model display a patterning in the areas of the study region where it performs predicts badly, then you may have a problem. This is telling your model is not a good representation of the social phenomena you are studying across the full study area: there is systematically more distortion in some areas than in others.</p>
 <p>We are going to produce a choropleth map for the residuals, but we will use a common classification method we haven’t covered yet: standard deviations. Standard deviation is a statistical technique type of map based on how much the data differs from the mean. You measure the mean and standard deviation for your data. Then, each standard deviation becomes a class in your choropleth maps.</p>
 <p>In order to do that we will compute the mean and the standard deviation for the variable we want to plot and break the variable according to these values. The following code creates a new variable in which we will express the residuals in terms of standard deviations away from the mean. So, for each observation, we substract the mean and divide by the standard deviation.</p>
-<div class="sourceCode" id="cb661"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb661-1" title="1">ncovr_sf<span class="op">$</span>sd_breaks &lt;-<span class="st"> </span>(ncovr_sf<span class="op">$</span>res_fit1 <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(ncovr_sf<span class="op">$</span>res_fit1))<span class="op">/</span><span class="kw">sd</span>(ncovr_sf<span class="op">$</span>res_fit1)</a>
-<a class="sourceLine" id="cb661-2" title="2"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>sd_breaks)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sf<span class="op">$</span>sd_breaks &lt;-<span class="st"> </span>(ncovr_sf<span class="op">$</span>res_fit1 <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(ncovr_sf<span class="op">$</span>res_fit1))<span class="op">/</span><span class="kw">sd</span>(ncovr_sf<span class="op">$</span>res_fit1)
+<span class="kw">summary</span>(ncovr_sf<span class="op">$</span>sd_breaks)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ## -3.5370 -0.5238 -0.1404  0.0000  0.3314 13.7407</code></pre>
 <p>Next we use a new style, fixed, within the tm_fill function. When we break the variable into classes using the fixed argument we need to specify the boundaries of the classes. We do this using the breaks argument. In this case we are going to ask R to create 7 classes based on standard deviations away from the mean.</p>
-<div class="sourceCode" id="cb663"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb663-1" title="1">my_breaks &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">14</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">14</span>)</a>
-<a class="sourceLine" id="cb663-2" title="2"></a>
-<a class="sourceLine" id="cb663-3" title="3"><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb663-4" title="4"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;sd_breaks&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;fixed&quot;</span>, <span class="dt">breaks =</span> my_breaks, <span class="dt">palette =</span> <span class="st">&quot;-RdBu&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb663-5" title="5"><span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb663-6" title="6"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,</a>
-<a class="sourceLine" id="cb663-7" title="7">            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">my_breaks &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">14</span>,<span class="op">-</span><span class="dv">3</span>,<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">14</span>)
+
+<span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;sd_breaks&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="dt">style =</span> <span class="st">&quot;fixed&quot;</span>, <span class="dt">breaks =</span> my_breaks, <span class="dt">palette =</span> <span class="st">&quot;-RdBu&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Residuals&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,
+            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</code></pre>
 <pre><code>## Variable &quot;sd_breaks&quot; contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
 <p><img src="09-week9_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>Notice the spatial patterning of areas of over-prediction (negative residuals, or blue tones) and under-prediction (positive residuals, or brown tones). This visual inspection of the residuals is telling you that spatial autocorrelation may be present here. This, however, would require a more formal test.</p>
 <p>Remember from week 6 that in order to do this first we need to turn our sf object into a sp class object and then create the spatial weight matrix. If the code below and what it does is not clear to you, revise the notes from week 6 -when we first introduced it.</p>
-<div class="sourceCode" id="cb665"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb665-1" title="1"><span class="co">#We coerce the sf object into a new sp object</span></a>
-<a class="sourceLine" id="cb665-2" title="2">ncovr_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_sf, <span class="st">&quot;Spatial&quot;</span>)</a>
-<a class="sourceLine" id="cb665-3" title="3"><span class="co">#Then we create a list of neighbours using the Queen criteria</span></a>
-<a class="sourceLine" id="cb665-4" title="4">w &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_sp, <span class="dt">row.names=</span>ncovr_sp<span class="op">$</span>FIPSNO)</a>
-<a class="sourceLine" id="cb665-5" title="5"><span class="kw">summary</span>(w)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We coerce the sf object into a new sp object</span>
+ncovr_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_sf, <span class="st">&quot;Spatial&quot;</span>)
+<span class="co">#Then we create a list of neighbours using the Queen criteria</span>
+w &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_sp, <span class="dt">row.names=</span>ncovr_sp<span class="op">$</span>FIPSNO)
+<span class="kw">summary</span>(w)</code></pre>
 <pre><code>## Neighbour list object:
 ## Number of regions: 3085 
 ## Number of nonzero links: 18168 
@@ -421,10 +422,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 1 most connected region:
 ## 49037 with 14 links</code></pre>
 <p>This should give you an idea of the distribution of connectedness across the data, with counties having on average nearly 6 neighbours. Now we can generate the row standardise spatial weight matrix and the Moran Scatterplot.</p>
-<div class="sourceCode" id="cb667"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb667-1" title="1">wm &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)</a>
-<a class="sourceLine" id="cb667-2" title="2">rwm &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">wm &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)
+rwm &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</code></pre>
 <p>We obtain the Moran’s test for regression residuals using the function lm.morantest() as below. It is important to realize that the Moran’s I test statistic for residual spatial autocorrelation takes into account the fact that the variable under consideration is a residual, computed from a regression. The usual Moran’s I test statistic does not. It is therefore incorrect to simply apply a Moran’s I test to the residuals from the regression without correcting for the fact that these are residuals.</p>
-<div class="sourceCode" id="cb668"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb668-1" title="1"><span class="kw">lm.morantest</span>(fit_<span class="dv">1</span>, rwm, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm.morantest</span>(fit_<span class="dv">1</span>, rwm, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</code></pre>
 <pre><code>## 
 ##  Global Moran I for regression residuals
 ## 
@@ -458,33 +459,33 @@ characteristic is that it includes a spatially lagged “dependent” variable a
 <p>We could have attempted to test other interaction effects between some of our other predictors and their geographical location in the South or the North. But we did not.</p>
 <p>If you have read the Ballen et al. (2001) paper that we are replicating in last week and this week lab, you will have noticed that they decided that they needed to run separate models for the South and the North. This kind of situation, where sub-regions, seem to display different patterns often is alluded with the name of spatial regimes. In the context of regression analysis, spatial regimes relates to the possibility that we may need to split our data into two (or more sub-regions) in order to run our models, because we presume that the relationship of the predictors to the outcome may play out differently in these sub-regions (spatial regimes).</p>
 <p>So how can we assess whether this is an issue in our data? As with many other diagnostics of regression, you may want to start by looking at your residuals. Look at the residual map we produced earlier. Do you think that the residuals look different in the South and in the North? If the pattern is not clear to you, you may want to run other forms of visualisation.</p>
-<div class="sourceCode" id="cb670"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb670-1" title="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb670-2" title="2"></a>
-<a class="sourceLine" id="cb670-3" title="3"><span class="kw">ggplot</span>(ncovr_sf, <span class="kw">aes</span>(<span class="dt">x =</span> res_fit1, <span class="dt">colour =</span> <span class="kw">as.factor</span>(SOUTH))) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb670-4" title="4"><span class="st">  </span><span class="kw">geom_density</span>() </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+
+<span class="kw">ggplot</span>(ncovr_sf, <span class="kw">aes</span>(<span class="dt">x =</span> res_fit1, <span class="dt">colour =</span> <span class="kw">as.factor</span>(SOUTH))) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_density</span>() </code></pre>
 <p><img src="09-week9_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div id="homework-1-4" class="section level3">
 <h3><span class="header-section-number">9.4.1</span> HOMEWORK 1</h3>
 <p><em>What do you see in this plot? And, critically, what does it mean? What is this telling you about the predicted values that result from our model? (Remember what a residual is: the difference between the observed values and the predicted values).</em></p>
 <p>There are formal tests that one can use to further explore these issues. The paper by Bollen et al. (2001) mentions them (Chow tests). But those are beyond the scope of this course. Sufficient to say that, as Bollen et al. (2001), we are going to split our analysis and run them separately for the Southern and the Northern states. We have covered the filter() function from dplyr to split datasets based on values of a variable. But to split sf objects it is better to rely on the more generic subset function, since filter() doesn’t accommodate well the column with the geographic information that sf provides.</p>
-<div class="sourceCode" id="cb671"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb671-1" title="1">ncovr_s_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb671-2" title="2">ncovr_n_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_s_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+ncovr_n_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</code></pre>
 </div>
 </div>
 <div id="lagrange-multipliers" class="section level2">
 <h2><span class="header-section-number">9.5</span> Lagrange multipliers</h2>
 <p>The Moran’s I test statistic has high power against a range of spatial alternatives. However, it does not provide much help in terms of which alternative model would be most appropriate. The Lagrange Multiplier test statistics do allow a distinction between spatial error models and spatial lag models.</p>
 <p>In order to practice their computation and interpretation, let’s run two separate OLS regression models (one for the South and one for the North), using the same predictors as we used last week and, first, focusing on homicide in the northern counties in the earliest year for which we have data (1960). We have split the data in two, so that means that before we do this we need to create new files for the spatial weight matrix: in particular we will create one using first order queen criteria.</p>
-<div class="sourceCode" id="cb672"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb672-1" title="1"><span class="co">#We coerce the sf object into a new sp object</span></a>
-<a class="sourceLine" id="cb672-2" title="2">ncovr_n_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_n_sf, <span class="st">&quot;Spatial&quot;</span>)</a>
-<a class="sourceLine" id="cb672-3" title="3"><span class="co">#Then we create a list of neighbours using the Queen criteria</span></a>
-<a class="sourceLine" id="cb672-4" title="4">w_n &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_n_sp, <span class="dt">row.names=</span>ncovr_n_sp<span class="op">$</span>FIPSNO)</a>
-<a class="sourceLine" id="cb672-5" title="5">wm_n &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w_n, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)</a>
-<a class="sourceLine" id="cb672-6" title="6">rwm_n &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm_n, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</a>
-<a class="sourceLine" id="cb672-7" title="7"></a>
-<a class="sourceLine" id="cb672-8" title="8">fit_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We coerce the sf object into a new sp object</span>
+ncovr_n_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_n_sf, <span class="st">&quot;Spatial&quot;</span>)
+<span class="co">#Then we create a list of neighbours using the Queen criteria</span>
+w_n &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_n_sp, <span class="dt">row.names=</span>ncovr_n_sp<span class="op">$</span>FIPSNO)
+wm_n &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w_n, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)
+rwm_n &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm_n, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)
+
+fit_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf)</code></pre>
 <p>First look at the Moran’s I.</p>
-<div class="sourceCode" id="cb673"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb673-1" title="1"><span class="kw">lm.morantest</span>(fit_<span class="dv">2</span>, rwm_n, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm.morantest</span>(fit_<span class="dv">2</span>, rwm_n, <span class="dt">alternative=</span><span class="st">&quot;two.sided&quot;</span>)</code></pre>
 <pre><code>## 
 ##  Global Moran I for regression residuals
 ## 
@@ -500,7 +501,7 @@ characteristic is that it includes a spatially lagged “dependent” variable a
 ##     0.0394654814    -0.0022539192     0.0002157889</code></pre>
 <p>The p (probability) value associated with this Moran’s I is below our standard threshold. So we will say that we have an issue with spatial autocorrelation that we need to deal with. OLS regression won’t do. In order to decide whether to fit a spatial error or a spatially lagged model we need to run the Lagrange Multipliers.</p>
 <p>Both Lagrange multiplier tests (for the error and the lagged models, LMerr and LMlag respectively), as well as their robust forms (RLMerr and RLMLag, also respectively) are included in the lm.LMtests function. Again, a regression object and a spatial listw object must be passed as arguments. In addition, the tests must be specified as a character vector (the default is only LMerror), using the c( ) operator (concatenate), as illustrated below.</p>
-<div class="sourceCode" id="cb675"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb675-1" title="1"><span class="kw">lm.LMtests</span>(fit_<span class="dv">2</span>, rwm_n, <span class="dt">test =</span> <span class="kw">c</span>(<span class="st">&quot;LMerr&quot;</span>,<span class="st">&quot;LMlag&quot;</span>,<span class="st">&quot;RLMerr&quot;</span>,<span class="st">&quot;RLMlag&quot;</span>,<span class="st">&quot;SARMA&quot;</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm.LMtests</span>(fit_<span class="dv">2</span>, rwm_n, <span class="dt">test =</span> <span class="kw">c</span>(<span class="st">&quot;LMerr&quot;</span>,<span class="st">&quot;LMlag&quot;</span>,<span class="st">&quot;RLMerr&quot;</span>,<span class="st">&quot;RLMlag&quot;</span>,<span class="st">&quot;SARMA&quot;</span>))</code></pre>
 <pre><code>## 
 ##  Lagrange multiplier diagnostics for spatial dependence
 ## 
@@ -563,8 +564,8 @@ characteristic is that it includes a spatially lagged “dependent” variable a
 <div id="fitting-and-interpreting-a-spatially-lagged-model" class="section level2">
 <h2><span class="header-section-number">9.6</span> Fitting and interpreting a spatially lagged model</h2>
 <p>Maximum Likelihood (ML) estimation of the spatial lag model is carried out with the lagsarlm() function. The required arguments are a regression “formula”, a data set and a listw spatial weights object. The default method uses Ord’s eigenvalue decomposition of the spatial weights matrix.</p>
-<div class="sourceCode" id="cb677"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb677-1" title="1">fit_<span class="dv">2</span>_lag &lt;-<span class="st"> </span><span class="kw">lagsarlm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf, rwm_n)</a>
-<a class="sourceLine" id="cb677-2" title="2"><span class="kw">summary</span>(fit_<span class="dv">2</span>_lag)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">2</span>_lag &lt;-<span class="st"> </span><span class="kw">lagsarlm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf, rwm_n)
+<span class="kw">summary</span>(fit_<span class="dv">2</span>_lag)</code></pre>
 <pre><code>## 
 ## Call:
 ## lagsarlm(formula = HR60 ~ RD60 + DV60 + MA60 + PS60 + UE60, data = ncovr_n_sf, 
@@ -610,15 +611,15 @@ characteristic is that it includes a spatially lagged “dependent” variable a
 <h2><span class="header-section-number">9.7</span> Fitting an interpreting a spatial error model</h2>
 <p>We saw (well you should have seen!) that for the case of homicide in the 80s for Southern states the spatial error model was more appropriate when using the 1 st order contiguity queen criteria. In this case then, we need to run a spatial error model.</p>
 <p>Maximum likelihood estimation of the spatial error model is similar to the lag procedure and implemented in the errorsarlm() function. Again, the formula, data set and a listw spatial weights object must be specified, as illustrated below.</p>
-<div class="sourceCode" id="cb679"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb679-1" title="1"><span class="co">#We coerce the sf object into a new sp object</span></a>
-<a class="sourceLine" id="cb679-2" title="2">ncovr_s_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_s_sf, <span class="st">&quot;Spatial&quot;</span>)</a>
-<a class="sourceLine" id="cb679-3" title="3"><span class="co">#Then we create a list of neighbours using the Queen criteria</span></a>
-<a class="sourceLine" id="cb679-4" title="4">w_s &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_s_sp, <span class="dt">row.names=</span>ncovr_s_sp<span class="op">$</span>FIPSNO)</a>
-<a class="sourceLine" id="cb679-5" title="5">wm_s &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w_s, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)</a>
-<a class="sourceLine" id="cb679-6" title="6">rwm_s &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm_s, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</a>
-<a class="sourceLine" id="cb679-7" title="7"></a>
-<a class="sourceLine" id="cb679-8" title="8">fit_<span class="dv">3</span>_err &lt;-<span class="st"> </span><span class="kw">errorsarlm</span>(HR80 <span class="op">~</span><span class="st"> </span>RD80 <span class="op">+</span><span class="st"> </span>DV80 <span class="op">+</span><span class="st"> </span>MA80 <span class="op">+</span><span class="st"> </span>PS80 <span class="op">+</span>UE80, <span class="dt">data=</span>ncovr_s_sf, rwm_s)</a>
-<a class="sourceLine" id="cb679-9" title="9"><span class="kw">summary</span>(fit_<span class="dv">3</span>_err)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We coerce the sf object into a new sp object</span>
+ncovr_s_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_s_sf, <span class="st">&quot;Spatial&quot;</span>)
+<span class="co">#Then we create a list of neighbours using the Queen criteria</span>
+w_s &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_s_sp, <span class="dt">row.names=</span>ncovr_s_sp<span class="op">$</span>FIPSNO)
+wm_s &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w_s, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)
+rwm_s &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm_s, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)
+
+fit_<span class="dv">3</span>_err &lt;-<span class="st"> </span><span class="kw">errorsarlm</span>(HR80 <span class="op">~</span><span class="st"> </span>RD80 <span class="op">+</span><span class="st"> </span>DV80 <span class="op">+</span><span class="st"> </span>MA80 <span class="op">+</span><span class="st"> </span>PS80 <span class="op">+</span>UE80, <span class="dt">data=</span>ncovr_s_sf, rwm_s)
+<span class="kw">summary</span>(fit_<span class="dv">3</span>_err)</code></pre>
 <pre><code>## 
 ## Call:errorsarlm(formula = HR80 ~ RD80 + DV80 + MA80 + PS80 + UE80, 
 ##     data = ncovr_s_sf, listw = rwm_s)
@@ -682,7 +683,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -694,6 +695,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/rstudio/bookdown-demo/edit/master/09-week9.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["CrimeMapping.pdf", "CrimeMapping.epub"],
 "toc": {

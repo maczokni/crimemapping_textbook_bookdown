@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Crime Mapping in R</title>
+  <title>Chapter 10 Week 10 | Crime Mapping in R</title>
   <meta name="description" content="Worksheets for labs of Crime Mapping course">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Crime Mapping in R" />
+  <meta property="og:title" content="Chapter 10 Week 10 | Crime Mapping in R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Crime Mapping in R" />
+  <meta name="twitter:title" content="Chapter 10 Week 10 | Crime Mapping in R" />
   
   <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-02-05">
+<meta name="date" content="2019-02-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -334,41 +335,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">10.1</span> Introduction</h2>
 <p>This session we begin to …</p>
 <p>Before we do any of this, we need to load the libraries we will use today:</p>
-<div class="sourceCode" id="cb681"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb681-1" title="1"><span class="kw">library</span>(sf)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre>
 <pre><code>## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3</code></pre>
-<div class="sourceCode" id="cb683"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb683-1" title="1"><span class="kw">library</span>(tmap)</a>
-<a class="sourceLine" id="cb683-2" title="2"><span class="kw">library</span>(sp)</a>
-<a class="sourceLine" id="cb683-3" title="3"><span class="kw">library</span>(spdep)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<span class="kw">library</span>(sp)
+<span class="kw">library</span>(spdep)</code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre><code>## Loading required package: spData</code></pre>
 <pre><code>## To access larger datasets in this package, install the spDataLarge
 ## package with: `install.packages(&#39;spDataLarge&#39;,
 ## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;))`</code></pre>
-<div class="sourceCode" id="cb687"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb687-1" title="1"><span class="kw">library</span>(DCluster)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DCluster)</code></pre>
 <pre><code>## Loading required package: boot</code></pre>
 <pre><code>## Loading required package: MASS</code></pre>
-<div class="sourceCode" id="cb690"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb690-1" title="1"><span class="kw">library</span>(cartogram)</a>
-<a class="sourceLine" id="cb690-2" title="2"><span class="kw">library</span>(ggmap)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cartogram)
+<span class="kw">library</span>(ggmap)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<div class="sourceCode" id="cb692"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb692-1" title="1"><span class="kw">library</span>(ggplot2)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre>
 <p>There are also some new libraries we will use. If you don’t already have these you will need to install them.</p>
 <div id="pro-tip-do-i-need-to-install-this-package" class="section level3">
 <h3><span class="header-section-number">10.1.1</span> Pro-tip: do I need to install this package?</h3>
 <p>You might have noticed that in your list of available packages you might see more than you remember downloading. The idea of <em>dependencies</em> has come up throughout the semester. Packages have <em>dependencies</em> when their code is <em>dependent</em> on (uses code from) another package. For example, if I write some code that I think will be useful, so I release this in the form of the package “rekaR”, but I use ggplot2 in the code, then ggplot2 will be a dependency of rekaR. As a default, R will install all the dependencies for a package when you install your package. So this way you might end up with some packages there that you didn’t realise you had.</p>
 <p>Why am I telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code <a href="https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them">here</a> to do this. I’ll comment it a bit, so you can follow along what it does <strong>but you don’t have to if you don’t want to</strong>. This is just an optional extra.</p>
 <p>So as a first step, you have to assign a list of all the packages you have to check to an object. Let’s say I tell you that today we will be using the following packaes: “sp”, “rgdal”, “classInt”, “RColorBrewer”, “ggplot2”, “hexbin”, “ggmap”, “XML”, and “dplyr”. Then you can add these to an object called <code>libs</code>, using the <code>c()</code> function:</p>
-<div class="sourceCode" id="cb693"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb693-1" title="1">libs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sf&quot;</span>, <span class="st">&quot;tmap&quot;</span>, <span class="st">&quot;sp&quot;</span>, <span class="st">&quot;spdep&quot;</span>, <span class="st">&quot;DCluster&quot;</span>, <span class="st">&quot;cartogram&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">libs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sf&quot;</span>, <span class="st">&quot;tmap&quot;</span>, <span class="st">&quot;sp&quot;</span>, <span class="st">&quot;spdep&quot;</span>, <span class="st">&quot;DCluster&quot;</span>, <span class="st">&quot;cartogram&quot;</span>)</code></pre>
 <p>Now you can run the below bit of code, and you will see in the console an output of what is and isn’t installed, as well as install the packages that are not!</p>
-<div class="sourceCode" id="cb694"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb694-1" title="1"><span class="cf">for</span> (x <span class="cf">in</span> libs){                                                <span class="co">#cycle through each item in libs object</span></a>
-<a class="sourceLine" id="cb694-2" title="2">  <span class="cf">if</span>(x <span class="op">%in%</span><span class="st"> </span><span class="kw">rownames</span>(<span class="kw">installed.packages</span>()) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>) {          <span class="co">#if the package is not installed</span></a>
-<a class="sourceLine" id="cb694-3" title="3">    <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;installing &quot;</span>, x, <span class="st">&quot;...&quot;</span>))                      <span class="co">#print a message to tell me</span></a>
-<a class="sourceLine" id="cb694-4" title="4">    <span class="kw">install.packages</span>(x)                                         <span class="co">#and then install the packages</span></a>
-<a class="sourceLine" id="cb694-5" title="5">  }</a>
-<a class="sourceLine" id="cb694-6" title="6">  <span class="cf">else</span>{                                                         <span class="co">#otherwise (if it is installed)</span></a>
-<a class="sourceLine" id="cb694-7" title="7">    <span class="kw">print</span> (<span class="kw">paste0</span>(x, <span class="st">&quot; is already installed &quot;</span>))                 <span class="co">#print a message to tell me</span></a>
-<a class="sourceLine" id="cb694-8" title="8">  }</a>
-<a class="sourceLine" id="cb694-9" title="9">  <span class="kw">library</span>(x, <span class="dt">character.only =</span> <span class="ot">TRUE</span>)                             <span class="co">#and then load the packages</span></a>
-<a class="sourceLine" id="cb694-10" title="10">}</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (x <span class="cf">in</span> libs){                                                <span class="co">#cycle through each item in libs object</span>
+  <span class="cf">if</span>(x <span class="op">%in%</span><span class="st"> </span><span class="kw">rownames</span>(<span class="kw">installed.packages</span>()) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>) {          <span class="co">#if the package is not installed</span>
+    <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;installing &quot;</span>, x, <span class="st">&quot;...&quot;</span>))                      <span class="co">#print a message to tell me</span>
+    <span class="kw">install.packages</span>(x)                                         <span class="co">#and then install the packages</span>
+  }
+  <span class="cf">else</span>{                                                         <span class="co">#otherwise (if it is installed)</span>
+    <span class="kw">print</span> (<span class="kw">paste0</span>(x, <span class="st">&quot; is already installed &quot;</span>))                 <span class="co">#print a message to tell me</span>
+  }
+  <span class="kw">library</span>(x, <span class="dt">character.only =</span> <span class="ot">TRUE</span>)                             <span class="co">#and then load the packages</span>
+}</code></pre>
 <pre><code>## [1] &quot;sf is already installed &quot;
 ## [1] &quot;tmap is already installed &quot;
 ## [1] &quot;sp is already installed &quot;
@@ -380,14 +381,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data" class="section level3">
 <h3><span class="header-section-number">10.1.2</span> Data</h3>
 <p>Then we will bring back the data from last week:</p>
-<div class="sourceCode" id="cb696"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb696-1" title="1"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span></a>
-<a class="sourceLine" id="cb696-2" title="2">urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span></a>
-<a class="sourceLine" id="cb696-3" title="3"><span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)</a>
-<a class="sourceLine" id="cb696-4" title="4"><span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span></a>
-<a class="sourceLine" id="cb696-5" title="5"><span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span>
+urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span>
+<span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)
+<span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span>
+<span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</code></pre>
 <p>Remember that to treat the data as spatial we need to load the shapefile. With that we can create a spatial object:</p>
-<div class="sourceCode" id="cb697"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb697-1" title="1">shp_name &lt;-<span class="st"> &quot;ncovr/ncovr/NAT.shp&quot;</span></a>
-<a class="sourceLine" id="cb697-2" title="2">ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">shp_name &lt;-<span class="st"> &quot;ncovr/ncovr/NAT.shp&quot;</span>
+ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre>
 <pre><code>## Reading layer `NAT&#39; from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/ncovr/ncovr/NAT.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
@@ -401,18 +402,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">10.2</span> Interpreting Spatial Lag Coefficiences</h2>
 <p>Today we are mostly going to go back to some issues about geographical representation (mapping rates, bins) and other more general issues that are quite revelant when we talk about spatial analysis, and are integral part of a spatial analysis course (e.g., the modifiable area unit problem). But before we do any of that we need to go back to something we mentioned last week about the spatial lag models.</p>
 <p>Remember that last week we fitted the following spatial lag model after creating a spatial weight matrix based on Queen first order neighbours:</p>
-<div class="sourceCode" id="cb699"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb699-1" title="1"><span class="co">#Split the data into Southern and Northern counties</span></a>
-<a class="sourceLine" id="cb699-2" title="2">ncovr_s_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb699-3" title="3">ncovr_n_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb699-4" title="4"><span class="co">#We coerce the sf object into a new sp object</span></a>
-<a class="sourceLine" id="cb699-5" title="5">ncovr_n_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_n_sf, <span class="st">&quot;Spatial&quot;</span>)</a>
-<a class="sourceLine" id="cb699-6" title="6"><span class="co">#Then we create a list of neighbours using the Queen criteria</span></a>
-<a class="sourceLine" id="cb699-7" title="7">w_n &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_n_sp, <span class="dt">row.names=</span>ncovr_n_sp<span class="op">$</span>FIPSNO)</a>
-<a class="sourceLine" id="cb699-8" title="8">wm_n &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w_n, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)</a>
-<a class="sourceLine" id="cb699-9" title="9">rwm_n &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm_n, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)</a>
-<a class="sourceLine" id="cb699-10" title="10"><span class="co">#Fit model</span></a>
-<a class="sourceLine" id="cb699-11" title="11">fit_<span class="dv">1</span>_lag &lt;-<span class="st"> </span><span class="kw">lagsarlm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf, rwm_n)</a>
-<a class="sourceLine" id="cb699-12" title="12"><span class="kw">summary</span>(fit_<span class="dv">1</span>_lag)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Split the data into Southern and Northern counties</span>
+ncovr_s_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">1</span>)
+ncovr_n_sf &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>)
+<span class="co">#We coerce the sf object into a new sp object</span>
+ncovr_n_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_n_sf, <span class="st">&quot;Spatial&quot;</span>)
+<span class="co">#Then we create a list of neighbours using the Queen criteria</span>
+w_n &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_n_sp, <span class="dt">row.names=</span>ncovr_n_sp<span class="op">$</span>FIPSNO)
+wm_n &lt;-<span class="st"> </span><span class="kw">nb2mat</span>(w_n, <span class="dt">style=</span><span class="st">&#39;B&#39;</span>)
+rwm_n &lt;-<span class="st"> </span><span class="kw">mat2listw</span>(wm_n, <span class="dt">style=</span><span class="st">&#39;W&#39;</span>)
+<span class="co">#Fit model</span>
+fit_<span class="dv">1</span>_lag &lt;-<span class="st"> </span><span class="kw">lagsarlm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf, rwm_n)
+<span class="kw">summary</span>(fit_<span class="dv">1</span>_lag)</code></pre>
 <pre><code>## 
 ## Call:
 ## lagsarlm(formula = HR60 ~ RD60 + DV60 + MA60 + PS60 + UE60, data = ncovr_n_sf, 
@@ -452,29 +453,29 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 -Average Total impact, which would be the total of direct and indirect impacts of a predictor on one’s outcome
 -Average Indirect impact, which would be the average impact of one’s neighbors on one’s outcome</p>
 <p>These quantities can be found using the impacts() function in the spdep library. We follow the example that converts the spatial weight matrix into a “sparse” matrix, and power it up using the trW() function. This follows the approximation methods described in Lesage and Pace, 2009. Here, we use Monte Carlo simulation to obtain simulated distributions of the various impacts.</p>
-<div class="sourceCode" id="cb701"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb701-1" title="1">W &lt;-<span class="st"> </span><span class="kw">as</span>(rwm_n, <span class="st">&quot;CsparseMatrix&quot;</span>)</a>
-<a class="sourceLine" id="cb701-2" title="2">trMC &lt;-<span class="st"> </span><span class="kw">trW</span>(W, <span class="dt">type=</span><span class="st">&quot;MC&quot;</span>)</a>
-<a class="sourceLine" id="cb701-3" title="3">im&lt;-<span class="kw">impacts</span>(fit_<span class="dv">1</span>_lag, <span class="dt">tr=</span>trMC, <span class="dt">R=</span><span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb701-4" title="4">sums&lt;-<span class="kw">summary</span>(im,  <span class="dt">zstats=</span>T)</a>
-<a class="sourceLine" id="cb701-5" title="5"><span class="co">#To print the coefficients</span></a>
-<a class="sourceLine" id="cb701-6" title="6"><span class="kw">data.frame</span>(sums<span class="op">$</span>res)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">W &lt;-<span class="st"> </span><span class="kw">as</span>(rwm_n, <span class="st">&quot;CsparseMatrix&quot;</span>)
+trMC &lt;-<span class="st"> </span><span class="kw">trW</span>(W, <span class="dt">type=</span><span class="st">&quot;MC&quot;</span>)
+im&lt;-<span class="kw">impacts</span>(fit_<span class="dv">1</span>_lag, <span class="dt">tr=</span>trMC, <span class="dt">R=</span><span class="dv">100</span>)
+sums&lt;-<span class="kw">summary</span>(im,  <span class="dt">zstats=</span>T)
+<span class="co">#To print the coefficients</span>
+<span class="kw">data.frame</span>(sums<span class="op">$</span>res)</code></pre>
 <pre><code>##        direct    indirect      total
-## 1  1.74079670  0.27047402  2.0112707
-## 2  1.00625430  0.15634545  1.1625998
-## 3 -0.17995309 -0.02795998 -0.2079131
-## 4  0.38429132  0.05970876  0.4440001
-## 5  0.08827019  0.01371487  0.1019851</code></pre>
-<div class="sourceCode" id="cb703"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb703-1" title="1"><span class="co">#To print the p balues</span></a>
-<a class="sourceLine" id="cb703-2" title="2"><span class="kw">data.frame</span>(sums<span class="op">$</span>pzmat)</a></code></pre></div>
-<pre><code>##            Direct    Indirect        Total
-## RD60 0.000000e+00 0.001590851 0.000000e+00
-## DV60 0.000000e+00 0.001002614 0.000000e+00
-## MA60 0.000000e+00 0.001684054 0.000000e+00
-## PS60 8.728664e-08 0.007301957 2.659298e-07
-## UE60 1.027390e-03 0.017039319 9.438616e-04</code></pre>
+## 1  1.74079618  0.27047454  2.0112707
+## 2  1.00625400  0.15634575  1.1625998
+## 3 -0.17995303 -0.02796003 -0.2079131
+## 4  0.38429120  0.05970888  0.4440001
+## 5  0.08827017  0.01371489  0.1019851</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#To print the p balues</span>
+<span class="kw">data.frame</span>(sums<span class="op">$</span>pzmat)</code></pre>
+<pre><code>##            Direct     Indirect        Total
+## RD60 0.000000e+00 8.497615e-05 0.000000e+00
+## DV60 0.000000e+00 2.140568e-04 0.000000e+00
+## MA60 0.000000e+00 2.174671e-04 0.000000e+00
+## PS60 8.449377e-09 2.222562e-03 1.461618e-08
+## UE60 1.507681e-03 2.365934e-02 1.720364e-03</code></pre>
 <p>We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.</p>
-<div class="sourceCode" id="cb705"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb705-1" title="1">fit_<span class="dv">1</span>_OLS &lt;-<span class="st"> </span><span class="kw">lm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf)</a>
-<a class="sourceLine" id="cb705-2" title="2"><span class="kw">summary</span>(fit_<span class="dv">1</span>_OLS)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">1</span>_OLS &lt;-<span class="st"> </span><span class="kw">lm</span>(HR60 <span class="op">~</span><span class="st"> </span>RD60 <span class="op">+</span><span class="st"> </span>DV60 <span class="op">+</span><span class="st"> </span>MA60 <span class="op">+</span><span class="st"> </span>PS60 <span class="op">+</span>UE60, <span class="dt">data=</span>ncovr_n_sf)
+<span class="kw">summary</span>(fit_<span class="dv">1</span>_OLS)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR60 ~ RD60 + DV60 + MA60 + PS60 + UE60, data = ncovr_n_sf)
@@ -501,66 +502,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="mapping-rates-learning-from-disease-mapping" class="section level2">
 <h2><span class="header-section-number">10.3</span> Mapping rates, learning from disease mapping</h2>
 <p>In previous sessions we discussed how to map rates. It seems a fairly straightoforward issue. You get your variable with the relevant rate and you map it using a choropleth map. However, things are not that simple. Rates are funny animals. Let’s look at the ncvor data.</p>
-<div class="sourceCode" id="cb707"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb707-1" title="1"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>HR60)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>HR60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   0.000   2.783   4.504   6.885  92.937</code></pre>
 <p>We can see that the county with the highest homicide rate in the 1960s had a rate of 92.937 homicides per 100,000 individuals. That is very high. Just to put it into context in the UK is about 0.92. Where is that place? I can tell you is a place call Borden. Check it out:</p>
-<div class="sourceCode" id="cb709"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb709-1" title="1">borden &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, NAME <span class="op">==</span><span class="st"> &quot;Borden&quot;</span>)</a>
-<a class="sourceLine" id="cb709-2" title="2">borden<span class="op">$</span>HR60</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, NAME <span class="op">==</span><span class="st"> &quot;Borden&quot;</span>)
+borden<span class="op">$</span>HR60</code></pre>
 <pre><code>## [1] 92.9368</code></pre>
 <p>Borden county in Texas. You may be thinking… “Texas Chainsaw Massacre” perhaps? No, not really. Ed Gein, who inspired the film, was based and operated in Wisconsin. Borden claim to fame is that it was named after Gail Borden, the inventor of condensed milk. So, what’s going on here? Why do we have a homicide rate in Borden that makes it look like a war zone or the setting for Midsomer Murders?</p>
 <p>Check this out too:</p>
-<div class="sourceCode" id="cb711"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb711-1" title="1">borden<span class="op">$</span>HC60</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HC60</code></pre>
 <pre><code>## [1] 1</code></pre>
 <p>What? A total homicide count of 1. How can a county with just one homicide have a rate that makes it look like the most dangerous place in the US?</p>
-<div class="sourceCode" id="cb713"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb713-1" title="1">borden<span class="op">$</span>PO60</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>PO60</code></pre>
 <pre><code>## [1] 1076</code></pre>
 <p>Well, there were about 1076 people living there.</p>
-<div class="sourceCode" id="cb715"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb715-1" title="1"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>PO60)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>PO60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     208    9417   18408   57845   39165 7781984</code></pre>
 <p>If you contrast that with the average county in the US, that’s tiny. One homicide in such a small place can end up producing a big rate. Remember that the rate is simply dividing the number of relevant events by the exposure variable (in this case population) and multiplying by a constant (in this case 100,000 since we expressed crime rates in those terms). Most times Borden is a very peaceful place:</p>
-<div class="sourceCode" id="cb717"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb717-1" title="1">borden<span class="op">$</span>HR70</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR70</code></pre>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb719"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb719-1" title="1">borden<span class="op">$</span>HR80</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR80</code></pre>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode" id="cb721"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb721-1" title="1">borden<span class="op">$</span>HR90</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR90</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>It has a homicide rate of 0. But it only takes one homicide and, bang, it goes top of the league. So a standard map of rates is bound to be noisy. There is the instability that is introduced by virtue of having areas that may be sparsely populated and in which one single event, like in this case, will produce a very noticeable change in the rate. In fact, if you look at the counties with the highest homicide rate in the ncovr dataset you will notice all of them are places like Borden, areas that are sparsely populated, not because they are that dangerous, but because of the instability of rates.</p>
 <p>This is a problem that was first noted by epidemiologists doing disease mapping. But a number of other disciplines have now noted this and used some of the approaches developed by public health researchers that confronted this problem when producing maps of disease (PRO TIP: techniques and approaches used by spatial epidemiologists are very similar to those used by criminologists -in case you ever think of changing careers or need inspiration for how to solve a crime analysis problem).</p>
 <p>One way of dealing with this is by smoothing the rates. This basically as the word implies aims for a smoother representation that avoids hard spikes associated with random noise. There are different ways of doing that. Some ways use a non-spatial approach to smoothing, using something called a empirical bayesian smoother. How does this work? This approach takes the raw rates and tries to “shrunk” them towards the overall average. What does this mean? Essentially, we compute a weighted average between the raw rate for each area and the global average across all areas, with weights proportional to the underlying population at risk. What this procedure does is to have the rates of smaller areas (those with a small population at risk) to have their rates adjusted considerably (brought closer to the global average), whereas the rates for the larger areas will barely change.</p>
 <p>Here we are going to introduce the approach implemented in DCluster, a package developed for epidemiological research and detection of <a href="https://www.r-project.org/conferences/DSC-2003/Proceedings/GomezRubioEtAl.pdf">clusters of disease</a>.</p>
-<div class="sourceCode" id="cb723"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb723-1" title="1">res &lt;-<span class="st"> </span><span class="kw">empbaysmooth</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw">empbaysmooth</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60)</code></pre>
 <p>In the new object we generate, which is a list, you have an element which contains the computed rates. We can add those to our dataset:</p>
-<div class="sourceCode" id="cb724"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb724-1" title="1">ncovr_sf<span class="op">$</span>HR60EBS &lt;-<span class="st"> </span>res<span class="op">$</span>smthrr <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sf<span class="op">$</span>HR60EBS &lt;-<span class="st"> </span>res<span class="op">$</span>smthrr <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></code></pre>
 <p>Instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. If instead of shrinking to a global rate, we shrink to a local rate, we may be able to take unobserved heterogeneity into account; for this we need the list of neighbours (created as we covered in previous sessions):</p>
-<div class="sourceCode" id="cb725"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb725-1" title="1">ncovr_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_sf, <span class="st">&quot;Spatial&quot;</span>)</a>
-<a class="sourceLine" id="cb725-2" title="2">w_nb &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_sp, <span class="dt">row.names=</span>ncovr_sp<span class="op">$</span>FIPSNO)</a>
-<a class="sourceLine" id="cb725-3" title="3">eb2 &lt;-<span class="st"> </span><span class="kw">EBlocal</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60, w_nb)</a>
-<a class="sourceLine" id="cb725-4" title="4">ncovr_sf<span class="op">$</span>HR60EBSL &lt;-<span class="st"> </span>eb2<span class="op">$</span>est <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_sf, <span class="st">&quot;Spatial&quot;</span>)
+w_nb &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_sp, <span class="dt">row.names=</span>ncovr_sp<span class="op">$</span>FIPSNO)
+eb2 &lt;-<span class="st"> </span><span class="kw">EBlocal</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60, w_nb)
+ncovr_sf<span class="op">$</span>HR60EBSL &lt;-<span class="st"> </span>eb2<span class="op">$</span>est <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></code></pre>
 <p>We can now plot the maps and compare them:</p>
-<div class="sourceCode" id="cb726"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb726-1" title="1">current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</code></pre>
 <pre><code>## tmap style set to &quot;col_blind&quot;</code></pre>
 <pre><code>## other available styles are: &quot;white&quot;, &quot;gray&quot;, &quot;natural&quot;, &quot;cobalt&quot;, &quot;albatross&quot;, &quot;beaver&quot;, &quot;bw&quot;, &quot;classic&quot;, &quot;watercolor&quot;</code></pre>
-<div class="sourceCode" id="cb729"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb729-1" title="1">map1&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb729-2" title="2"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Raw rate&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb729-3" title="3"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), </a>
-<a class="sourceLine" id="cb729-4" title="4">            <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb729-5" title="5">            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb729-6" title="6"></a>
-<a class="sourceLine" id="cb729-7" title="7">map2&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb729-8" title="8"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60EBS&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;EB Smooth&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb729-9" title="9"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), </a>
-<a class="sourceLine" id="cb729-10" title="10">            <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb729-11" title="11">            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb729-12" title="12"></a>
-<a class="sourceLine" id="cb729-13" title="13">map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb729-14" title="14"><span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60EBSL&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Local Smooth&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb729-15" title="15"><span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), </a>
-<a class="sourceLine" id="cb729-16" title="16">            <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,</a>
-<a class="sourceLine" id="cb729-17" title="17">            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb729-18" title="18"></a>
-<a class="sourceLine" id="cb729-19" title="19"><span class="kw">tmap_arrange</span>(map1, map2, map3) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">map1&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Raw rate&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
+            <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)
+
+map2&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60EBS&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;EB Smooth&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
+            <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)
+
+map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60EBSL&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Local Smooth&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
+            <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)
+
+<span class="kw">tmap_arrange</span>(map1, map2, map3) </code></pre>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
 <p>Notice that the quantiles are not the same, so that will make your comparison difficult.</p>
 </div>
@@ -599,26 +600,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In many applications binning is done using a technique called <strong>hexagonal binning</strong>. This technique uses hexagon shapes to create a grid of points and develops a spatial histogram that shows different data points as a range or group of pairs with common distances and directions. In hexagonal binning the number of points falling within a particular rectangular or hexagon in a gridded surface is what makes the different colors to easily visualize data <a href="https://www.mapbox.com/blog/binning-alternative-point-maps/">(Smith, 2012)</a>. Hexagonnal binning was first developed in 1987 and today “hexbinning” is conducted by laying a hexagonal grid on top of 2-dimensional data <a href="http://indiemaps.com/blog/2011/10/hexbins/">(Johnson, 2011)</a>. Once this is done users can conduct data point counts to determine the number of points for each hexagon <a href="http://indiemaps.com/blog/2011/10/hexbins/">(Johnson, 2011)</a>. The bins are then symbolized differently to show meaningful patterns in the data.</p>
 <p>So how can we use hexbinning to solve our antisocial behaviour days of action task? Well let’s say we split Manchester city centre into hexagons, and count the number of antisocial behaviour instances in these. We can then identify the top hexagons, and locate our booths somewhere within these.</p>
 <p>First make sure you have the appropriate packages loaded:</p>
-<div class="sourceCode" id="cb730"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb730-1" title="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb730-2" title="2"><span class="kw">library</span>(ggmap)</a>
-<a class="sourceLine" id="cb730-3" title="3"><span class="kw">library</span>(hexbin)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(ggmap)
+<span class="kw">library</span>(hexbin)</code></pre>
 <p>Also let’s get some data. You could go and get this data yourself from police.uk, we’ve been through all the steps for downloading data from there a few times now. But for now, I have a tidied set of data ready for you. This data is one year’s worth of antisocial behaviour from the <a href="data.police.uk">police.uk</a> data, from May 2016 to May 2017, for the borough of Manchester. You can download from the dropbox link here:</p>
-<div class="sourceCode" id="cb731"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb731-1" title="1">manchester_asb &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester_asb.csv?dl=1&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">manchester_asb &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester_asb.csv?dl=1&quot;</span>)</code></pre>
 <p>As a first step, we can plot asb in the borough of Manchester using simple ggplot! Remember the data visualisation session from weeks ago? We discussed how ggplot is such a great tool for building visualisations, because you can apply whatever geometry best suits your data. So for us to just have a look at the hexbinned version of our point data of antisocial behaviour, we can use the <code>stat_binhex()</code> function. We can also recreate the thematic map element, as we can use the frequency of points in each hex to shade each hexbin from white (least number of incidents) to red (most nuber of incidents).</p>
 <p>So let’s have a go:</p>
-<div class="sourceCode" id="cb732"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb732-1" title="1"><span class="kw">ggplot</span>(manchester_asb, <span class="kw">aes</span>(Longitude, Latitude)) <span class="op">+</span><span class="st">                        </span><span class="co">#define data and variables for x and y axes</span></a>
-<a class="sourceLine" id="cb732-2" title="2"><span class="st">  </span><span class="kw">stat_binhex</span>() <span class="op">+</span><span class="st">                                                         </span><span class="co">#add binhex layer (hexbin)</span></a>
-<a class="sourceLine" id="cb732-3" title="3"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(manchester_asb, <span class="kw">aes</span>(Longitude, Latitude)) <span class="op">+</span><span class="st">                        </span><span class="co">#define data and variables for x and y axes</span>
+<span class="st">  </span><span class="kw">stat_binhex</span>() <span class="op">+</span><span class="st">                                                         </span><span class="co">#add binhex layer (hexbin)</span>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents</span></code></pre>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Neat, but doesn’t quite tell us <em>where</em> that really dark hexbon actually is. So it would be much better if we could do this with a basemap as the backrgound, rather than our grey ggplot theme.</p>
 <p>Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap:</p>
 <p><strong><em>COORDS ARE WRONG IDK WHY</em></strong></p>
-<div class="sourceCode" id="cb733"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb733-1" title="1"><span class="kw">library</span>(ggspatial) <span class="co">#load ggspatial package for background map tiles</span></a>
-<a class="sourceLine" id="cb733-2" title="2"></a>
-<a class="sourceLine" id="cb733-3" title="3"><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb733-4" title="4"><span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb733-5" title="5"><span class="st">  </span><span class="kw">stat_binhex</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st">                                                         </span><span class="co">#add binhex layer (hexbin)</span></a>
-<a class="sourceLine" id="cb733-6" title="6"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents </span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggspatial) <span class="co">#load ggspatial package for background map tiles</span>
+
+<span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_binhex</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st">                                                         </span><span class="co">#add binhex layer (hexbin)</span>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents </span></code></pre>
 <pre><code>## Zoom: 18</code></pre>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Now this should give you some more context! Woo!</p>
@@ -637,38 +638,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ol style="list-style-type: lower-alpha">
 <li>rectangular binning:</li>
 </ol>
-<div class="sourceCode" id="cb735"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb735-1" title="1"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb735-2" title="2"><span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb735-3" title="3"><span class="st">  </span><span class="kw">stat_bin2d</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, </a>
-<a class="sourceLine" id="cb735-4" title="4">                                         <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb735-5" title="5"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), </a>
-<a class="sourceLine" id="cb735-6" title="6">                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_bin2d</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, 
+                                         <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), 
+                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </code></pre>
 <pre><code>## Zoom: 18</code></pre>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>hexagonal binning:</li>
 </ol>
-<div class="sourceCode" id="cb737"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb737-1" title="1"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb737-2" title="2"><span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb737-3" title="3"><span class="st">  </span><span class="kw">stat_binhex</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, </a>
-<a class="sourceLine" id="cb737-4" title="4">                                         <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb737-5" title="5"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), </a>
-<a class="sourceLine" id="cb737-6" title="6">                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_binhex</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, 
+                                         <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), 
+                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)</code></pre>
 <pre><code>## Zoom: 18</code></pre>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>a simple heatmap:</li>
 </ol>
-<div class="sourceCode" id="cb739"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb739-1" title="1"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb739-2" title="2"><span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb739-3" title="3"><span class="st">  </span><span class="kw">stat_density2d</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, </a>
-<a class="sourceLine" id="cb739-4" title="4">                     <span class="dt">y =</span> Latitude, </a>
-<a class="sourceLine" id="cb739-5" title="5">                     <span class="dt">fill =</span> ..level.., <span class="co"># value corresponding to discretized density estimates </span></a>
-<a class="sourceLine" id="cb739-6" title="6">                     <span class="dt">alpha =</span> ..level..), </a>
-<a class="sourceLine" id="cb739-7" title="7">                 <span class="dt">geom =</span> <span class="st">&quot;polygon&quot;</span>) <span class="op">+</span><span class="st">  </span><span class="co"># creates the bands of differenc colors</span></a>
-<a class="sourceLine" id="cb739-8" title="8"><span class="st">  </span><span class="co">## Configure the colors, transparency and panel</span></a>
-<a class="sourceLine" id="cb739-9" title="9"><span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), </a>
-<a class="sourceLine" id="cb739-10" title="10">                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_density2d</span>(<span class="dt">data =</span> manchester_asb, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, 
+                     <span class="dt">y =</span> Latitude, 
+                     <span class="dt">fill =</span> ..level.., <span class="co"># value corresponding to discretized density estimates </span>
+                     <span class="dt">alpha =</span> ..level..), 
+                 <span class="dt">geom =</span> <span class="st">&quot;polygon&quot;</span>) <span class="op">+</span><span class="st">  </span><span class="co"># creates the bands of differenc colors</span>
+<span class="st">  </span><span class="co">## Configure the colors, transparency and panel</span>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), 
+                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </code></pre>
 <pre><code>## Zoom: 18</code></pre>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 </div>
@@ -807,7 +808,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -819,6 +820,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/rstudio/bookdown-demo/edit/master/10-week10.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["CrimeMapping.pdf", "CrimeMapping.epub"],
 "toc": {

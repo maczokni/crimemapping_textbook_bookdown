@@ -5,11 +5,11 @@
 
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Crime Mapping in R</title>
+  <title>Chapter 8 # Week 8 : Regression analysis (a refresher) | Crime Mapping in R</title>
   <meta name="description" content="Worksheets for labs of Crime Mapping course">
-  <meta name="generator" content="bookdown 0.7 and GitBook 2.6.7">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
 
-  <meta property="og:title" content="Crime Mapping in R" />
+  <meta property="og:title" content="Chapter 8 # Week 8 : Regression analysis (a refresher) | Crime Mapping in R" />
   <meta property="og:type" content="book" />
   
   
@@ -17,7 +17,7 @@
   <meta name="github-repo" content="rstudio/bookdown-demo" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Crime Mapping in R" />
+  <meta name="twitter:title" content="Chapter 8 # Week 8 : Regression analysis (a refresher) | Crime Mapping in R" />
   
   <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
   
@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-02-05">
+<meta name="date" content="2019-02-07">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -36,6 +36,7 @@
 <link rel="next" href="week-9-spatial-regression-models.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
@@ -335,13 +336,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this session we are going to cover regression analysis or, rather, we are beginning to talk about regression modelling. This form of analysis has been one the main technique of data analysis in the social sciences for many years and it belongs to a family of techniques called generalised linear models. Regression is a flexible model that allows you to “explain” or “predict” a given outcome (Y), variously called your outcome, response or dependent variable, as a function of a number of what is variously called inputs, features or independent, explanatory, or predictive variables (X1, X2, X3, etc.). Following Gelman and Hill (2007), I will try to stick for the most part to the terms outputs and inputs.</p>
 <p>Today we will cover something that is called linear regression or ordinary least squares regression (OLS), which is a technique that you use when you are interested in explaining variation in an interval level variable. First we will see how you can use regression analysis when you only have one input and then we will move to situations when we have several explanatory variables or inputs. For those of you already familiar with regression analysis this session can be a it of a refresher, for those that aren’t a bit of an introduction. Today we will cover regression models more generally and in the next lab we will discuss adaptations to the regression model that are necessary when you have spatial autocorrelation.</p>
 <p>We will use a dataset that includes information about homicide in the US, as well as information in a number of sociodemographic variables that are often thought of as associated with the geographical distribution of homicides.</p>
-<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb580-1" title="1"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span></a>
-<a class="sourceLine" id="cb580-2" title="2">urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span></a>
-<a class="sourceLine" id="cb580-3" title="3"><span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)</a>
-<a class="sourceLine" id="cb580-4" title="4"><span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span></a>
-<a class="sourceLine" id="cb580-5" title="5"><span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span>
+urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span>
+<span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)
+<span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span>
+<span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</code></pre>
 <p>There is quite a few files and folders here. We don’t need all of it. If you look inside the newly created folder you will find two subdirecoties MACOSX and ncovr. Look in the latter. You will see a pdf file called codebook.pdf. Read this file. It provides information on the variables and data that is included here. We are now going to read the main data file into R. This is the NAT.csv file.</p>
-<div class="sourceCode" id="cb581"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb581-1" title="1">ncovr &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;ncovr/ncovr/NAT.csv&#39;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;ncovr/ncovr/NAT.csv&#39;</span>)</code></pre>
 <p>The dataset contains information about 3085 counties in the US and if you view it you will see it has information about several decades, the 60s, 70s, 80s, and 90s. The number at the end of the variable names denotes the relevant decade and you will see that for each decade we have the same variables.</p>
 <p>The purpose of this and next session is to help you choose a model to represent the relationship between homicide and various predictors. You can think of a model as a map. A map aims to represent a given reality, but as you may have already discovered there are many ways of presenting the same information through a map. As an analyst you decide what the most appropriate representation for your needs is. Each representation you choose will involve an element of distortion. Maps (and models) are not exact representations of the real word, they are simply good approximations that may serve well a particular functional need. Look at the map of the metro in London that we reproduce below:</p>
 <div class="figure">
@@ -351,48 +352,48 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>London doesn’t quite look like this. Yet, if you want to use the Metro system, this map will be extremely helpful to you. It serves a need in a good way. Same happens with models. They may not be terribly good reflections of the world, but may give us approximations that allows us to develop useful insights.</p>
 <p>Choosing a good model is like choosing a good way for displaying quantitative information in a map. Decisions, decisions, decisions. There are many parameters and options one can choose from. This can be overwhelming, particularly as you are learning how to model and map phenomena. How to make good decisions is something that you learn on earnest by practice, practice, practice. Nobody expects you to get the maps you are doing as you are learning, and the models you are developing as you are learning spot on. So please do not stress out about this. All we can do here is to learn some basic principles and start getting some practice, which you will be able to further develop in aprofessional context or in further training.</p>
 <p>The first step in any analysis is to develop some familiarity with the data you are going to be working with. We have been here before. Read the codebook. Run summary statistics for your quantitative variables, frequency distributions for your categorical variables, and visualise your variables. This will help you to detect any anomalies and give you a sense for what you have. If, for example, you run a histogram for the homicide rate for 1990 (HR90), you will get a sense of the distribution form –which of course is skewed.</p>
-<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb582-1" title="1"><span class="kw">library</span>(ggplot2)</a>
-<a class="sourceLine" id="cb582-2" title="2"><span class="kw">qplot</span>(<span class="dt">x =</span> HR90, <span class="dt">data =</span> ncovr)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">qplot</span>(<span class="dt">x =</span> HR90, <span class="dt">data =</span> ncovr)</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>Once one has gone through the process of exploring the data in this way for all the variables you want to work, you can start exploring bivariate associations with your dependent, response or outcome variable. So, as an illustration, you could explore the association with resource deprivation (RD90), a measure of the level of concentrated disadvantge or social exclusion in an area, via a scatterplot:</p>
-<div class="sourceCode" id="cb584"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb584-1" title="1"><span class="kw">ggplot</span>(ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> RD90, <span class="dt">y =</span> HR90)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb584-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>) </a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> RD90, <span class="dt">y =</span> HR90)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>) </code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <p>What do you think when looking at this scatterplot? Is there a relationship between the variables? Does it look as if individuals that have a high score on the X axis also have a high score on the Y axis? Or viceversa?</p>
 </div>
 <div id="motivating-regression" class="section level2">
 <h2><span class="header-section-number">8.2</span> Motivating regression</h2>
 <p>Now, imagine that we play a game. Imagine I have all the respondents waiting in a room, and I randomly call one of them to the stage. You’re sitting in the audience, and you have to guess the level of fear (’tcviolent’) for that respondent. Imagine that I pay £150 to the student that gets the closest to the right value. What would you guess if you only have one guess and you knew (as we do) how fear of violent crime is distributed?</p>
-<div class="sourceCode" id="cb585"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb585-1" title="1"><span class="kw">ggplot</span>(ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> HR90)) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb585-2" title="2"><span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb585-3" title="3"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">4.377</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb585-4" title="4"><span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">6.183</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb585-5" title="5"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Density estimate, mean and median of homicide rate 1990&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> HR90)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_density</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">4.377</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">color=</span><span class="st">&quot;red&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_vline</span>(<span class="dt">xintercept =</span> <span class="fl">6.183</span>, <span class="dt">linetype =</span> <span class="st">&quot;dashed&quot;</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">color=</span><span class="st">&quot;blue&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Density estimate, mean and median of homicide rate 1990&quot;</span>)</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<div class="sourceCode" id="cb586"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb586-1" title="1"><span class="kw">summary</span>(ncovr<span class="op">$</span>HR90)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr<span class="op">$</span>HR90)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   1.334   4.377   6.183   8.938  71.378</code></pre>
 <p>If I only had one shot, you could go for the median, in red, (given the skew) but the mean, in blue, perhaps would be your second best. Most of the areas here have values clustered around those values, which is another way of saying they are bound to be not too far from them.</p>
 <p>Imagine, however, that now when someone is called to the stage, you are told the level of resource deprivation in the county - so the value of the <code>RD90</code> variable for the individual that has been selected (for example 4). Imagine as well that you have the scatterplot that we produced earlier in front of you. Would you still go for the value of “4.377” as your best guess for the value of the selected county?</p>
 <p>I certainly would not go with the overall mean or median as my prediction anymore. If somebody said to me, the value ‘RD90’ for the selected respondent is 4, I would be more inclined to guess the mean value for the level of homicide with that level of resource deprivation (the conditional mean), rather than the overall mean across all the counties. Wouldn’t you?</p>
 <p>If we plot the conditional means we can see that the mean of homicide rate for counties that report a value of 4 in <code>RD90</code> is around 22. So you may be better off guessing that.</p>
-<div class="sourceCode" id="cb588"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb588-1" title="1"><span class="kw">library</span>(grid)</a>
-<a class="sourceLine" id="cb588-2" title="2"><span class="kw">ggplot</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb588-3" title="3"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> RD90, <span class="dt">y =</span> HR90), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb588-4" title="4"><span class="kw">geom_line</span>(<span class="dt">data=</span>ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">round</span>(RD90<span class="op">/</span><span class="fl">0.12</span>)<span class="op">*</span><span class="fl">0.12</span>, <span class="dt">y =</span> HR90), </a>
-<a class="sourceLine" id="cb588-5" title="5">          <span class="dt">stat=</span><span class="st">&#39;summary&#39;</span>,</a>
-<a class="sourceLine" id="cb588-6" title="6">          <span class="dt">fun.y=</span>mean,</a>
-<a class="sourceLine" id="cb588-7" title="7">          <span class="dt">color=</span><span class="st">&quot;red&quot;</span>,</a>
-<a class="sourceLine" id="cb588-8" title="8">          <span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb588-9" title="9"><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;segment&quot;</span>, <span class="dt">x=</span><span class="dv">3</span>, <span class="dt">xend =</span> <span class="dv">4</span>, <span class="dt">y =</span> <span class="dv">25</span>, <span class="dt">yend=</span> <span class="dv">22</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>()) <span class="op">+</span></a>
-<a class="sourceLine" id="cb588-10" title="10"><span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="dv">3</span>, <span class="dt">y =</span> <span class="dv">29</span>, <span class="dt">label =</span> <span class="st">&quot;Pick this one!&quot;</span>, <span class="dt">size =</span><span class="dv">7</span>, <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(grid)
+<span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> RD90, <span class="dt">y =</span> HR90), <span class="dt">alpha=</span>.<span class="dv">2</span>) <span class="op">+</span>
+<span class="kw">geom_line</span>(<span class="dt">data=</span>ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">round</span>(RD90<span class="op">/</span><span class="fl">0.12</span>)<span class="op">*</span><span class="fl">0.12</span>, <span class="dt">y =</span> HR90), 
+          <span class="dt">stat=</span><span class="st">&#39;summary&#39;</span>,
+          <span class="dt">fun.y=</span>mean,
+          <span class="dt">color=</span><span class="st">&quot;red&quot;</span>,
+          <span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;segment&quot;</span>, <span class="dt">x=</span><span class="dv">3</span>, <span class="dt">xend =</span> <span class="dv">4</span>, <span class="dt">y =</span> <span class="dv">25</span>, <span class="dt">yend=</span> <span class="dv">22</span>, <span class="dt">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="dt">size =</span> <span class="dv">2</span>, <span class="dt">arrow =</span> <span class="kw">arrow</span>()) <span class="op">+</span>
+<span class="st">  </span><span class="kw">annotate</span>(<span class="st">&quot;text&quot;</span>, <span class="dt">x =</span> <span class="dv">3</span>, <span class="dt">y =</span> <span class="dv">29</span>, <span class="dt">label =</span> <span class="st">&quot;Pick this one!&quot;</span>, <span class="dt">size =</span><span class="dv">7</span>, <span class="dt">colour =</span> <span class="st">&quot;blue&quot;</span>)</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Linear regression tackles this problem using a slightly different approach. Rather than focusing on the conditional mean (smoothed or not), it draws a straight line that tries to capture the trend in the data. If we focus in the region of the scatterplot that are less sparse we see that this is an upward trend, suggesting that as resource deprivation increases so does the homicide rate.</p>
 <p>Simple linear regression draws a single straight line of predicted values as the model for the data. This line would be a <strong>model</strong>, a <em>simplification</em> of the real world like any other model (e.g., a toy pistol, an architectural drawing, a subway map), that assumes that there is approximately a linear relationship between X and Y. Let’s draw the regression line:</p>
-<div class="sourceCode" id="cb589"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb589-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data =</span> ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> RD90, <span class="dt">y =</span> HR90)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb589-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb589-3" title="3"><span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="co">#This ask for a geom with the regression line, method=lm asks for the linear regression line, se=FALSE ask for just the line to be printed, the other arguments specify the color and thickness of the line</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data =</span> ncovr, <span class="kw">aes</span>(<span class="dt">x =</span> RD90, <span class="dt">y =</span> HR90)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_smooth</span>(<span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="dt">se =</span> <span class="ot">FALSE</span>, <span class="dt">color =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">size =</span> <span class="dv">1</span>) <span class="co">#This ask for a geom with the regression line, method=lm asks for the linear regression line, se=FALSE ask for just the line to be printed, the other arguments specify the color and thickness of the line</span></code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>What that line is doing is giving you guesses (predictions) for the values of homicide based in the information that we have about the level of resource deprivation. It gives you one possible guess for the value of homicide for every possible value of resource deprivation and links them all together in a straight line.</p>
 <p>Another way of thinking about this line is as the best possible summary of the cloud of points that are represented in the scatterplot (if we can assume that a straight line would do a good job doing this). If I were to tell you to draw a straight line that best represents this pattern of points the regression line would be the one that best does it (if certain assumptions are met).</p>
@@ -412,11 +413,11 @@ In statistics we use a slightly different notation, although the equation remain
 y = b0 + b1x</p>
 <p>We need the origin of the line (b0) and the slope of the line (b1). How does R get the intercept and the slope for the green line? How does R know where to draw this line? We need to estimate these <strong>parameters</strong> (or <strong>coefficients</strong>) from the data. How? We don’t have the time to get into these more mathematical details now. You should study the <a href="http://link.springer.com/chapter/10.1007/978-1-4614-7138-7_3">required reading</a> to understand this (<em>required means it is required, it is not optional</em>)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. For now, suffice to say that for linear regression modes like the one we cover here, when drawing the line, R tries to minimise the distance from every point in the scatterplot to the regression line using a method called <strong>least squares estimation</strong>.</p>
 <p>In order to fit the model we use the <code>lm()</code> function using the formula specification <code>(Y ~ X)</code>. Typically you want to store your regression model in a “variable”, let’s call it <code>fit_1</code>:</p>
-<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb590-1" title="1">fit_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90, <span class="dt">data =</span> ncovr)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90, <span class="dt">data =</span> ncovr)</code></pre>
 <p>You will see in your R Studio global environment space that there is a new object called <code>fit_1</code> with 12 elements on it. We can get a sense for what this object is and includes using the functions we introduced in previous weeks:</p>
-<div class="sourceCode" id="cb591"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb591-1" title="1"><span class="kw">class</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fit_<span class="dv">1</span>)</code></pre>
 <pre><code>## [1] &quot;lm&quot;</code></pre>
-<div class="sourceCode" id="cb593"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb593-1" title="1"><span class="kw">attributes</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attributes</span>(fit_<span class="dv">1</span>)</code></pre>
 <pre><code>## $names
 ##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
 ##  [5] &quot;fitted.values&quot; &quot;assign&quot;        &quot;qr&quot;            &quot;df.residual&quot;  
@@ -425,7 +426,7 @@ y = b0 + b1x</p>
 ## $class
 ## [1] &quot;lm&quot;</code></pre>
 <p>R is telling us that this is an object of class <code>lm</code> and that it includes a number of attributes. One of the beauties of R is that you are producing all the results from running the model, putting them in an object, and then giving you the opportunity for using them later on. If you want to simply see the basic results from running the model you can use the <code>summary()</code> function.</p>
-<div class="sourceCode" id="cb595"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb595-1" title="1"><span class="kw">summary</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit_<span class="dv">1</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR90 ~ RD90, data = ncovr)
@@ -445,14 +446,14 @@ y = b0 + b1x</p>
 ## Multiple R-squared:  0.3224, Adjusted R-squared:  0.3222 
 ## F-statistic:  1467 on 1 and 3083 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Or if you prefer more parsimonious presentation you could use the <code>display()</code> function of the <code>arm</code> package:</p>
-<div class="sourceCode" id="cb597"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb597-1" title="1"><span class="kw">library</span>(arm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(arm)</code></pre>
 <pre><code>## Loading required package: MASS</code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre><code>## Loading required package: lme4</code></pre>
 <pre><code>## 
 ## arm (Version 1.10-1, built: 2018-4-12)</code></pre>
 <pre><code>## Working directory is /Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown</code></pre>
-<div class="sourceCode" id="cb603"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb603-1" title="1"><span class="kw">display</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">display</span>(fit_<span class="dv">1</span>)</code></pre>
 <pre><code>## lm(formula = HR90 ~ RD90, data = ncovr)
 ##             coef.est coef.se
 ## (Intercept) 6.18     0.10   
@@ -460,9 +461,9 @@ y = b0 + b1x</p>
 ## ---
 ## n = 3085, k = 2
 ## residual sd = 5.47, R-Squared = 0.32</code></pre>
-<div class="sourceCode" id="cb605"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb605-1" title="1"><span class="kw">detach</span>(package<span class="op">:</span>arm) <span class="co">#This will unload the package</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">detach</span>(package<span class="op">:</span>arm) <span class="co">#This will unload the package</span></code></pre>
 <p>For now I just want you to focus on the numbers in the “Estimate” (or coef.est) column. The value of 6.18 estimated for the <strong>intercept</strong> is the “predicted” value for Y when X equals zero. This is the predicted value of the fear of crime score <em>when resource deprivation has a value of zero</em>.</p>
-<div class="sourceCode" id="cb606"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb606-1" title="1"><span class="kw">summary</span>(ncovr<span class="op">$</span>RD90)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr<span class="op">$</span>RD90)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ## -2.4103 -0.6667 -0.2016  0.0000  0.4393  5.5831</code></pre>
 <p>RD90 is a variable that has been centered in ). It has been created by the researchers in such a way that is has a mean value of 0. Since we only have one explanatory variable in the model this corresponds to the mean of the homicide rate, 6.18. In many other contexts the intercept has less of a meaning.</p>
@@ -472,7 +473,7 @@ y = b0 + b1x</p>
 y = 6.18 + 3.77 (1)<br />
 y = 9.95</p>
 <p>Or if you don’t want to do the calculation yourself, you can use the <code>predict</code> function (differences are due to rounding error):</p>
-<div class="sourceCode" id="cb608"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb608-1" title="1"><span class="kw">predict</span>(fit_<span class="dv">1</span>, <span class="kw">data.frame</span>(<span class="dt">RD90 =</span> <span class="kw">c</span>(<span class="dv">1</span>))) <span class="co">#First you name your stored model and then you identify the new data (which has to be in a data frame format and with a variable name matching the one in the original data set)</span></a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">predict</span>(fit_<span class="dv">1</span>, <span class="kw">data.frame</span>(<span class="dt">RD90 =</span> <span class="kw">c</span>(<span class="dv">1</span>))) <span class="co">#First you name your stored model and then you identify the new data (which has to be in a data frame format and with a variable name matching the one in the original data set)</span></code></pre>
 <pre><code>##        1 
 ## 9.954065</code></pre>
 <p>This is the expected value of Y, homicide rate, when X, resource deprivation is 1 <strong>according to our model</strong> (according to our simplification of the real world, our simplification of the whole cloud of points into just one straight line). Look back at the scatterplot we produced earlier with the red line. Does it look as if the green line when X is 1 corresponds to a value of Y of 9.95?</p>
@@ -501,8 +502,8 @@ y = b0 + b1x + residuals</p>
 </div>
 <p>All this formula is doing is taking a ratio of the explained variation (the squared differences between the regression line and the mean of Y for each observation) by the total variation (the squared differences of the observed values of Y for each observation from the mean of Y). This gives us a measure of the <strong>percentage of variation in Y that is “explained” by X</strong>. If this sounds familiar is because it is a measure similar to eta squared in ANOVA.</p>
 <p>As then we can take this value as a measure of the strength of our model. If you look at the R output you will see that the R2 for our model was .32 (look at the multiple R square value in the output) . We can say that our model explains 32% of the variance in the fear of homicide. when doing regression, you will often find that regression models with aggregate data such as county level data will give you better results than when dealing with individuals. It is much harder understanding individual variation than county level variation.</p>
-<div class="sourceCode" id="cb610"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb610-1" title="1"><span class="co">#As an aside, and to continue emphasising your appreciation of the object oriented nature of R, when we run the summary() function we are simply generating a list object of the class summary.lm.</span></a>
-<a class="sourceLine" id="cb610-2" title="2"><span class="kw">attributes</span>(<span class="kw">summary</span>(fit_<span class="dv">1</span>))</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#As an aside, and to continue emphasising your appreciation of the object oriented nature of R, when we run the summary() function we are simply generating a list object of the class summary.lm.</span>
+<span class="kw">attributes</span>(<span class="kw">summary</span>(fit_<span class="dv">1</span>))</code></pre>
 <pre><code>## $names
 ##  [1] &quot;call&quot;          &quot;terms&quot;         &quot;residuals&quot;     &quot;coefficients&quot; 
 ##  [5] &quot;aliased&quot;       &quot;sigma&quot;         &quot;df&quot;            &quot;r.squared&quot;    
@@ -510,8 +511,8 @@ y = b0 + b1x + residuals</p>
 ## 
 ## $class
 ## [1] &quot;summary.lm&quot;</code></pre>
-<div class="sourceCode" id="cb612"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb612-1" title="1"><span class="co">#This means that we can access its elements if so we wish. So, for example, to obtain just the R Squared, we could ask for:</span></a>
-<a class="sourceLine" id="cb612-2" title="2"><span class="kw">summary</span>(fit_<span class="dv">1</span>)<span class="op">$</span>r.squared</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#This means that we can access its elements if so we wish. So, for example, to obtain just the R Squared, we could ask for:</span>
+<span class="kw">summary</span>(fit_<span class="dv">1</span>)<span class="op">$</span>r.squared</code></pre>
 <pre><code>## [1] 0.3224335</code></pre>
 <p>Knowing how to interpret this is important. R^2 ranges from 0 to 1. The greater it is the more powerful our model is, the more explaining we are doing, the better we are able to account for variation in our outcome Y with our input. In other words, the stronger the relationship is between Y and X. As with all the other measures of effect size interpretation is a matter of judgement. You are advised to see what other researchers report in relation to the particular outcome that you may be exploring.</p>
 <p>Weisburd and Britt (2009: 437) suggest that in criminal justice you rarely see values for R^2 greater than .40. Thus, if your R^2 is larger than .40, you can assume you have a powerful model. When, on the other hand, R^2 is lower than .15 or .2 the model is likely to be viewed as relatively weak. Our observed r squared here is rather poor. There is considerably room for improvement if we want to develop a better model to explain fear of violent crime<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. In any case, many people would argue that R^2 is a bit overrated. You need to be aware of what it measures and the context in which you are using it. Read <a href="http://blog.minitab.com/blog/adventures-in-statistics/how-high-should-r-squared-be-in-regression-analysis">here</a> for some additional detail.</p>
@@ -531,13 +532,13 @@ y = b0 + b1x + residuals</p>
 </div>
 <p>The dark-blue line marks the best fit. The two dark-pink lines mark the limits of the confidence interval. The light-pink lines show the sampling distributions around each of the confidence-interval limits (the many regression lines that would result from repeated sampling); notice that the best-fit line falls at the extreme of each sampling distribution.</p>
 <p>You can also then perform standard hypothesis test on the coefficients. As we saw before when summarising the model, R will compute the standard errors and a t test for each of the coefficients.</p>
-<div class="sourceCode" id="cb614"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb614-1" title="1"><span class="kw">summary</span>(fit_<span class="dv">1</span>)<span class="op">$</span>coefficients</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit_<span class="dv">1</span>)<span class="op">$</span>coefficients</code></pre>
 <pre><code>##             Estimate Std. Error  t value      Pr(&gt;|t|)
 ## (Intercept) 6.182860 0.09844166 62.80735  0.000000e+00
 ## RD90        3.771206 0.09845761 38.30283 6.535551e-263</code></pre>
 <p>In our example, we can see that the coefficient for our predictor here is statistically significant<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
 <p>We can also obtain confidence intervals for the estimated coefficients using the <code>confint()</code> function:</p>
-<div class="sourceCode" id="cb616"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb616-1" title="1"><span class="kw">confint</span>(fit_<span class="dv">1</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confint</span>(fit_<span class="dv">1</span>)</code></pre>
 <pre><code>##                2.5 %   97.5 %
 ## (Intercept) 5.989842 6.375877
 ## RD90        3.578156 3.964255</code></pre>
@@ -546,17 +547,17 @@ y = b0 + b1x + residuals</p>
 <h2><span class="header-section-number">8.6</span> Fitting regression with categorical predictors</h2>
 <p>So far we have explained regression using a numeric input. It turns out we can also use regression with categorical explanatory variables. It is quite straightforward to run it.</p>
 <p>There is only one categorical explanatory variable in this dataset, a binary indicator that indicates whether the county is in a Southern State or not. We can also explore this relationship using regression and a regression line. This is how you would express the model:</p>
-<div class="sourceCode" id="cb618"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb618-1" title="1"><span class="co">#We use the as.factor function to tell R that SOUTH is a categorical variable</span></a>
-<a class="sourceLine" id="cb618-2" title="2">fit_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(SOUTH), <span class="dt">data=</span>ncovr)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We use the as.factor function to tell R that SOUTH is a categorical variable</span>
+fit_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span><span class="kw">as.factor</span>(SOUTH), <span class="dt">data=</span>ncovr)</code></pre>
 <p>Notice that there is nothing different in how we ask for the model. And see below the regression line:</p>
-<div class="sourceCode" id="cb619"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb619-1" title="1"><span class="kw">ggplot</span>(<span class="dt">data=</span>ncovr, <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.factor</span>(SOUTH), <span class="dt">y=</span>HR90)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb619-2" title="2"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>, <span class="dt">position=</span><span class="st">&quot;jitter&quot;</span>, <span class="dt">color=</span><span class="st">&quot;orange&quot;</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb619-3" title="3"><span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> fit_<span class="dv">2</span><span class="op">$</span>coefficients[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb619-4" title="4">    <span class="dt">slope =</span> fit_<span class="dv">2</span><span class="op">$</span>coefficients[<span class="dv">2</span>], <span class="dt">color=</span><span class="st">&quot;red&quot;</span>, <span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb619-5" title="5"><span class="st">  </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(<span class="dt">data=</span>ncovr, <span class="kw">aes</span>(<span class="dt">x=</span><span class="kw">as.factor</span>(SOUTH), <span class="dt">y=</span>HR90)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">alpha=</span>.<span class="dv">2</span>, <span class="dt">position=</span><span class="st">&quot;jitter&quot;</span>, <span class="dt">color=</span><span class="st">&quot;orange&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_abline</span>(<span class="dt">intercept =</span> fit_<span class="dv">2</span><span class="op">$</span>coefficients[<span class="dv">1</span>],
+    <span class="dt">slope =</span> fit_<span class="dv">2</span><span class="op">$</span>coefficients[<span class="dv">2</span>], <span class="dt">color=</span><span class="st">&quot;red&quot;</span>, <span class="dt">size=</span><span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Let’s have a look at the results:</p>
-<div class="sourceCode" id="cb620"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb620-1" title="1"><span class="kw">summary</span>(fit_<span class="dv">2</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit_<span class="dv">2</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR90 ~ as.factor(SOUTH), data = ncovr)
@@ -578,9 +579,9 @@ y = b0 + b1x + residuals</p>
 <p>As you will see the output does not look too different. But notice that in the print out you see how the row with the coefficient and other values for our input variable <code>SOUTH</code> we see that R is printing <code>1</code>. What does this mean?</p>
 <p>It turns out that a linear regression model with just one dichotomous categorical predictor is just the equivalent of a t test. When you only have one predictor the value of the intercept is the mean value of the <strong>reference category</strong> and the coefficient for the slope tells you how much higher (if it is positive) or how much lower (if it is negative) is the mean value for the other category in your factor.</p>
 <p>The reference category is the one for which R does not print the <em>level</em> next to the name of the variable for which it gives you the regression coefficient. Here we see that the named level is “1”. That’s telling you that the reference category here is “0”. If you look at the codebook you will see that 1 means the county is in a Southern state. Therefore the Y intercept in this case is the mean value of fear of violent crime for the northern counties, whereas the coefficient for the slope is telling you how much higher (since it is a positive value) the mean value is for the southern counties. Don’t believe me?</p>
-<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb622-1" title="1"><span class="kw">mean</span>(ncovr<span class="op">$</span>HR90[ncovr<span class="op">$</span>SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(ncovr<span class="op">$</span>HR90[ncovr<span class="op">$</span>SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</code></pre>
 <pre><code>## [1] 3.341614</code></pre>
-<div class="sourceCode" id="cb624"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb624-1" title="1"><span class="kw">mean</span>(ncovr<span class="op">$</span>HR90[ncovr<span class="op">$</span>SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">1</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(ncovr<span class="op">$</span>HR90[ncovr<span class="op">$</span>SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(ncovr<span class="op">$</span>HR90[ncovr<span class="op">$</span>SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">1</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="op">-</span><span class="st"> </span><span class="kw">mean</span>(ncovr<span class="op">$</span>HR90[ncovr<span class="op">$</span>SOUTH <span class="op">==</span><span class="st"> </span><span class="dv">0</span>], <span class="dt">na.rm=</span><span class="ot">TRUE</span>)</code></pre>
 <pre><code>## [1] 6.207679</code></pre>
 <p>So, to reiterate, for a binary predictor, the coefficient is nothing else than the difference between the mean of the two levels in your factor variable, between the averages in your two groups.</p>
 <p>With categorical variables encoded as <strong>factors</strong> you always have a situation like this: a reference category and then as many additional coefficients as there are additional levels in your categorical variable. Each of these additional categories is included into the model as <strong>“dummy” variables</strong>. Here our categorical variable has two levels, thus we have only one dummy variable. There will always be one fewer dummy variable than the number of levels. The level with no dummy variable, northern counties in this example, is known as the <strong>reference category</strong> or the <strong>baseline</strong>.</p>
@@ -599,9 +600,9 @@ y = b0 + b1x + residuals</p>
 <div id="fitting-and-interpreting-a-multiple-regression-model" class="section level2">
 <h2><span class="header-section-number">8.8</span> Fitting and interpreting a multiple regression model</h2>
 <p>It could not be any easier to fit a multiple regression model. You simply modify the formula in the <code>lm()</code> function by adding terms for the additional inputs.</p>
-<div class="sourceCode" id="cb626"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb626-1" title="1">ncovr<span class="op">$</span>SOUTH_f &lt;-<span class="st"> </span><span class="kw">as.factor</span>(ncovr<span class="op">$</span>SOUTH)</a>
-<a class="sourceLine" id="cb626-2" title="2">fit_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f, <span class="dt">data=</span>ncovr)</a>
-<a class="sourceLine" id="cb626-3" title="3"><span class="kw">summary</span>(fit_<span class="dv">3</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr<span class="op">$</span>SOUTH_f &lt;-<span class="st"> </span><span class="kw">as.factor</span>(ncovr<span class="op">$</span>SOUTH)
+fit_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f, <span class="dt">data=</span>ncovr)
+<span class="kw">summary</span>(fit_<span class="dv">3</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR90 ~ RD90 + SOUTH_f, data = ncovr)
@@ -637,28 +638,29 @@ y = b0 + b1x + residuals</p>
 <h2><span class="header-section-number">8.9</span> Presenting your regression results.</h2>
 <p>Communicating your results in a clear manner is incredibly important. We have seen the tabular results produced by R. If you want to use them in a paper you may need to do some tidying up of those results. There are a number of packages (<code>textreg</code>, <code>stargazer</code>) that automatise that process. They take your <code>lm</code> objects and produce tables that you can put straight away in your reports or papers. One popular trend in presenting results is the <strong>coefficient plot</strong> as an alternative to the table of regression coefficients. There are various ways of producing coefficient plots with R for a variety of models. See <a href="http://www.carlislerainey.com/2012/06/30/coefficient-plots-in-r/">here</a> and <a href="http://www.carlislerainey.com/2012/07/03/an-improvement-to-coefficient-plots/">here</a>, for example.</p>
 <p>We are going to use instead the <code>plot_model()</code> function of the <code>sjPlot</code> package, that makes it easier to produce this sort of plots. You can find a more detailed tutorial about this function <a href="https://strengejacke.wordpress.com/2017/10/23/one-function-to-rule-them-all-visualization-of-regression-models-in-rstats-w-sjplot/">here</a>. See below for an example:</p>
-<div class="sourceCode" id="cb628"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb628-1" title="1"><span class="kw">library</span>(sjPlot)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sjPlot)</code></pre>
 <pre><code>## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
 ## TMB was built with Matrix version 1.2.15
 ## Current Matrix version is 1.2.14
 ## Please re-install &#39;TMB&#39; from source using install.packages(&#39;TMB&#39;, type = &#39;source&#39;) or ask CRAN for a binary version of &#39;TMB&#39; matching CRAN&#39;s &#39;Matrix&#39; package</code></pre>
+<pre><code>## Install package &quot;strengejacke&quot; from GitHub (`devtools::install_github(&quot;strengejacke/strengejacke&quot;)`) to load all sj-packages at once!</code></pre>
 <p>Let’s try with a more complex example:</p>
-<div class="sourceCode" id="cb630"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb630-1" title="1">fit_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f <span class="op">+</span><span class="st"> </span>DV90 <span class="op">+</span><span class="st"> </span>MA90 <span class="op">+</span><span class="st"> </span>PS90, <span class="dt">data=</span>ncovr)</a>
-<a class="sourceLine" id="cb630-2" title="2"><span class="kw">plot_model</span>(fit_<span class="dv">4</span>, <span class="dt">breakLabelsAt =</span> <span class="dv">30</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f <span class="op">+</span><span class="st"> </span>DV90 <span class="op">+</span><span class="st"> </span>MA90 <span class="op">+</span><span class="st"> </span>PS90, <span class="dt">data=</span>ncovr)
+<span class="kw">plot_model</span>(fit_<span class="dv">4</span>, <span class="dt">breakLabelsAt =</span> <span class="dv">30</span>)</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Visual display of the effects of the variables in the model are particularly helpful. The <code>effects</code> package allows us to produce plots to visualise these relationships (when adjusting for the other variables in the model). Here’s an example going back to our model fit_3 which contained SOUTH and RD90 predictor variables:</p>
-<div class="sourceCode" id="cb631"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb631-1" title="1"><span class="kw">library</span>(effects)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(effects)</code></pre>
 <pre><code>## Loading required package: carData</code></pre>
 <pre><code>## lattice theme set by effectsTheme()
 ## See ?effectsTheme for details.</code></pre>
-<div class="sourceCode" id="cb634"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb634-1" title="1"><span class="kw">plot</span>(<span class="kw">allEffects</span>(fit_<span class="dv">3</span>), <span class="dt">ask=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">allEffects</span>(fit_<span class="dv">3</span>), <span class="dt">ask=</span><span class="ot">FALSE</span>)</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>Notice that the line has a confidence interval drawn around it and that the predicted means for southern and northern counties (when controlling for <code>RD90</code>) also have a confidence interval.</p>
 </div>
 <div id="rescaling-input-variables-to-assist-interpretation" class="section level2">
 <h2><span class="header-section-number">8.10</span> Rescaling input variables to assist interpretation</h2>
 <p>The interpretation or regression coefficients is sensitive to the scale of measurement of the predictors. This means one cannot compare the magnitude of the coefficients to compare the relevance of variables to predict the response variable. Let’s look at the more recent model, how can we tell what predictors have a stronger effect?</p>
-<div class="sourceCode" id="cb635"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb635-1" title="1"><span class="kw">summary</span>(fit_<span class="dv">4</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(fit_<span class="dv">4</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR90 ~ RD90 + SOUTH_f + DV90 + MA90 + PS90, data = ncovr)
@@ -684,11 +686,11 @@ y = b0 + b1x + residuals</p>
 <p>We just cannot. One way of dealing with this is by rescaling the input variables. A common method involves subtracting the mean and dividing by the standard deviation of each numerical input. The coefficients in these models is the expected difference in the response variable, comparing units that differ by one standard deviation in the predictor while adjusting for other predictors in the model.</p>
 <p>Instead, <a href="http://www.stat.columbia.edu/~gelman/research/published/standardizing7.pdf">Gelman (2008)</a> has proposed dividing each numeric variables <em>by two times its standard deviation</em>, so that the generic comparison is with inputs equal to plus/minus one standard deviation. As Gelman explains the resulting coefficients are then comparable to untransformed binary predictors. The implementation of this approach in the <code>arm</code> package subtract the mean of each binary input while it subtract the mean and divide by two standard deviations for every numeric input.</p>
 <p>The way we would obtain these rescaled inputs uses the <code>standardize()</code> function of the <code>arm</code> package, that takes as an argument the name of the stored fit model.</p>
-<div class="sourceCode" id="cb637"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb637-1" title="1"><span class="kw">library</span>(arm)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(arm)</code></pre>
 <pre><code>## 
 ## arm (Version 1.10-1, built: 2018-4-12)</code></pre>
 <pre><code>## Working directory is /Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown</code></pre>
-<div class="sourceCode" id="cb640"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb640-1" title="1"><span class="kw">standardize</span>(fit_<span class="dv">4</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">standardize</span>(fit_<span class="dv">4</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR90 ~ z.RD90 + c.SOUTH_f + z.DV90 + z.MA90 + z.PS90, 
@@ -708,10 +710,10 @@ y = b0 + b1x + residuals</p>
 <p>One of the assumptions of the regression model is that the relationship between the response variable and your predictors is additive. That is, if you have two predictors <code>x1</code> and <code>x2</code>. Regression assumes that the effect of <code>x1</code> on <code>y</code> is the same at all levels of <code>x2</code>. If that is not the case, you are then violating one of the assumptions of regression. This is in fact one of the most important assumptions of regression, even if researchers often overlook it.</p>
 <p>One way of extending our model to accommodate for interaction effects is to add additional terms to our model, a third predictor <code>x3</code>, where <code>x3</code> is simply the product of multiplying <code>x1</code> by <code>x2</code>. Notice we keep a term for each of the <strong>main effects</strong> (the original predictors) as well as a new term for the interaction effect. “Analysts should include all constitutive terms when specifying multiplicative interaction models except in very rare circumstances” (Brambor et al., 2006: 66).</p>
 <p>How do we do this in R? One way is to use the following notation in the formula argument. Notice how we have added a third term <code>RD90:SOUTH_f</code>, which is asking R to test the conditional hypothesis that resource deprivation may have a different impact on homicide for soutern and northern counties.</p>
-<div class="sourceCode" id="cb642"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb642-1" title="1">fit_<span class="dv">5</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f <span class="op">+</span><span class="st"> </span>RD90<span class="op">:</span>SOUTH_f , <span class="dt">data=</span>ncovr)</a>
-<a class="sourceLine" id="cb642-2" title="2"><span class="co"># which is equivalent to: </span></a>
-<a class="sourceLine" id="cb642-3" title="3"><span class="co"># fit_5 &lt;- lm(HR90 ~ RD90 * SOUTH_f , data=ncovr)</span></a>
-<a class="sourceLine" id="cb642-4" title="4"><span class="kw">summary</span>(fit_<span class="dv">5</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">5</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f <span class="op">+</span><span class="st"> </span>RD90<span class="op">:</span>SOUTH_f , <span class="dt">data=</span>ncovr)
+<span class="co"># which is equivalent to: </span>
+<span class="co"># fit_5 &lt;- lm(HR90 ~ RD90 * SOUTH_f , data=ncovr)</span>
+<span class="kw">summary</span>(fit_<span class="dv">5</span>)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = HR90 ~ RD90 + SOUTH_f + RD90:SOUTH_f, data = ncovr)
@@ -734,7 +736,7 @@ y = b0 + b1x + residuals</p>
 ## F-statistic: 592.4 on 3 and 3081 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>You see here that essentially you have only two inputs (resource deprivation and south) but several regression coefficients. Gelman and Hill (2007) suggest reserving the term input for the variables encoding the information and to use the term predictor to refer to each of the terms in the model. So here we have two inputs and three predictors (one for SOUTH, another for resource deprivation, and a final one for the interaction effect).</p>
 <p>In this case the test for the interaction effect is significant, which suggests there is such an interaction. Let’s visualise the results with the <code>effects</code> package:</p>
-<div class="sourceCode" id="cb644"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb644-1" title="1"><span class="kw">plot</span>(<span class="kw">allEffects</span>(fit_<span class="dv">5</span>), <span class="dt">ask=</span><span class="ot">FALSE</span>)</a></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="kw">allEffects</span>(fit_<span class="dv">5</span>), <span class="dt">ask=</span><span class="ot">FALSE</span>)</code></pre>
 <p><img src="08-week8_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Notice that essentially what we are doing is running two regression lines and testing whether the slope is different for the two groups. The intercept is different, we know that Southern counties are more violent, but what we are testing here is whether the level of homicide goes up in a steeper fashion (and in the same direction) for one or the other group as the level of resource deprivation goes up. We see that’s the case here. The estimated lines are almost parallel, but the slopw is a bit more steep in the Southern counties. In southern counties resource deprivation seems to have more of an impact on homicide than in northern counties.</p>
 <p>A word of warning, the moment you introduce an interaction effect the meaning of the coefficients for the other predictors changes (what it is often referred as to the “main effects” as opposed to the interaction effect). You cannot retain the interpretation we introduced earlier. Now, for example, the coefficient for the <code>SOUTH</code> variable relates the marginal effect of this variable when <code>RD90</code> equals zero. The typical table of results helps you to understand whether the effects are significant but offers little of interest that will help you to meaningfully interpret what the effects are. For this is better you use some of the graphical displays we have covered.</p>
@@ -821,7 +823,7 @@ gitbook.start({
 "google": false,
 "linkedin": false,
 "weibo": false,
-"instapper": false,
+"instapaper": false,
 "vk": false,
 "all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
 },
@@ -833,6 +835,10 @@ gitbook.start({
 "edit": {
 "link": "https://github.com/rstudio/bookdown-demo/edit/master/08-week8.Rmd",
 "text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
 },
 "download": ["CrimeMapping.pdf", "CrimeMapping.epub"],
 "toc": {
