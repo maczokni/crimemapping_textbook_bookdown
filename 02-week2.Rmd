@@ -1,5 +1,5 @@
 
-# Week 2: Making your first maps in R
+# Making your first maps in R
 
 
 ## A quick introduction of terms
