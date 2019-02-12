@@ -1,5 +1,5 @@
 
-# A first lesson about R (Week 1)
+# A first lesson about R
 
 ## Install R & RStudio
 
