@@ -122,7 +122,7 @@ data.frame(sums$res)
 ```
 
 ```{r}
-#To print the p balues
+#To print the p values
 data.frame(sums$pzmat)
 ```
 
