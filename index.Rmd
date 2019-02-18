@@ -15,6 +15,7 @@ description: "Worksheets for labs of Crime Mapping course"
 
 ## Introduction 
 
+
 This workbook contains the lab materials and homework assignments for an introduction to crime mapping course designed for LAWS31152 and 60142 Crime Mapping, an optional module open to  3rd year undergraduates on the BA Criminology programme as well as postgraduates on the MA and MRes Criminology programmes at the University of Manchester. 
 
 It makes use of R, as it is a free, open source tool, that has tremendous community support, and great versatility in mapping applications. You can find more details about the advantages of R for geospatial work [here](https://geocompr.robinlovelace.net/intro.html)
