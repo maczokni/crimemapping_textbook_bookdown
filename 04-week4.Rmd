@@ -1,10 +1,10 @@
-# Week 4: Performing spatial operations in R
+# Performing spatial operations in R
 
-So by now you've come a long way in terms of taking your spatial data, and visualising it using maps, being able to present the values of a variable using thematic maps. You've had some practice in taking data which has a spatial component, and joining it to a shapefile, using the common column, in order to be able to visually demonstrate variation on something, in this case crime rate, across space. 
+By now you have come a long way in terms of taking your spatial data, and visualising it using maps, and being able to present the values of a variable using thematic maps. You have had some practice in taking data which has a spatial component, and joining it to a shapefile, using the common column, in order to be able to visually demonstrate variation on something, such as the crime rate, across space. 
 
-I hope that you are finding this to be really exciting stuff, and an opportunity to get yourselves accustomed to spatial data. But today we will go a step further, and get your hands dirty with **spatial manipulation of your data**. 
+I hope that you are finding this to be really exciting stuff, and an opportunity to get yourselves accustomed to spatial data. If there is anything you are unsure about, or want to catch up on, please do not hesitate to revisit older material, and ask us questions about it. We build on each week acquiring knowledge umulatively, so don't let yourself get stuck anywhere down the line. But, if you're ready, today we will go a step further, and get your hands dirty with **spatial manipulation of your data**. 
 
-Thus far, our data manipulation exercises were such that you might be familiar with, from your earlier exposures to data analysis. Linking datasets using a common column, calculating a new variable (new column) from values of existing variables, these are all tasks which you can perform on spatial or non-spatial data. However today we will explore some exercises in data manipulation which are specific to spatial data analysis. After this session you can truly say you are masters of spatial data manipulation. So let's get started with that!
+Thus far, our data manipulation exercises were such that you might be familiar with, from your earlier exposures to data analysis. Linking datasets using a common column, calculating a new variable (new column) from values of existing variables, these are all tasks which you can perform on spatial or non-spatial data. However today we will explore some exercises in data manipulation which are specific to *spatial* data analysis. After this session you can truly say you are masters of spatial data manipulation. So let's get started with that!
 
 The main objectives for this session are that by the end you will have:
 
@@ -17,12 +17,22 @@ The main objectives for this session are that by the end you will have:
 
 These are all very useful tools for the spatial crime analyst, and we will hope to demonstrate this by working through an example project, where you would make use of all of these tools. 
 
-Let's consider the assumption that licenced premises which serve alcohol are associated with increased crimes. 
+Let's consider the assumption that licenced premises which serve alcohol are associated with increased crimes. We might have some hypotheses about why this may be. 
 
-[something about crime attractors/ generators/ etc here]
+One theory might be that some of these serve as *crime attractors*. 
+
+> Crime attractors are particular places, areas, neighbourhoods, districts which create well-known criminal opportunities to which strongly motivated, intending criminal offenders are attracted because of the known opportunities for particular types of crime. Examples might include bar districts; prostitution areas; drug markets; large shopping malls, particularly those near major public transit exchanges; large, insecure parking lots in business or commercial areas. The intending offender goes to rough bars looking for fights or other kinds of 'action'. 
+
+On the other hand, it is possible that these areas are *crime generators*. 
+
+> Crime generators are particular areas to which large numbers of people are attracted for reasons unrelated to any particular level of criminal motivation they might have or to any particular crime they might end up committing. Typical examples might include shopping precincts; entertainment districts; office concentrations; or sports stadiums. 
+
+(If you are interested further in crime attractors vs crime generators I recommend a read of [Brantingham, P., & Brantingham, P. (1995). Criminality of place. European journal on criminal policy and research, 3(3), 5-26.](https://link.springer.com/content/pdf/10.1007/BF02242925.pdf))
 
 
-So let's say we want to examine whether certain outlets have more crimes near them than others. We can do this using open data, some R code, and the spatial operations discussed above. So let's get to it!
+It's possible that some licensed premises attract crimes, due to their reputation. However it is also possible that some of them are simply located in areas that are busy, attracts lots of people for lots of reasons, and crimes occurr as a result of an abundance of opportunities instead. 
+
+In any case, what we want to do is to examine whether certain outlets have more crimes near them than others. We can do this using open data, some R code, and the spatial operations discussed above. So let's get to it!
 
 
 ## Getting some (more) data
@@ -166,7 +176,7 @@ Any ideas?
 
 
 
-We can use the `geocode()` function from the `ggmap` package to turn our addresses into mappable coordinates. `geocode()` geocodes a location (find latitude and longitude) using either (1) the [Data Science Toolkit](http://www.datasciencetoolkit.org/about) or (2) Google Maps. Note that when using Google you are agreeing to the Google Maps API Terms of Service at [https://developers.google.com/maps/terms](https://developers.google.com/maps/terms). One of the conditions of using Google API to geocode your points is that you *have to* display them using a Google basemap for example!
+We can use the `geocode()` function from the `ggmap` package to turn our addresses into mappable coordinates. `geocode()` geocodes a location (find latitude and longitude) using either (1) the [Data Science Toolkit](http://www.datasciencetoolkit.org/about) or (2) Google Maps. Note that when using Google you are agreeing to the Google Maps API Terms of Service at [https://developers.google.com/maps/terms](https://developers.google.com/maps/terms) (this link is also loaded when you load the ggmap package). One of the conditions of using Google API to geocode your points is that you *have to* display them using a Google basemap for example! Also, to use the Google Maps API you need to get an API key, which we won't be messing around with today. Instead, we will use the Data Science Toolkit approach. 
 
 
 We can, at the most basic, geocode the postcode. This will put all the establisments to the centroid of the postocde. Postcodes are used in the United Kingdom as alphanumeric codes, that were devised by Royal Mail. A full postcode is known as a "postcode unit" and designates an area with a number of addresses or a single major delivery point. [You can search the Royal Mail for infor on post codes here.](https://www.royalmail.com/business/search/google/POSTCODE). 
@@ -260,7 +270,7 @@ View(city_centre_prems)
 ```
 
 
-You will see that we have some coordinates. Woohoo! Let's "flatten" them out, so we can use them to map in a moment. 
+You will see that we have some coordinates. Woohoo! Let's "flatten" them out, so we can use them to map. While some approaches to mapping can deal with the coordinates as one variable, when we use leaflet, we are expected to provide separate latitude and longitude columns. So let's create them here by extracting first the longitude, then the latitude fmor the coords object.  
 
 
 ```{r}
@@ -282,7 +292,7 @@ As we saw in earlier sessions, [Leaflet](http://leafletjs.com/) is one way to ea
 
 In this section of the lab we will learn how to make really flashy looking maps using leaflet. 
 
-You will need to have installed the following packages to follow along:
+If you haven't already, you will need to have installed the following packages to follow along:
 
 ```{r, eval=FALSE}
 install.packages("leaflet") #for mapping
@@ -313,6 +323,8 @@ And just print it:
 m  
 ```
 
+This should all be familiar from earlier. 
+
 ### Adding some content:
 
 You might of course want to add some content to your map. 
@@ -329,7 +341,7 @@ m
 ```
 
 
-Or many points manually:
+Or many points manually, with some popup text as well:
 
 
 ```{r}
@@ -345,21 +357,10 @@ m <- leaflet(data = df) %>%
 m  
 ```
 
-### Change the basemap
-
-You can change the background as well. We played arouns with this already so don't spend too much time, but remember how you can see a list of the available basemaps? Well, you can also find a list with some previews included [here](http://leaflet-extras.github.io/leaflet-providers/preview/index.html).
-
-```{r}
-m <- leaflet(data = df) %>%
-  addProviderTiles("Stamen.Toner") %>% 
-  addMarkers(lng=~longitudes, lat=~latitudes, popup=~popups)
-m  
-```
-
 
 ### Adding data from elsewhere
 
-You will most likely want to add data to your map form external sources, rather than manually creating points. In this case, we want to be mapping our licensed premises in the city centre, right? So let's do this: 
+Last time around we added crime data to our map.  In this case, we want to be mapping our licensed premises in the city centre, right? So let's do this: 
 
 ```{r}
 m <- leaflet(data = city_centre_prems) %>%
@@ -367,7 +368,6 @@ m <- leaflet(data = city_centre_prems) %>%
   addMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME))
 m  
 ```
-
 
 
 Should be looking familiar as well.  Now let's say you wanted to save this map. You can do this by clicking on the export button at the top of the plot viewer, and choose the *Save as Webpage* option saving this as a .html file: 
@@ -505,6 +505,7 @@ First things first, we check whether they have the same crs.
 ```{r}
 
 st_crs(city_centre) == st_crs(cc_spatial)
+
 ```
 
 
@@ -597,7 +598,7 @@ Well first we will need crime data. Let's use the same data set from last week. 
 
 ```{r}
 
-crimes <- read.csv("https://raw.githubusercontent.com/maczokni/2018_labs/master/data/2017-11-greater-manchester-street.csv")
+crimes <- read.csv("data/2017-11-greater-manchester-street.csv")
 
 
 ```
@@ -758,7 +759,7 @@ You now have a new dataframe, `crimes_per_prem` which has a column for the name 
 Take a moment to look at this table. Use the View() function. Which premises have the most violent crimes? Are you surprised? 
 
 
-Now as a final step, let's plot this, going back to leaflet: 
+Now as a final step, let's plot this, going back to leaflet. We can shade by the number of crimes within the buffer, and include a little popup label with the name of the establishment: 
 
 
 ```{r}
@@ -812,12 +813,12 @@ geocode("M1 1RG", source = 'dsk')
 - **1) Discuss why you think the geocode for the address is different than the geocode for the postcode**
 - **2) Geocode the address for all the city centre licensed premises**
 - **3) Did this work OK? Do you have any geocoded to weird locations? Why do you think this might be?**
-- **4) Fix any issues with geocoding that you identified above**
-
-
+- **4) Fix (or at describe how you would fix) any issues with geocoding that you identified above**
 
 
 Make sure you think a little bit about this. Not only do you have to consider what variable to pass to the `geocode()` function, but also whether that's enough information to get the relevant coordinates. 
+
+
 
 
 
