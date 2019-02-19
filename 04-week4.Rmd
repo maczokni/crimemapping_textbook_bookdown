@@ -232,7 +232,7 @@ Now we can use `geocode()`. To use this, you have to specify **what** you want t
 So let's create a new column, call it `postcode_coords`, use the geocode function to populate it with values: 
 
 
-```{r}
+```{r, warning=FALSE, message=FALSE, quietly=TRUE}
 
 city_centre_prems$postcode_coords <- geocode(city_centre_prems$postcodes2, source = 'dsk')
 
