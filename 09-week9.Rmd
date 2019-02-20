@@ -1,4 +1,4 @@
-# Week 9 : Spatial regression models
+#Spatial regression models
 
 
 ## Introduction
@@ -269,3 +269,64 @@ As before the AIC is better for the spatial model (8786) than for the non spatia
 ### HOMEWORK 3
 
 *Estimate an appropriate regression model for the homicide rate for the 1970s for the Northern States. Justify and interpret the model that you have selected.*
+
+
+
+
+## Interpreting Spatial Lag Coefficiences
+
+Today we are mostly going to go back to some issues about geographical representation (mapping rates, bins) and other more general issues that are quite revelant when we talk about spatial analysis, and are integral part of a spatial analysis course (e.g., the modifiable area unit problem). But before we do any of that we need to go back to something we mentioned last week about the spatial lag models.
+
+Remember that last week we fitted the following spatial lag model after creating a spatial weight matrix based on Queen first order neighbours:
+
+```{r}
+#Split the data into Southern and Northern counties
+ncovr_s_sf <- subset(ncovr_sf, SOUTH == 1)
+ncovr_n_sf <- subset(ncovr_sf, SOUTH == 0)
+#We coerce the sf object into a new sp object
+ncovr_n_sp <- as(ncovr_n_sf, "Spatial")
+#Then we create a list of neighbours using the Queen criteria
+w_n <- poly2nb(ncovr_n_sp, row.names=ncovr_n_sp$FIPSNO)
+wm_n <- nb2mat(w_n, style='B')
+rwm_n <- mat2listw(wm_n, style='W')
+#Fit model
+fit_1_lag <- lagsarlm(HR60 ~ RD60 + DV60 + MA60 + PS60 +UE60, data=ncovr_n_sf, rwm_n)
+summary(fit_1_lag)
+```
+
+Remember what we said last week:
+
+"Interpreting  the substantive  effects  of  each  predictor  in  a spatial lag  model  is  much  more  complex  than  in  a nonspatial model (or in a spatial error model) because of the presence of the spatial multiplier that links  the  independent  variables  to  the  dependent.  In  the nonspatial model,  it  does  not  matter which unit is experiencing the change on the independent variable. The effect" in the dependent variable "of a change" in the value of an independent variable "is constant across all observations" (Darmofal, 2015: 107). Remember we say, when interpreting a regression coefficient for variable X~i,  that they indicate how much Y goes up or down for every one unit increase in X~i  when holding all other variables in the model constant. In our example, for the nonspatial model this effect is the same  for  every  county  in  our  dataset.  But  in  the  spatial  lag  model  things  are  not  the  same.  We cannot interpret the regression coefficients for the substantive predictors in the same way because the "substantive effects of the independent variables vary by observation as a result of the different neighbors for each unit in the data" (Darmofal, 2015: 107).
+
+In  the  OLS  regression  model,  the  coefficients  for  any  of  the  explanatory  variables  measure  the absolute impact of these variables. It is a simpler scenario. We look at the effect of X in Y within each county. So X in county A affects Y in count A. In the spatial lag model there are two components to how  X  affect  Y.  X  affects  Y  within  each  county  directly  but  remember  we  are  also  including  the spatial, the measure of Y in the surrounding counties (call them B, C, and D). So our model includes not only the effect of X in county A in the level of Y in county A. By virtues of including the spatial lag (a measure of Y in county B, C and D) we are indirectly incorporating as well the effects that X has on Y in  counties  B,  C,  and  D.  So  the  effect  of  a  covariate  (independent  variable)  is  the  sum  of  two particular effects: a direct, local effect of the covariate in that unit, and an indirect, spillover effect due to the spatial lag.
+
+This implies that a change in the ith region’s predictor can affect the jth region’s outcome. We have 2 situations: (a) the direct impact of an observation’s predictor on its own outcome, and (b) the indirect impact of an observation’s neighbor’s predictor on its outcome.This leads to three quantities that we want to know:
+
+-Average Direct Impact, which is similar to a traditional interpretation
+-Average Total impact, which would be the total of direct and indirect impacts of a predictor on one’s outcome
+-Average Indirect impact, which would be the average impact of one’s neighbors on one’s outcome
+
+These quantities can be found using the impacts() function in the spdep library. We follow the example that converts the spatial weight matrix into a “sparse” matrix, and power it up using the trW() function. This follows the approximation methods described in Lesage and Pace, 2009. Here, we use Monte Carlo simulation to obtain simulated distributions of the various impacts. 
+
+```{r}
+W <- as(rwm_n, "CsparseMatrix")
+trMC <- trW(W, type="MC")
+im<-impacts(fit_1_lag, tr=trMC, R=100)
+sums<-summary(im,  zstats=T)
+#To print the coefficients
+data.frame(sums$res)
+```
+
+```{r}
+#To print the p values
+data.frame(sums$pzmat)
+```
+
+We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.
+
+```{r}
+fit_1_OLS <- lm(HR60 ~ RD60 + DV60 + MA60 + PS60 +UE60, data=ncovr_n_sf)
+summary(fit_1_OLS)
+```
+
+

@@ -1,11 +1,9 @@
-# Week 5 
+#More on thematic maps
 
 
 ## Introduction
 
-This session we begin to ...
-
-Before we do any of this, we need to load the libraries we will use today:
+In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. Before we do any of this, we need to load the libraries we will use today:
 
 ```{r}
 library(sf)
@@ -25,10 +23,7 @@ There are also some new libraries we will use. If you don't already have these y
 
 You might have noticed that in your list of available packages you might see more than you remember downloading. The idea of *dependencies* has come up throughout the semester. Packages have *dependencies* when their code is *dependent* on (uses code from) another package. For example, if I write some code that I think will be useful, so I release this in the form of the package "rekaR", but I use ggplot2 in the code, then ggplot2 will be a dependency of rekaR. As a default, R will install all the dependencies for a package when you install your package. So this way you might end up with some packages there that you didn't realise you had. 
 
-
 Why am I telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code [here](https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them) to do this. I'll comment it a bit, so you can follow along what it does **but you don't have to if you don't want to**. This is just an optional extra. 
-
-
 So as a first step, you have to assign a list of all the packages you have to check to an object. Let's say I tell you that today we will be using the following packaes: "sp", "rgdal", "classInt", "RColorBrewer", "ggplot2", "hexbin", "ggmap", "XML", and "dplyr". Then you can add these to an object called `libs`, using the `c()` function: 
 
 
@@ -54,12 +49,11 @@ for (x in libs){                                                #cycle through e
 
 ```
 
-
 As you can see if you read through the comments there, this bit of code checks each package in the list you pass to tbe `libs` object when you create it, and if it is not installed it installs for you, and if it is, it just loads it for you. It can be a handy bit of code to keep around. 
 
 ### Data
 
-Then we will bring back the data from last week:
+Then we will bring back data about homicide across US counties. Some of you that have taken previous classes with us may be familiar with this dataset. The dataset was used as the basis for [this study](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1745-9125.2001.tb00933.x). We will be using it also later on in the semester. It contains data on homicide counts and rates for various decades across the US as well as information on structural factors often thought to be associated with violence.
 
 ```{r, eval=FALSE}
 ##R in Windows have some problems with https addresses, that's why we need to do this first:
@@ -77,63 +71,6 @@ shp_name <- "ncovr/ncovr/NAT.shp"
 ncovr_sf <- st_read(shp_name)
 ```
 
-## Interpreting Spatial Lag Coefficiences
-
-Today we are mostly going to go back to some issues about geographical representation (mapping rates, bins) and other more general issues that are quite revelant when we talk about spatial analysis, and are integral part of a spatial analysis course (e.g., the modifiable area unit problem). But before we do any of that we need to go back to something we mentioned last week about the spatial lag models.
-
-Remember that last week we fitted the following spatial lag model after creating a spatial weight matrix based on Queen first order neighbours:
-
-```{r}
-#Split the data into Southern and Northern counties
-ncovr_s_sf <- subset(ncovr_sf, SOUTH == 1)
-ncovr_n_sf <- subset(ncovr_sf, SOUTH == 0)
-#We coerce the sf object into a new sp object
-ncovr_n_sp <- as(ncovr_n_sf, "Spatial")
-#Then we create a list of neighbours using the Queen criteria
-w_n <- poly2nb(ncovr_n_sp, row.names=ncovr_n_sp$FIPSNO)
-wm_n <- nb2mat(w_n, style='B')
-rwm_n <- mat2listw(wm_n, style='W')
-#Fit model
-fit_1_lag <- lagsarlm(HR60 ~ RD60 + DV60 + MA60 + PS60 +UE60, data=ncovr_n_sf, rwm_n)
-summary(fit_1_lag)
-```
-
-Remember what we said last week:
-
-"Interpreting  the substantive  effects  of  each  predictor  in  a spatial lag  model  is  much  more  complex  than  in  a nonspatial model (or in a spatial error model) because of the presence of the spatial multiplier that links  the  independent  variables  to  the  dependent.  In  the nonspatial model,  it  does  not  matter which unit is experiencing the change on the independent variable. The effect" in the dependent variable "of a change" in the value of an independent variable "is constant across all observations" (Darmofal, 2015: 107). Remember we say, when interpreting a regression coefficient for variable X~i,  that they indicate how much Y goes up or down for every one unit increase in X~i  when holding all other variables in the model constant. In our example, for the nonspatial model this effect is the same  for  every  county  in  our  dataset.  But  in  the  spatial  lag  model  things  are  not  the  same.  We cannot interpret the regression coefficients for the substantive predictors in the same way because the "substantive effects of the independent variables vary by observation as a result of the different neighbors for each unit in the data" (Darmofal, 2015: 107).
-
-In  the  OLS  regression  model,  the  coefficients  for  any  of  the  explanatory  variables  measure  the absolute impact of these variables. It is a simpler scenario. We look at the effect of X in Y within each county. So X in county A affects Y in count A. In the spatial lag model there are two components to how  X  affect  Y.  X  affects  Y  within  each  county  directly  but  remember  we  are  also  including  the spatial, the measure of Y in the surrounding counties (call them B, C, and D). So our model includes not only the effect of X in county A in the level of Y in county A. By virtues of including the spatial lag (a measure of Y in county B, C and D) we are indirectly incorporating as well the effects that X has on Y in  counties  B,  C,  and  D.  So  the  effect  of  a  covariate  (independent  variable)  is  the  sum  of  two particular effects: a direct, local effect of the covariate in that unit, and an indirect, spillover effect due to the spatial lag.
-
-This implies that a change in the ith region’s predictor can affect the jth region’s outcome. We have 2 situations: (a) the direct impact of an observation’s predictor on its own outcome, and (b) the indirect impact of an observation’s neighbor’s predictor on its outcome.This leads to three quantities that we want to know:
-
--Average Direct Impact, which is similar to a traditional interpretation
--Average Total impact, which would be the total of direct and indirect impacts of a predictor on one’s outcome
--Average Indirect impact, which would be the average impact of one’s neighbors on one’s outcome
-
-These quantities can be found using the impacts() function in the spdep library. We follow the example that converts the spatial weight matrix into a “sparse” matrix, and power it up using the trW() function. This follows the approximation methods described in Lesage and Pace, 2009. Here, we use Monte Carlo simulation to obtain simulated distributions of the various impacts. 
-
-```{r}
-W <- as(rwm_n, "CsparseMatrix")
-trMC <- trW(W, type="MC")
-im<-impacts(fit_1_lag, tr=trMC, R=100)
-sums<-summary(im,  zstats=T)
-#To print the coefficients
-data.frame(sums$res)
-```
-
-```{r}
-#To print the p values
-data.frame(sums$pzmat)
-```
-
-We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.
-
-```{r}
-fit_1_OLS <- lm(HR60 ~ RD60 + DV60 + MA60 + PS60 +UE60, data=ncovr_n_sf)
-summary(fit_1_OLS)
-```
-
-
 ## Mapping rates, learning from disease mapping
 
 In previous sessions we discussed how to map rates. It seems a fairly straightoforward issue. You get your variable with the relevant rate and you map it using a choropleth map. However, things are not that simple. Rates are funny animals. Let's look at the ncvor data. 
@@ -150,7 +87,7 @@ borden$HR60
 
 ```
 
-Borden county in Texas. You may be thinking… “Texas Chainsaw Massacre” perhaps? No, not really. Ed Gein, who inspired the film, was based and operated in Wisconsin. Borden claim to fame is that it was named after Gail Borden, the inventor of condensed milk. So, what’s going on here? Why do we have a homicide rate in Borden that makes it look like a war zone or the setting for Midsomer Murders? 
+[Borden county](https://en.wikipedia.org/wiki/Borden_County,_Texas) in Texas. You may be thinking… “Texas Chainsaw Massacre” perhaps? No, not really. Ed Gein, who inspired the film, was based and operated in Wisconsin. Borden claim to fame is that it was named after Gail Borden, the inventor of condensed milk. So, what’s going on here? Why do we have a homicide rate in Borden that makes it look like a war zone or the setting for Midsomer Murders? Is is that it is only one of the six counties where alcohol is banned in Texas (and people are consequently going nuts?).
 
 Check this out too:
 
@@ -179,13 +116,13 @@ borden$HR80
 borden$HR90
 ```
 
-It has a homicide rate of 0. But it only takes one homicide and, bang, it goes top of the league. So a standard map of rates is bound to be noisy. There is the instability that is introduced by virtue of having areas that may be sparsely populated and in which one single event, like in this case, will produce a very noticeable change in the rate. In fact, if you look at the counties with the highest homicide rate in the ncovr dataset you will notice all of them are places like Borden, areas that are sparsely populated, not because they are that dangerous, but because of the instability of rates.
+It has a homicide rate of 0 in most decades. But it only takes one homicide and, bang, it goes top of the league. So a standard map of rates is bound to be noisy. There is the instability that is introduced by virtue of having areas that may be sparsely populated and in which one single event, like in this case, will produce a very noticeable change in the rate. In fact, if you look at the counties with the highest homicide rate in the ncovr dataset you will notice all of them are places like Borden, areas that are sparsely populated, not because they are that dangerous, but because of the instability of rates.
 
 This is a problem that was first noted by epidemiologists doing disease mapping. But a number of other disciplines have now noted this and used some of the approaches developed by public health researchers that confronted this problem when producing maps of disease (PRO TIP: techniques and approaches used by spatial epidemiologists are very similar to those used by criminologists -in case you ever think of changing careers or need inspiration for how to solve a crime analysis problem).
 
-One way of dealing with this is by smoothing the rates. This basically as the word implies aims for a smoother representation that avoids hard spikes associated with random noise. There are different ways of doing that. Some ways use a non-spatial approach to smoothing, using something called a empirical bayesian smoother. How does this work? This approach takes the raw rates and tries to “shrunk” them towards the overall average. What does this mean? Essentially, we compute a weighted average between the raw rate for each area and the global average across all areas, with weights proportional to the underlying population at risk. What this procedure does is to have the rates of smaller areas (those with a small population at risk) to have their rates adjusted considerably (brought closer to the global average), whereas the rates for the larger areas will barely change.
+One way of dealing with this is by **smoothing** the rates. This basically as the word implies aims for a smoother representation that avoids hard spikes associated with random noise. There are different ways of doing that. Some ways use a non-spatial approach to smoothing, using something called a **empirical bayesian smoother**. How does this work? This approach takes the raw rates and tries to “shrunk” them towards the overall average. What does this mean? Essentially, we compute a weighted average between the raw rate for each area and the global average across all areas, with weights proportional to the underlying population at risk. What this procedure does is to have the rates of smaller areas (those with a small population at risk) to have their rates adjusted considerably (brought closer to the global average), whereas the rates for the larger areas will barely change.
 
-Here we are going to introduce the approach implemented in DCluster, a package developed for epidemiological research and detection of [clusters of disease](https://www.r-project.org/conferences/DSC-2003/Proceedings/GomezRubioEtAl.pdf).
+Here we are going to introduce the approach implemented in `DCluster`, a package developed for epidemiological research and detection of [clusters of disease](https://www.r-project.org/conferences/DSC-2003/Proceedings/GomezRubioEtAl.pdf).
 
 ```{r}
 res <- empbaysmooth(ncovr_sf$HC60, ncovr_sf$PO60)
@@ -197,7 +134,7 @@ In the new object we generate, which is a list, you have an element which contai
 ncovr_sf$HR60EBS <- res$smthrr * 100000
 ```
 
-Instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. If instead of shrinking to a global rate, we shrink to a local rate, we may be able to take unobserved heterogeneity into account; for this we need the list of neighbours (created as we covered in previous sessions):
+Instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. If instead of shrinking to a global rate, we shrink to a local rate, we may be able to take unobserved heterogeneity into account; for this we need the list of neighbours (we will discuss this code in a later session, so for now just trust us we are computing the rate of the areas that surround each country):
 
 ```{r}
 ncovr_sp <- as(ncovr_sf, "Spatial")
@@ -235,7 +172,7 @@ tmap_arrange(map1, map2, map3)
 
 Notice that the quantiles are not the same, so that will make your comparison difficult.
 
-## Binning
+## Binning points
 
 In GIS it is often difficult to present point-based data because in many instances there are several different points and data symbologies that need to be shown. As the number of different data points grows they can become complicated to interpret and manage which can result in convoluted and sometimes inaccurate maps. This becomes an even larger problem in web maps that are able to be depicted at different scales because smaller scale maps need to show more area and more data. This makes the maps convoluted if multiple data points are included.
 
@@ -451,8 +388,6 @@ aggregation.
 
 
 In this lab we will focus on **MAUP**, but if you are interested in this kind of work, you should definitely read their paper to consider the other issues as well. There are techniques that can be used to alleviate each of the methodological difficulties, and they are described in accessible detail in their paper: [Rengert, George F., and Brian Lockwood. "Geographical units of analysis and the analysis of crime." Putting crime in its place. Springer, New York, NY, 2009. 109-122.](https://link.springer.com/chapter/10.1007/978-0-387-09688-9_5)
-
-
 
 ### What is MAUP?
 

@@ -1,4 +1,4 @@
-# Week 7 : Spatial autocorrelation
+#Global and local spatial autocorrelation
 
 This session we begin to ...
 
