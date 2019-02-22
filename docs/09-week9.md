@@ -1,4 +1,4 @@
-# Week 9 : Spatial regression models
+#Spatial regression models
 
 
 ## Introduction
@@ -504,3 +504,145 @@ As before the AIC is better for the spatial model (8786) than for the non spatia
 ### HOMEWORK 3
 
 *Estimate an appropriate regression model for the homicide rate for the 1970s for the Northern States. Justify and interpret the model that you have selected.*
+
+
+
+
+## Interpreting Spatial Lag Coefficiences
+
+Today we are mostly going to go back to some issues about geographical representation (mapping rates, bins) and other more general issues that are quite revelant when we talk about spatial analysis, and are integral part of a spatial analysis course (e.g., the modifiable area unit problem). But before we do any of that we need to go back to something we mentioned last week about the spatial lag models.
+
+Remember that last week we fitted the following spatial lag model after creating a spatial weight matrix based on Queen first order neighbours:
+
+
+```r
+#Split the data into Southern and Northern counties
+ncovr_s_sf <- subset(ncovr_sf, SOUTH == 1)
+ncovr_n_sf <- subset(ncovr_sf, SOUTH == 0)
+#We coerce the sf object into a new sp object
+ncovr_n_sp <- as(ncovr_n_sf, "Spatial")
+#Then we create a list of neighbours using the Queen criteria
+w_n <- poly2nb(ncovr_n_sp, row.names=ncovr_n_sp$FIPSNO)
+wm_n <- nb2mat(w_n, style='B')
+rwm_n <- mat2listw(wm_n, style='W')
+#Fit model
+fit_1_lag <- lagsarlm(HR60 ~ RD60 + DV60 + MA60 + PS60 +UE60, data=ncovr_n_sf, rwm_n)
+summary(fit_1_lag)
+```
+
+```
+## 
+## Call:
+## lagsarlm(formula = HR60 ~ RD60 + DV60 + MA60 + PS60 + UE60, data = ncovr_n_sf, 
+##     listw = rwm_n)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -11.86076  -1.54308  -0.55531   0.76832  28.30435 
+## 
+## Type: lag 
+## Coefficients: (asymptotic standard errors) 
+##              Estimate Std. Error z value  Pr(>|z|)
+## (Intercept)  5.802071   0.677236  8.5673 < 2.2e-16
+## RD60         1.734746   0.157771 10.9954 < 2.2e-16
+## DV60         1.002757   0.077951 12.8640 < 2.2e-16
+## MA60        -0.179328   0.020024 -8.9557 < 2.2e-16
+## PS60         0.382956   0.077193  4.9610 7.014e-07
+## UE60         0.087963   0.030109  2.9215  0.003483
+## 
+## Rho: 0.13749, LR test value: 15.139, p-value: 9.9874e-05
+## Asymptotic standard error: 0.035631
+##     z-value: 3.8587, p-value: 0.000114
+## Wald statistic: 14.89, p-value: 0.000114
+## 
+## Log likelihood: -4273.43 for lag model
+## ML residual variance (sigma squared): 9.6542, (sigma: 3.1071)
+## Number of observations: 1673 
+## Number of parameters estimated: 8 
+## AIC: 8562.9, (AIC for lm: 8576)
+## LM test for residual autocorrelation
+## test value: 10.659, p-value: 0.0010954
+```
+
+Remember what we said last week:
+
+"Interpreting  the substantive  effects  of  each  predictor  in  a spatial lag  model  is  much  more  complex  than  in  a nonspatial model (or in a spatial error model) because of the presence of the spatial multiplier that links  the  independent  variables  to  the  dependent.  In  the nonspatial model,  it  does  not  matter which unit is experiencing the change on the independent variable. The effect" in the dependent variable "of a change" in the value of an independent variable "is constant across all observations" (Darmofal, 2015: 107). Remember we say, when interpreting a regression coefficient for variable X~i,  that they indicate how much Y goes up or down for every one unit increase in X~i  when holding all other variables in the model constant. In our example, for the nonspatial model this effect is the same  for  every  county  in  our  dataset.  But  in  the  spatial  lag  model  things  are  not  the  same.  We cannot interpret the regression coefficients for the substantive predictors in the same way because the "substantive effects of the independent variables vary by observation as a result of the different neighbors for each unit in the data" (Darmofal, 2015: 107).
+
+In  the  OLS  regression  model,  the  coefficients  for  any  of  the  explanatory  variables  measure  the absolute impact of these variables. It is a simpler scenario. We look at the effect of X in Y within each county. So X in county A affects Y in count A. In the spatial lag model there are two components to how  X  affect  Y.  X  affects  Y  within  each  county  directly  but  remember  we  are  also  including  the spatial, the measure of Y in the surrounding counties (call them B, C, and D). So our model includes not only the effect of X in county A in the level of Y in county A. By virtues of including the spatial lag (a measure of Y in county B, C and D) we are indirectly incorporating as well the effects that X has on Y in  counties  B,  C,  and  D.  So  the  effect  of  a  covariate  (independent  variable)  is  the  sum  of  two particular effects: a direct, local effect of the covariate in that unit, and an indirect, spillover effect due to the spatial lag.
+
+This implies that a change in the ith region’s predictor can affect the jth region’s outcome. We have 2 situations: (a) the direct impact of an observation’s predictor on its own outcome, and (b) the indirect impact of an observation’s neighbor’s predictor on its outcome.This leads to three quantities that we want to know:
+
+-Average Direct Impact, which is similar to a traditional interpretation
+-Average Total impact, which would be the total of direct and indirect impacts of a predictor on one’s outcome
+-Average Indirect impact, which would be the average impact of one’s neighbors on one’s outcome
+
+These quantities can be found using the impacts() function in the spdep library. We follow the example that converts the spatial weight matrix into a “sparse” matrix, and power it up using the trW() function. This follows the approximation methods described in Lesage and Pace, 2009. Here, we use Monte Carlo simulation to obtain simulated distributions of the various impacts. 
+
+
+```r
+W <- as(rwm_n, "CsparseMatrix")
+trMC <- trW(W, type="MC")
+im<-impacts(fit_1_lag, tr=trMC, R=100)
+sums<-summary(im,  zstats=T)
+#To print the coefficients
+data.frame(sums$res)
+```
+
+```
+##        direct    indirect      total
+## 1  1.74079413  0.27047660  2.0112707
+## 2  1.00625282  0.15634694  1.1625998
+## 3 -0.17995282 -0.02796024 -0.2079131
+## 4  0.38429075  0.05970933  0.4440001
+## 5  0.08827006  0.01371500  0.1019851
+```
+
+
+```r
+#To print the p values
+data.frame(sums$pzmat)
+```
+
+```
+##            Direct     Indirect        Total
+## RD60 0.000000e+00 0.0003762253 0.000000e+00
+## DV60 0.000000e+00 0.0002633652 0.000000e+00
+## MA60 0.000000e+00 0.0004982933 0.000000e+00
+## PS60 6.616710e-07 0.0042950953 1.182180e-06
+## UE60 3.772079e-04 0.0093932134 3.478408e-04
+```
+
+We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.
+
+
+```r
+fit_1_OLS <- lm(HR60 ~ RD60 + DV60 + MA60 + PS60 +UE60, data=ncovr_n_sf)
+summary(fit_1_OLS)
+```
+
+```
+## 
+## Call:
+## lm(formula = HR60 ~ RD60 + DV60 + MA60 + PS60 + UE60, data = ncovr_n_sf)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.1581  -1.5986  -0.5770   0.7949  28.4121 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  6.39963    0.66312   9.651  < 2e-16 ***
+## RD60         1.85730    0.15692  11.836  < 2e-16 ***
+## DV60         1.11883    0.07604  14.713  < 2e-16 ***
+## MA60        -0.19537    0.01976  -9.889  < 2e-16 ***
+## PS60         0.37748    0.07782   4.851 1.34e-06 ***
+## UE60         0.09277    0.03021   3.071  0.00217 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3.132 on 1667 degrees of freedom
+## Multiple R-squared:  0.1833,	Adjusted R-squared:  0.1809 
+## F-statistic: 74.83 on 5 and 1667 DF,  p-value: < 2.2e-16
+```
+
+

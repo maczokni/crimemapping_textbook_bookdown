@@ -1,4 +1,4 @@
-#More on thematic maps
+# More on thematic maps
 
 
 ## Introduction
@@ -14,6 +14,7 @@ library(DCluster)
 library(cartogram)
 library(ggmap)
 library(ggplot2)
+library(dplyr)
 ```
 
 
@@ -23,7 +24,8 @@ There are also some new libraries we will use. If you don't already have these y
 
 You might have noticed that in your list of available packages you might see more than you remember downloading. The idea of *dependencies* has come up throughout the semester. Packages have *dependencies* when their code is *dependent* on (uses code from) another package. For example, if I write some code that I think will be useful, so I release this in the form of the package "rekaR", but I use ggplot2 in the code, then ggplot2 will be a dependency of rekaR. As a default, R will install all the dependencies for a package when you install your package. So this way you might end up with some packages there that you didn't realise you had. 
 
-Why am I telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code [here](https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them) to do this. I'll comment it a bit, so you can follow along what it does **but you don't have to if you don't want to**. This is just an optional extra. 
+Why am I telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code from a Stackoverflow discussion (if you are not yet familiar with Stackoverflow you have not been Google-ing your error messages enough) [here](https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them) to do this. I'll comment it a bit, so you can follow along what it does **but you don't have to if you don't want to**. This is just an optional extra. 
+
 So as a first step, you have to assign a list of all the packages you have to check to an object. Let's say I tell you that today we will be using the following packaes: "sp", "rgdal", "classInt", "RColorBrewer", "ggplot2", "hexbin", "ggmap", "XML", and "dplyr". Then you can add these to an object called `libs`, using the `c()` function: 
 
 
@@ -73,7 +75,7 @@ ncovr_sf <- st_read(shp_name)
 
 ## Mapping rates, learning from disease mapping
 
-In previous sessions we discussed how to map rates. It seems a fairly straightoforward issue. You get your variable with the relevant rate and you map it using a choropleth map. However, things are not that simple. Rates are funny animals. Let's look at the ncvor data. 
+In previous sessions we discussed how to map rates. It seems a fairly straightoforward issue, you calculate a rate by dividing your numerator (eg: number of crimes) by your demoninator (eg: daytime population). You get your variable with the relevant rate and you map it using a choropleth map. However, things are not always that simple. Rates are funny animals. Let's look at the ncvor data. 
 
 ```{r}
 summary(ncovr_sf$HR60)
@@ -205,6 +207,7 @@ Binning itself is a general term used to describe the grouping of a dataset's va
 
 
 #### Choropleth maps 
+
 You might be thinkging, "grouping points into a larger spatial unit, haven't we already done this when making choropleth maps?". In a way you are right. Choropleth maps are another type of map to that uses binning. Proportional symbol and choropleth maps group similar data points together to show a range of data instead of many individual points. We've covered this extensively, and is generally the best approch to consider spatial grouping of your point variables, because the polygons (shapes) to which you are aggregating your points are *meaningful*. You can group into LSOAs because you want to show variation in neighbourhoods. Or you can group into police force areas because you want to look at differences between those units of analysis. But sometimes there is just not a geography present to meet your needs. 
 
 
@@ -235,8 +238,10 @@ library(hexbin)
 ```
 
 
-Also let's get some data. You could go and get this data yourself from police.uk, we've been through all the steps for downloading data from there a few times now. But for now, I have a tidied set of data ready for you. This data is one year's worth of antisocial behaviour from the [police.uk](data.police.uk) data, from May 2016 to May 2017, for the borough of Manchester. You can download from the dropbox link here: 
+Also let's get some data. You could go and get this data yourself from police.uk, we've been through all the steps for downloading data from there a few times now. But for now, I have a tidied set of data ready for you. This data is one year's worth of antisocial behaviour from the [police.uk](data.police.uk) data, from May 2016 to May 2017, for the borough of Manchester. 
 
+
+We can take our GMP crimes data, and select only the cases from ASB using the crime.type variable. If you want, however, I have already done this, so you can also download from my dropbox using the link here: 
 
 
 ```{r}
@@ -274,7 +279,7 @@ library(ggspatial) #load ggspatial package for background map tiles
 
 ggplot() +
   annotation_map_tile() + 
-  stat_binhex(data = manchester_asb, aes(x = Longitude, y = Latitude)) +                                                         #add binhex layer (hexbin)
+  stat_binhex(data = manchester_asb, aes(x = as.numeric(as.character(Longitude)), y = as.numeric(as.character(Latitude)))) +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents 
   
 
@@ -299,7 +304,7 @@ So I mentioned we'd go over some reasons why you should consider aggregating int
 - Since the distance between centroids is the same in all six directions with hexagons, if you are using a distance band to find neighbors or are using the Optimized Hot Spot Analysis, Optimized Outlier Analysis or Create Space Time Cube By Aggregating Points tools, you will have more neighbors included in the calculations for each feature if you are using hexagonal grid as opposed to a fishnet grid.
 
 
-![](http://pro.arcgis.com/en/pro-app/tool-reference/spatial-statistics/GUID-3EF700EB-1EEF-44BB-AB02-EE17F7E03F82-web.png)
+![](img/EE17F7E03F82-web.png)
 
 Now, to again illustrate the differences of different approaches, let's see what this map would look like with: 
 
@@ -349,7 +354,7 @@ ggplot() +
 ```
 
 
-### Homework 10.3 
+### Homework 1
 
 Look at the difference between the three maps (hex, rectangle, and density). How would your conclusions change if you were given these maps? Would you make different decisions about where to place your booths for the days of action? Why or why not? Discuss. 
 
@@ -369,7 +374,7 @@ By using binning to create categories of data maps are easier to understand, mor
 Hexbin plots can be viewed as an alternative to scatter plots. The hexagon-shaped bins were introduced to plot densely packed sunflower plots. They can be used to plot scatter plots with high-density data.
 
 
-## A final note of caution: MAUP
+## A note of caution: MAUP
 
 Now that we've shown you how to do a lot of spatial crime analysis, we wanted to close with some words of caution. Remember that everything you've learned here are just tools that you will be applying to data you are working with, but it's up to you, the researcher, the analyst, the domain expert, to apply and use these with careful consideration and cautions. This discussion is very much part of spatial crime analysis, and an important field of thought. 
 
@@ -446,9 +451,178 @@ Most often you will just have to remain aware of the MAUP and it's possible effe
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
 
 
-### Homework 10.4
+### Homework 2
 
-Look at the question for homework 10.3 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. 
+Look at the question for homework 1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. 
+
+
+## Replacing polygons with grid or hex shapes
+
+When you have meaningful spatial units of analysis in your polygons, so you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to cheare thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions.
+
+Fortunately, there are many methods in R to enhance the legibility of geographic information and the interpretability of what it is trying to be communicated. 
+
+Broadly, the options are:
+
+- cartogram
+- hexmap
+- grid
+
+Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on two methods that have been developed recently: the `geogrid` package on CRAN and some [open code]https://rpubs.com/profrichharris/hexograms shared by Richard Harris to make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about  **cartograms**, but I'll leave that to the next section.
+
+
+Let's explore this using the example of the results of the 2016 EU referendum at Local Authority level, where remain areas clustered in London. A simple thematic map does not necessarily communicate this well because Local Authorities are both small and densely populated in London. 
+
+
+You can download the full set of EU referendum result data as a csv from [the Electoral Commission webside](https://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/past-elections-and-referendums/eu-referendum/eu-referendum-result-visualisations). Let's read it straight into R: 
+
+
+```{r}
+
+eu_ref <- read.csv("https://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv")
+
+```
+
+
+OKAY, now we need a shapefile to join it to. Remember when we got the Manchester lsoa shapefile with the [boundary selector](https://borders.ukdataservice.ac.uk/bds.html)? Let's go back, and this time get *Local Authority Districts* for *England*. 
+
+In this case that means select "English Districts, UAs and London Boroughs, 2011": 
+
+![](img/la_shp_dl.png)
+
+
+Once you have the file, download, extract (unzip) and put the folder in your working directory. Mine is in a subfolder in my working directory called data, so I point R inside that folder to find my shape file. 
+
+```{r}
+
+las <- st_read("data/England_lad_2011_gen/england_lad_2011_gen.shp")
+
+```
+
+We can now join the EU referendum data, as we have learned in the past weeks: 
+
+
+```{r}
+
+eu_sf <- left_join(las, eu_ref, by = c("name" = "Area"))
+
+#make sure we are in British National Grid Projection
+eu_sf <- st_transform(eu_sf, 27700)
+
+```
+
+Now we can have a look at these data: 
+
+```{r}
+ggplot() +
+  geom_sf(data = eu_sf, aes(fill = Pct_Leave)) 
+```
+
+
+We can see that in smaller LAs we don't even really see the result, as the boundary lines pretty much cover everything. Hmm. Now what we can do is transform the shapes into squares of hexagons. Let's have a go at squares. 
+
+We can use the functions in the geogrid package. 
+
+```{r}
+library(geogrid)
+```
+
+
+Now we can use the `calculate_grid()` function. This function, given an input multipolgyon spatial data frame this function calculates a hexagonal or regular grid, that strives to preserve the original geography. Once this is done, we assign each polygon in the original file to a new location in the gridded geometry. **NOTE THIS WILL TAKE A WHILE** again this is something that is quite computationally intensive, so you set it running, and go for a short break. You need short breaks in coding. 
+
+However this particular bit of code will actually take about 10 minutes. So if you're about to leave, wait until you are home to run it. 
+
+
+```{r}
+
+#first make our sf object into an sp object
+eu_sp <- as(eu_sf, 'Spatial')
+
+#then use the calculate_grid function. Note how we specify grid type to be "regular".
+eu_reg <- calculate_grid(shape = eu_sp, grid_type = "regular", seed = 1)
+#assign the polygons
+eu_reg <- assign_polygons(eu_sp, eu_reg)
+
+#now turn it back into sf object for easy ggplot plotting
+eu_reg <- st_as_sf(eu_reg)
+
+```
+
+
+While you're waiting for that, you can have a read about how the polygons are assigned. The help file will tell you they use "the Hungarian algorithm". This is from a paper called [The Hungarian Method for the Assignment Problem](https://pdfs.semanticscholar.org/b6a0/f30260302a2001da9999096cfdd89bc1f7fb.pdf) by Harold W. Kuhn. Apparently, this method was so promising, that when Kuhn came across it referenced in a paper, even though the original paper is in Hungarian, Kuhn describes he "took out a Hungarian grammar and a large Hungarian-English dictionary and taught myself enough Hungarian to translate Egervary’s paper." I can assure you, Hungarian is not an easy language to learn, so this must have been a most excellent theory to prompt such an act. 
+
+
+
+Now that your code has run, and you have your eu_reg shapefile, we can plot this!
+
+```{r}
+ggplot() +
+  geom_sf(data = eu_reg, aes(fill = Pct_Leave)) 
+```
+
+Cool, eh?
+
+
+### Homework 3
+
+Reproduce the above grid map using hexagons instead of squares. 
+
+
+## Cartograms
+
+The last thing we will do today is make some cartograms! Cartogram types of maps distort reality to convey information. They resize and exaggerate any variable on an attribute value.
+
+There are different types of cartograms. 
+
+Density-equalizing (contiguous) cartograms are your traditional cartograms. In density-equalizing cartograms, map features bulge out a specific variable. Even though it distorts each feature, it remains connected during its creation. On the other hand, you can have Non-Contiguous Cartograms, where features in non-contiguous cartograms don’t have to stay connected. Finally, Dorling Cartogram (named after professor [Danny Dorling](https://www.geog.ox.ac.uk/staff/ddorling.html)) uses shapes like circles and rectangles to depict area. These types of cartograms make it easy to recognize patterns. For example, here is a Darling Cartogram I made of [FixMyStreet](www.fixmystreet.org) reports in London: 
+
+![](img/notNaAll3CartogramNewFrame.png)
+
+Now we can make our own as well, using the cartogram package. 
+
+```{r}
+
+library(cartogram)
+```
+
+Within that there is the `cartogram()` function, which takes 2 arguments, 1 - the shape file (it can be a SpatialPolygonDataFrame or an sf object), and 2 - the variable which it should use to distort the polygon by. 
+
+In our data set we have a variable "electorate" which refers to the total number of registered electors
+
+```{r, eval = FALSE}
+
+# construct a cartogram using the percentage voting leave
+eu_cartogram <- cartogram(eu_sf, "Electorate")
+ 
+```
+
+
+Again this is some labour intensive work, much like the grid making, you have some time to chill now. Maybe read up on the maths behind this tranformation as well, in the paper [Dougenik, J. A., Chrisman, N. R., & Niemeyer, D. R. (1985). An Algorithm To Construct Continuous Area Cartograms. In The Professional Geographer, 37(1), 75-81.](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0033-0124.1985.00075.x). 
+
+
+I do have a tip for you if you want to make sure the process does not take too long. You can set a parameter in the cartogram function which is the "itermax" parameter. This specifies the maximum number of iterations we are happy with. If you don't specify it's set to 15. Let's set to 5 for the sake of speed: 
+
+```{r}
+
+# construct a cartogram using the percentage voting leave
+eu_cartogram <- cartogram_cont(eu_sf, "Electorate", itermax = 5)
+ 
+```
+
+And if your cartogram has been created, you can now plot again the referendum results, but using the electorate to change the size of the locad authority: 
+
+
+```{r}
+ggplot() +
+  geom_sf(data = eu_cartogram, aes(fill = Pct_Leave)) 
+```
+
+
+We can now see London much better, and see that darker coloured cluster where much smaller percentage of people voted leave. 
+
+
+Okay that's probably enough for the day. Nice work crime mappers!
+
 
 
 ## References and further reading
@@ -466,4 +640,11 @@ Look at the question for homework 10.3 about the three maps of binning and the h
 - [Gerell, Manne. "Smallest is better? The spatial distribution of arson and the modifiable areal unit problem." Journal of quantitative criminology 33.2 (2017): 293-318.](https://link.springer.com/article/10.1007/s10940-016-9297-6)
 - [Openshaw, Stan. "The modifiable areal unit problem. CATMOG (Concepts and techniques in modern geography) 38." Geo Abstracts, Norwich. 1984.](https://www.uio.no/studier/emner/sv/iss/SGO9010/openshaw1983.pdf).
 - [Rengert, George F., and Brian Lockwood. "Geographical units of analysis and the analysis of crime." Putting crime in its place. Springer, New York, NY, 2009. 109-122.](https://link.springer.com/chapter/10.1007/978-0-387-09688-9_5)
+
+
+###Transforming polygons
+
+- [Waldo Tobler (2004) Thirty Five Years of Computer Cartograms, Annals of the Association of American Geographers, 94:1, 58-73, DOI: 10.1111/j.1467-8306.2004.09401004.x](https://www.tandfonline.com/doi/full/10.1111/j.1467-8306.2004.09401004.x)
+- [Langton, S.H. & Solymosi, R. (2018) 'Visualising geographic information: examining methods of improving the thematic map.' RPubs. Available: https://rpubs.com/langton_/visual_geography_study](https://rpubs.com/langton_/visual_geography_study)
+
 
