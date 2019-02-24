@@ -247,6 +247,43 @@ We can take our GMP crimes data, and select only the cases from ASB using the cr
 ```{r}
 
 manchester_asb <- read.csv("https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester_asb.csv?dl=1")
+```
+
+
+This is currently just a text dataframe, so we need to let R know that actually this is a spatial object, who's geometry can be find in its longitude and latitude coordinates. As we have long/lat we can assure it's in WGS 84 projection. 
+
+
+```{r}
+ma_spatial <- st_as_sf(manchester_asb, coords = c("Longitude", "Latitude"), 
+                 crs = 4326, agr = "constant")
+```
+
+
+Now one thing that this does is it consumes our Long and Lat columnsinto a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. To do this, we can use a bespoke function, `sfc_as_cols()` created by [Josh M. London](https://github.com/jmlondon) in response to this [issue opened on github for the sf package](https://github.com/r-spatial/sf/issues/231). To create this function here, run the below code: 
+
+
+```{r}
+sfc_as_cols <- function(x, names = c("x","y")) {
+  stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
+  ret <- sf::st_coordinates(x)
+  ret <- tibble::as_tibble(ret)
+  stopifnot(length(names) == ncol(ret))
+  x <- x[ , !names(x) %in% names]
+  ret <- setNames(ret,names)
+  dplyr::bind_cols(x,ret)
+}
+
+```
+
+
+As we are not covering making your own function much here, don't worry too much about the above code, but if you're curious, raise your hand in the labs and we can come around and talk through it. 
+
+
+Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the columnd to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
+
+
+```{r}
+ma_spatial <- sfc_as_cols(ma_spatial, c("lng", "lat"))
 
 ```
 
@@ -259,7 +296,7 @@ So let's have a go:
 
 ```{r}
 
-ggplot(manchester_asb, aes(Longitude, Latitude)) +                        #define data and variables for x and y axes
+ggplot(ma_spatial, aes(lng, lat)) +                        #define data and variables for x and y axes
   stat_binhex() +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents
 
@@ -271,20 +308,16 @@ Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So 
 
 Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap: 
 
-***COORDS ARE  WRONG IDK WHY***
 
 ```{r}
 
 library(ggspatial) #load ggspatial package for background map tiles
 
-ggplot() +
+ggplot(ma_spatial, aes(x = lng, y = lat)) +
   annotation_map_tile() + 
-  stat_binhex(data = manchester_asb, aes(x = as.numeric(as.character(Longitude)), y = as.numeric(as.character(Latitude)))) +                                                         #add binhex layer (hexbin)
+  stat_binhex() +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents 
   
-
-
-
 
 ```
 
@@ -312,10 +345,9 @@ a) rectangular binning:
 
 ```{r}
 
-ggplot() + 
+ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_bin2d(data = manchester_asb, aes(x = Longitude, 
-                                         y = Latitude)) + 
+  stat_bin2d() + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency") 
 
@@ -326,10 +358,9 @@ b) hexagonal binning:
 
 ```{r}
 
-ggplot() + 
+ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_binhex(data = manchester_asb, aes(x = Longitude, 
-                                         y = Latitude)) + 
+  stat_binhex() + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency")
 
@@ -340,11 +371,9 @@ c) a simple heatmap:
 
 ```{r}
 
-ggplot() + 
+ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_density2d(data = manchester_asb, aes(x = Longitude, 
-                     y = Latitude, 
-                     fill = ..level.., # value corresponding to discretized density estimates 
+  stat_density2d(aes(fill = ..level.., # value corresponding to discretized density estimates 
                      alpha = ..level..), 
                  geom = "polygon") +  # creates the bands of differenc colors
   ## Configure the colors, transparency and panel
