@@ -369,7 +369,7 @@ ggplot(ma_spatial, aes(x = lng, y = lat)) +
 ```
 
 
-c) a simple heatmap:
+c) a simple "heatmap" (we will discuss these more thoroughly next week):
 
 ```{r}
 
