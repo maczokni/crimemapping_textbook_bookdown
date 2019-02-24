@@ -3,7 +3,9 @@
 
 ## Introduction
 
-In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. Before we do any of this, we need to load the libraries we will use today:
+In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. We are going to discuss how to address some of the problems we confront when we are trying to use use choropleth maps, as well as some alternatives to point based maps. We will also introduce the modifieable area unit problem.
+
+Before we do any of this, we need to load the libraries we will use today:
 
 ```{r}
 library(sf)
@@ -315,7 +317,7 @@ library(ggspatial) #load ggspatial package for background map tiles
 
 ggplot(ma_spatial, aes(x = lng, y = lat)) +
   annotation_map_tile() + 
-  stat_binhex() +                                                         #add binhex layer (hexbin)
+  stat_binhex(alpha=0.7) +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents 
   
 
@@ -347,7 +349,7 @@ a) rectangular binning:
 
 ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_bin2d() + 
+  stat_bin2d(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency") 
 
@@ -360,7 +362,7 @@ b) hexagonal binning:
 
 ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_binhex() + 
+  stat_binhex(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency")
 
@@ -383,9 +385,9 @@ ggplot(ma_spatial, aes(x = lng, y = lat)) +
 ```
 
 
-### Homework 1
+### Homework 5.1
 
-Look at the difference between the three maps (hex, rectangle, and density). How would your conclusions change if you were given these maps? Would you make different decisions about where to place your booths for the days of action? Why or why not? Discuss. 
+*Look at the difference between the three maps (hex, rectangle, and density). How would your conclusions change if you were given these maps? Would you make different decisions about where to place your booths for the days of action? Why or why not? Discuss.* 
 
 
 ### Multivariate binning 
@@ -396,7 +398,7 @@ We won't be covering this here but just so you can have a look at some examples 
 ### Benefits of Binning
 Because of the plethora of data types available and the wide variety of projects being done in GIS, binning is a popular method for mapping complex data and making it meaningful. Binning is a good option for map makers as well as users because it makes data easy to understand and it can be both static and interactive on many different map scales. If every different point were shown on a map it would have to be a very large scale map to ensure that the data points did not overlap and were easily understood by people using the maps.
 
-According to Kenneth Field, an Esri Research Cartographer, “Data binning is a great alternative for mapping large point-based data sets which allows us to tell a better story without interpolation.  Binning is a way of converting point-based data into a regular grid of polygons so that each polygon represents the aggregation of points that fall within it.”
+According to Kenneth Field, an Esri Research Cartographer, *“Data binning is a great alternative for mapping large point-based data sets which allows us to tell a better story without interpolation.  Binning is a way of converting point-based data into a regular grid of polygons so that each polygon represents the aggregation of points that fall within it.”*
 
 By using binning to create categories of data maps are easier to understand, more accurate and more visually appealing.
 
@@ -480,14 +482,14 @@ Most often you will just have to remain aware of the MAUP and it's possible effe
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
 
 
-### Homework 2
+### Homework 5.2
 
-Look at the question for homework 1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. 
+*Look at the question for homework 5.1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. *
 
 
 ## Replacing polygons with grid or hex shapes
 
-When you have meaningful spatial units of analysis in your polygons, so you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to cheare thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions.
+When you have meaningful spatial units of analysis in your polygons, for example you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to cheare thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions. [This article](https://www.tandfonline.com/eprint/q9w7iUhFJwzvBR84GkT9/full) provides a helpful discussion of the problem illustrating the case with UK election maps. It is worth reading.
 
 Fortunately, there are many methods in R to enhance the legibility of geographic information and the interpretability of what it is trying to be communicated. 
 
@@ -592,9 +594,9 @@ ggplot() +
 Cool, eh?
 
 
-### Homework 3
+### Homework 5.3
 
-Reproduce the above grid map using hexagons instead of squares. 
+*Reproduce the above grid map using hexagons instead of squares.* 
 
 
 ## Cartograms
