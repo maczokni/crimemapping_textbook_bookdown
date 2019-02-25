@@ -3,7 +3,9 @@
 
 ## Introduction
 
-In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. Before we do any of this, we need to load the libraries we will use today:
+In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. We are going to discuss how to address some of the problems we confront when we are trying to use use choropleth maps, as well as some alternatives to point based maps. We will also introduce the modifieable area unit problem.
+
+Before we do any of this, we need to load the libraries we will use today:
 
 
 ```r
@@ -395,6 +397,45 @@ manchester_asb <- read.csv("https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester
 ```
 
 
+This is currently just a text dataframe, so we need to let R know that actually this is a spatial object, who's geometry can be find in its longitude and latitude coordinates. As we have long/lat we can assure it's in WGS 84 projection. 
+
+
+
+```r
+ma_spatial <- st_as_sf(manchester_asb, coords = c("Longitude", "Latitude"), 
+                 crs = 4326, agr = "constant")
+```
+
+
+Now one thing that this does is it consumes our Long and Lat columnsinto a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. To do this, we can use a bespoke function, `sfc_as_cols()` created by [Josh M. London](https://github.com/jmlondon) in response to this [issue opened on github for the sf package](https://github.com/r-spatial/sf/issues/231). To create this function here, run the below code: 
+
+
+
+```r
+sfc_as_cols <- function(x, names = c("x","y")) {
+  stopifnot(inherits(x,"sf") && inherits(sf::st_geometry(x),"sfc_POINT"))
+  ret <- sf::st_coordinates(x)
+  ret <- tibble::as_tibble(ret)
+  stopifnot(length(names) == ncol(ret))
+  x <- x[ , !names(x) %in% names]
+  ret <- setNames(ret,names)
+  dplyr::bind_cols(x,ret)
+}
+```
+
+
+As we are not covering making your own function much here, don't worry too much about the above code, but if you're curious, raise your hand in the labs and we can come around and talk through it. 
+
+
+Now finally, let's use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the columnd to be called in a concatenated list (created with the `c()` function). Let's call these "lng" and "lat":
+
+
+
+```r
+ma_spatial <- sfc_as_cols(ma_spatial, c("lng", "lat"))
+```
+
+
 As a first step, we can plot asb in the borough of Manchester using simple ggplot! Remember the data visualisation session from weeks ago? We discussed how ggplot is such a great tool for building visualisations, because you can apply whatever geometry best suits your data. So for us to just have a look at the hexbinned version of our point data of antisocial behaviour, we can use the `stat_binhex()` function. We can also recreate the thematic map element, as we can use the frequency of points in each hex to shade each hexbin from white (least number of incidents) to red (most nuber of incidents). 
 
 
@@ -403,12 +444,12 @@ So let's have a go:
 
 
 ```r
-ggplot(manchester_asb, aes(Longitude, Latitude)) +                        #define data and variables for x and y axes
+ggplot(ma_spatial, aes(lng, lat)) +                        #define data and variables for x and y axes
   stat_binhex() +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-21-1.png" width="672" />
 
 
 Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So it would be much better if we could do this with a basemap as the backrgound, rather than our grey ggplot theme.
@@ -416,23 +457,22 @@ Neat, but doesn't quite tell us *where* that really dark hexbon actually is. So 
 
 Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap: 
 
-***COORDS ARE  WRONG IDK WHY***
 
 
 ```r
 library(ggspatial) #load ggspatial package for background map tiles
 
-ggplot() +
+ggplot(ma_spatial, aes(x = lng, y = lat)) +
   annotation_map_tile() + 
-  stat_binhex(data = manchester_asb, aes(x = as.numeric(as.character(Longitude)), y = as.numeric(as.character(Latitude)))) +                                                         #add binhex layer (hexbin)
+  stat_binhex(alpha=0.7) +                                                         #add binhex layer (hexbin)
   scale_fill_gradientn(colours = c("white","red"), name = "Frequency")    #add shading based on number of ASB incidents 
 ```
 
 ```
-## Zoom: 18
+## Zoom: 10
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-19-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-22-1.png" width="672" />
 
 
 Now this should give you some more context! Woo!
@@ -458,49 +498,45 @@ a) rectangular binning:
 
 
 ```r
-ggplot() + 
+ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_bin2d(data = manchester_asb, aes(x = Longitude, 
-                                         y = Latitude)) + 
+  stat_bin2d(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency") 
 ```
 
 ```
-## Zoom: 18
+## Zoom: 10
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 
 b) hexagonal binning: 
 
 
 ```r
-ggplot() + 
+ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_binhex(data = manchester_asb, aes(x = Longitude, 
-                                         y = Latitude)) + 
+  stat_binhex(alpha=0.7) + 
   scale_fill_gradientn(colours = c("white","red"), 
                        name = "Frequency")
 ```
 
 ```
-## Zoom: 18
+## Zoom: 10
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-21-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 
-c) a simple heatmap:
+c) a simple "heatmap" (we will discuss these more thoroughly next week):
 
 
 ```r
-ggplot() + 
+ggplot(ma_spatial, aes(x = lng, y = lat)) + 
   annotation_map_tile() + 
-  stat_density2d(data = manchester_asb, aes(x = Longitude, 
-                     y = Latitude, 
-                     fill = ..level.., # value corresponding to discretized density estimates 
+  stat_density2d(aes(fill = ..level.., # value corresponding to discretized density estimates 
                      alpha = ..level..), 
                  geom = "polygon") +  # creates the bands of differenc colors
   ## Configure the colors, transparency and panel
@@ -509,15 +545,15 @@ ggplot() +
 ```
 
 ```
-## Zoom: 18
+## Zoom: 11
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-25-1.png" width="672" />
 
 
-### Homework 1
+### Homework 5.1
 
-Look at the difference between the three maps (hex, rectangle, and density). How would your conclusions change if you were given these maps? Would you make different decisions about where to place your booths for the days of action? Why or why not? Discuss. 
+*Look at the difference between the three maps (hex, rectangle, and density). How would your conclusions change if you were given these maps? Would you make different decisions about where to place your booths for the days of action? Why or why not? Discuss.* 
 
 
 ### Multivariate binning 
@@ -528,7 +564,7 @@ We won't be covering this here but just so you can have a look at some examples 
 ### Benefits of Binning
 Because of the plethora of data types available and the wide variety of projects being done in GIS, binning is a popular method for mapping complex data and making it meaningful. Binning is a good option for map makers as well as users because it makes data easy to understand and it can be both static and interactive on many different map scales. If every different point were shown on a map it would have to be a very large scale map to ensure that the data points did not overlap and were easily understood by people using the maps.
 
-According to Kenneth Field, an Esri Research Cartographer, “Data binning is a great alternative for mapping large point-based data sets which allows us to tell a better story without interpolation.  Binning is a way of converting point-based data into a regular grid of polygons so that each polygon represents the aggregation of points that fall within it.”
+According to Kenneth Field, an Esri Research Cartographer, *“Data binning is a great alternative for mapping large point-based data sets which allows us to tell a better story without interpolation.  Binning is a way of converting point-based data into a regular grid of polygons so that each polygon represents the aggregation of points that fall within it.”*
 
 By using binning to create categories of data maps are easier to understand, more accurate and more visually appealing.
 
@@ -612,14 +648,14 @@ Most often you will just have to remain aware of the MAUP and it's possible effe
 For the purposes of this course, it's enough that you know of, and understand the MAUP and its implications. Always be smart when choosing your appropriate spatial unit of analysis, and when you use binning of any form, make sure you consider how and if your conclusions might change compared to another possible approach. 
 
 
-### Homework 2
+### Homework 5.2
 
-Look at the question for homework 1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. 
+*Look at the question for homework 5.1 about the three maps of binning and the hotspot map. Answer this question again, but now in light of what you have learned about MAUP. *
 
 
 ## Replacing polygons with grid or hex shapes
 
-When you have meaningful spatial units of analysis in your polygons, so you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to cheare thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions.
+When you have meaningful spatial units of analysis in your polygons, for example you are interested specifically in Local Autorities, it might make sense to stick with what we did last week, and aggregate the points into these polygons to cheare thematic maps. However, while thematic maps are an accessible and visually appealing method for displaying spatial information,  they can also be highly misleading. Irregularly shaped polygons and large differences in the size of areas being mapped can introduce misrepresentation. The message researchers want to get across might be lost, or even worse, misdirect the viewers to erroneous conclusions. [This article](https://www.tandfonline.com/eprint/q9w7iUhFJwzvBR84GkT9/full) provides a helpful discussion of the problem illustrating the case with UK election maps. It is worth reading.
 
 Fortunately, there are many methods in R to enhance the legibility of geographic information and the interpretability of what it is trying to be communicated. 
 
@@ -694,7 +730,7 @@ ggplot() +
   geom_sf(data = eu_sf, aes(fill = Pct_Leave)) 
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 
 We can see that in smaller LAs we don't even really see the result, as the boundary lines pretty much cover everything. Hmm. Now what we can do is transform the shapes into squares of hexagons. Let's have a go at squares. 
@@ -739,14 +775,14 @@ ggplot() +
   geom_sf(data = eu_reg, aes(fill = Pct_Leave)) 
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-32-1.png" width="672" />
 
 Cool, eh?
 
 
-### Homework 3
+### Homework 5.3
 
-Reproduce the above grid map using hexagons instead of squares. 
+*Reproduce the above grid map using hexagons instead of squares.* 
 
 
 ## Cartograms
@@ -817,7 +853,7 @@ ggplot() +
   geom_sf(data = eu_cartogram, aes(fill = Pct_Leave)) 
 ```
 
-<img src="05-week5_files/figure-html/unnamed-chunk-33-1.png" width="672" />
+<img src="05-week5_files/figure-html/unnamed-chunk-36-1.png" width="672" />
 
 
 We can now see London much better, and see that darker coloured cluster where much smaller percentage of people voted leave. 
