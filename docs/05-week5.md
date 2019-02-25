@@ -527,20 +527,6 @@ ggplot(ma_spatial, aes(x = lng, y = lat)) +
 ## Zoom: 10
 ```
 
-```
-## Warning in v[j] <- value: number of items to replace is not a multiple of
-## replacement length
-
-## Warning in v[j] <- value: number of items to replace is not a multiple of
-## replacement length
-
-## Warning in v[j] <- value: number of items to replace is not a multiple of
-## replacement length
-
-## Warning in v[j] <- value: number of items to replace is not a multiple of
-## replacement length
-```
-
 <img src="05-week5_files/figure-html/unnamed-chunk-24-1.png" width="672" />
 
 
