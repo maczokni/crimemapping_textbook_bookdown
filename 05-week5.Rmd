@@ -673,7 +673,7 @@ Okay that's probably enough for the day. Nice work crime mappers!
 - [Rengert, George F., and Brian Lockwood. "Geographical units of analysis and the analysis of crime." Putting crime in its place. Springer, New York, NY, 2009. 109-122.](https://link.springer.com/chapter/10.1007/978-0-387-09688-9_5)
 
 
-###Transforming polygons
+### Transforming polygons
 
 - [Waldo Tobler (2004) Thirty Five Years of Computer Cartograms, Annals of the Association of American Geographers, 94:1, 58-73, DOI: 10.1111/j.1467-8306.2004.09401004.x](https://www.tandfonline.com/doi/full/10.1111/j.1467-8306.2004.09401004.x)
 - [Langton, S.H. & Solymosi, R. (2018) 'Visualising geographic information: examining methods of improving the thematic map.' RPubs. Available: https://rpubs.com/langton_/visual_geography_study](https://rpubs.com/langton_/visual_geography_study)

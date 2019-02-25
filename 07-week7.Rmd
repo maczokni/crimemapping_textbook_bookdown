@@ -1,4 +1,4 @@
-#Global and local spatial autocorrelation
+# Global and local spatial autocorrelation
 
 This session we begin to ...
 

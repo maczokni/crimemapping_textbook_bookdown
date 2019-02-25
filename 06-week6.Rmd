@@ -1,5 +1,5 @@
 
-#Studying spatial point patterns
+# Studying spatial point patterns
 
 
 ## What we'll do today
