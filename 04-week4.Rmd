@@ -179,7 +179,7 @@ Any ideas?
 We can use the `geocode()` function from the `ggmap` package to turn our addresses into mappable coordinates. `geocode()` geocodes a location (find latitude and longitude) using either (1) the [Data Science Toolkit](http://www.datasciencetoolkit.org/about) or (2) Google Maps. Note that when using Google you are agreeing to the Google Maps API Terms of Service at [https://developers.google.com/maps/terms](https://developers.google.com/maps/terms) (this link is also loaded when you load the ggmap package). One of the conditions of using Google API to geocode your points is that you *have to* display them using a Google basemap for example! Also, to use the Google Maps API you need to get an API key, which we won't be messing around with today. Instead, we will use the Data Science Toolkit approach. 
 
 
-We can, at the most basic, geocode the postcode. This will put all the establisments to the centroid of the postocde. Postcodes are used in the United Kingdom as alphanumeric codes, that were devised by Royal Mail. A full postcode is known as a "postcode unit" and designates an area with a number of addresses or a single major delivery point. [You can search the Royal Mail for infor on post codes here.](https://www.royalmail.com/business/search/google/POSTCODE). 
+We can, at the most basic, geocode the postcode. This will put all the establisments to the centroid of the postcode. Postcodes are used in the United Kingdom as alphanumeric codes, that were devised by Royal Mail. A full postcode is known as a "postcode unit" and designates an area with a number of addresses or a single major delivery point. [You can search the Royal Mail for information on post codes here.](https://www.royalmail.com/business/search/google/POSTCODE). 
 
 Here is a map of the postcode areas in Greater Manchester: 
 
@@ -644,7 +644,7 @@ Now, we have our points that are crimes, right? Well... How do we connect them t
 One approach is to build a buffer around our licensed premises, and say that we will count all the crimes which fall within a specific radius of this licensed premise. What should this radius be? Well this is where your domain knowledge as criminologist comes in. How far away would you consdier a crime to still be related to this pub? 400 meters? 500 meters? 900 meters? 1 km? What do you think? This is again one of them *it depends* questions. Whatever buffer you choose you should justify, and make sure that you can defend when someone might ask about it, as the further your reach obviously the more crimes you will include, and these might alter your results. 
 
 
-So, let's say we are interested in all crimes that occur within 400 meters of each licensed premise. We chose 400m here as this is the recommended distance for accessible bus stop guidance, so basically as far as people should walk to get to a bus stop [TfL, 2008](http://content.tfl.gov.uk/accessibile-bus-stop-design-guidance.pdf). So in this case, we want to take our points, which represent the licensed premises, and build buffers of 400 meters around them. 
+So, let's say we are interested in all crimes that occur within 400 meters of each licensed premise. We chose 400m here as this is the recommended distance for accessible bus stop guidance, so basically as far as people should walk to get to a bus stop ([TfL, 2008](http://content.tfl.gov.uk/accessibile-bus-stop-design-guidance.pdf)). So in this case, we want to take our points, which represent the licensed premises, and build buffers of 400 meters around them. 
 
 
 You can do with the `st_buffer()` function: 
@@ -707,7 +707,7 @@ plot(st_geometry(prem_BNG), add = T)
 
 Still quite a bit of overlap, but this is possibly down to all the licensed premises being very densely close together in the city centre. 
 
-Well now let's have a look at our crimes. I think it might make sense (again using domain knowledge) to restrict to  violent crime. So let's do this: 
+Well now let's have a look at our crimes. I think it might make sense (again using domain knowledge) to restrict the analysis to violent crime. So let's do this: 
 
 
 

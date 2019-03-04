@@ -122,7 +122,7 @@ And while yepp, you've made a map, it's not a particularly exciting map.
 
 As the most important characteristic of any map is location, the most important argument of our code is the location argument. You can do this with the `setView()` function. Here you can specify location. Ideally, location is a longitude/latitude pair specifying the center of the map. Here we can choose the longitude and latitude for University of Manchester. If you wonder how we know these, there are many tools (such as [Google Maps](https://support.google.com/maps/answer/18539?co=GENIE.Platform%3DDesktop&hl=en)) for looking up latitude and longitude.  
 
-You could also accompany the coordinates with a  zoom argument, an integer from 3 to 20 specifying how large the spatial extent should be around the center, with 3 being the continent level and 20 being roughly the single building level. 
+You could also accompany the coordinates with a  zoom argument, an integer from 3 to 20 specifying how large the spatial extent should be around the center, with 3 being the continent level and 20 being roughly the single building level. Note that many maps do not support that high zoom levels. Find out by modifying the example below, what the maximum zoom level of the default tiles is.
 
 ```{r}
 
@@ -136,7 +136,7 @@ m  # Print the map, zoom = 15
 
 So what you see above is what we can call a **basemap**. The term basemap is seen often in GIS and refers to a collection of GIS data and/or orthorectified imagery that form the background setting for a map. The function of the basemap is to provide background detail necessary to orient the location of the map. Basemaps also add to the aesthetic appeal of a map.
 
-In the lecture today we described *reference maps*. We often may want to use these reference maps as **basemaps** for our thematic maps. They may give us context and help with the interpretation. But what we want to learn in this course is about thematic maps, maps that tell stories and for that we need data. We will look at cool data in the next section, but before just a couple of things about these basemaps. You can see above that you are seeing the *Open Street* Map Basemap. This is one option but there are others.
+In the lecture today we described *reference maps*. We often may want to use these reference maps as **basemaps** for our thematic maps. They may give us context and help with the interpretation. But what we want to learn in this course is about thematic maps, maps that tell stories and for that we need data. We will look at cool data in the next section, but before just a couple of things about these basemaps. You can see above that you are seeing the *Open Street Map* Basemap. This is one option but there are others.
 
 For example [stamen maps](http://maps.stamen.com/#toner/12/37.7706/-122.3782) are one alternative. If you wanted to use this, you have to specify what sort of tile you add in the `addProviderTiles()` function. Notice that it's different to `addTiles()` because you're getting tiles from an external provider, in this case Stamen. So to get stamen we would pass the argument `providers$Stamen.Toner`. Like so: 
 
@@ -196,7 +196,7 @@ To do this, open the [data.police.uk/data](https://data.police.uk/data/) website
 This will take you to a download page, where you have to click the `Download now` button. This will open a dialogue to save a .zip file. Navigate to the project directory folder you've created and save it there. Unzip the file. 
 
 ```{r, eval=FALSE}
-#You can use the unzip function for this. A cool function you may want to use as well is file.choose(). If we pass this function as an argument to unzip(), we will get a pop window where we will be able to select our file using familiar point and click. Ideally, you want to rather use the pathfile to your file. But sometimes these shortcuts are convenient.
+#You can use the unzip function for this. A cool function you may want to use as well is file.choose(). If we pass this function as an argument to unzip(), we will get a pop window where we will be able to select our file using familiar point and click. Ideally, you want to rather write down the path to your file. But sometimes these shortcuts are convenient.
 
 unzip(file.choose())
 
