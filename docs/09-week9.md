@@ -13,7 +13,7 @@ library(sf)
 ```
 
 ```
-## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
+## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
 ```
 
 ```r
@@ -33,7 +33,7 @@ library(spdep)
 ```
 ## To access larger datasets in this package, install the spDataLarge
 ## package with: `install.packages('spDataLarge',
-## repos='https://nowosad.github.io/drat/', type='source')`
+## repos='https://nowosad.github.io/drat/', type='source'))`
 ```
 
 
@@ -44,21 +44,8 @@ Then we will bring back the data from last week:
 ##R in Windows have some problems with https addresses, that's why we need to do this first:
 urlfile<-'https://s3.amazonaws.com/geoda/data/ncovr.zip'
 download.file(urlfile, 'ncovr.zip')
-```
-
-```
-## Warning in download.file(urlfile, "ncovr.zip"): downloaded length 8728576 !
-## = reported length 19106964
-```
-
-```r
 #Let's unzip and create a new directory (ncovr) in our working directory to place the files
 unzip('ncovr.zip', exdir = 'ncovr')
-```
-
-```
-## Warning in unzip("ncovr.zip", exdir = "ncovr"): error 1 al extraer del
-## archivo zip
 ```
 
 Last week we did not treated the data as spatial and, consequently, relied on the csv file. But notice that in the unzip ncovr file there is also a shapefile that we can load as a spatial object into R:
@@ -70,7 +57,7 @@ ncovr_sf <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
+## Reading layer `NAT' from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/ncovr/ncovr/NAT.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -603,11 +590,11 @@ data.frame(sums$res)
 
 ```
 ##        direct    indirect      total
-## 1  1.74080391  0.27046682  2.0112707
-## 2  1.00625847  0.15634129  1.1625998
-## 3 -0.17995383 -0.02795923 -0.2079131
-## 4  0.38429291  0.05970717  0.4440001
-## 5  0.08827056  0.01371450  0.1019851
+## 1  1.74079766  0.27047307  2.0112707
+## 2  1.00625486  0.15634490  1.1625998
+## 3 -0.17995318 -0.02795988 -0.2079131
+## 4  0.38429153  0.05970855  0.4440001
+## 5  0.08827024  0.01371482  0.1019851
 ```
 
 
@@ -618,11 +605,11 @@ data.frame(sums$pzmat)
 
 ```
 ##            Direct     Indirect        Total
-## RD60 0.000000e+00 0.0012892745 0.000000e+00
-## DV60 0.000000e+00 0.0008322913 0.000000e+00
-## MA60 0.000000e+00 0.0012191845 0.000000e+00
-## PS60 5.248795e-07 0.0088174508 1.162674e-06
-## UE60 7.777592e-04 0.0158103370 7.348345e-04
+## RD60 0.000000e+00 0.0002486369 0.000000e+00
+## DV60 0.000000e+00 0.0002038800 0.000000e+00
+## MA60 0.000000e+00 0.0001276522 0.000000e+00
+## PS60 3.794556e-07 0.0088502338 2.145641e-06
+## UE60 1.163417e-03 0.0046187632 8.090942e-04
 ```
 
 We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.

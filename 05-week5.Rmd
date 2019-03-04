@@ -499,7 +499,7 @@ Broadly, the options are:
 - hexmap
 - grid
 
-Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on two methods that have been developed recently: the `geogrid` package on CRAN and some [open code]https://rpubs.com/profrichharris/hexograms shared by Richard Harris to make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about  **cartograms**, but I'll leave that to the next section.
+Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on methods for transforming our maps to hex and gridap. We make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about  **cartograms**, but I'll leave that to the next section.
 
 
 Let's explore this using the example of the results of the 2016 EU referendum at Local Authority level, where remain areas clustered in London. A simple thematic map does not necessarily communicate this well because Local Authorities are both small and densely populated in London. 

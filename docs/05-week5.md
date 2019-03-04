@@ -13,7 +13,7 @@ library(sf)
 ```
 
 ```
-## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
+## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
 ```
 
 ```r
@@ -33,7 +33,7 @@ library(spdep)
 ```
 ## To access larger datasets in this package, install the spDataLarge
 ## package with: `install.packages('spDataLarge',
-## repos='https://nowosad.github.io/drat/', type='source')`
+## repos='https://nowosad.github.io/drat/', type='source'))`
 ```
 
 ```r
@@ -151,7 +151,7 @@ ncovr_sf <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
+## Reading layer `NAT' from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/ncovr/ncovr/NAT.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -665,7 +665,7 @@ Broadly, the options are:
 - hexmap
 - grid
 
-Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on two methods that have been developed recently: the `geogrid` package on CRAN and some [open code]https://rpubs.com/profrichharris/hexograms shared by Richard Harris to make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about  **cartograms**, but I'll leave that to the next section.
+Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on methods for transforming our maps to hex and gridap. We make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about  **cartograms**, but I'll leave that to the next section.
 
 
 Let's explore this using the example of the results of the 2016 EU referendum at Local Authority level, where remain areas clustered in London. A simple thematic map does not necessarily communicate this well because Local Authorities are both small and densely populated in London. 
@@ -695,7 +695,7 @@ las <- st_read("data/England_lad_2011_gen/england_lad_2011_gen.shp")
 ```
 
 ```
-## Reading layer `england_lad_2011_gen' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\data\England_lad_2011_gen\england_lad_2011_gen.shp' using driver `ESRI Shapefile'
+## Reading layer `england_lad_2011_gen' from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/data/England_lad_2011_gen/england_lad_2011_gen.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 326 features and 4 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -825,23 +825,23 @@ eu_cartogram <- cartogram_cont(eu_sf, "Electorate", itermax = 5)
 ```
 
 ```
-## Mean size error for iteration 1: 4.11884641548981
+## Mean size error for iteration 1: 4.11884641548982
 ```
 
 ```
-## Mean size error for iteration 2: 21.1096264532847
+## Mean size error for iteration 2: 21.1096264523744
 ```
 
 ```
-## Mean size error for iteration 3: 3.0584895516181
+## Mean size error for iteration 3: 3.05848955161026
 ```
 
 ```
-## Mean size error for iteration 4: 2.51480274957159
+## Mean size error for iteration 4: 2.51480274961733
 ```
 
 ```
-## Mean size error for iteration 5: 2.92812678108472
+## Mean size error for iteration 5: 2.92812677999131
 ```
 
 And if your cartogram has been created, you can now plot again the referendum results, but using the electorate to change the size of the locad authority: 

@@ -15,21 +15,8 @@ We will use a dataset that includes information about homicide in the US, as wel
 ##R in Windows have some problems with https addresses, that's why we need to do this first:
 urlfile<-'https://s3.amazonaws.com/geoda/data/ncovr.zip'
 download.file(urlfile, 'ncovr.zip')
-```
-
-```
-## Warning in download.file(urlfile, "ncovr.zip"): downloaded length
-## 17981440 != reported length 19106964
-```
-
-```r
 #Let's unzip and create a new directory (ncovr) in our working directory to place the files
 unzip('ncovr.zip', exdir = 'ncovr')
-```
-
-```
-## Warning in unzip("ncovr.zip", exdir = "ncovr"): error 1 al extraer del
-## archivo zip
 ```
 
 There is quite a few files and folders here. We don't need all of it. If you look inside the newly created folder you will find two subdirecoties MACOSX and ncovr. Look in the latter. You will see a pdf file called codebook.pdf. Read this file. It provides information on the variables and data that is included here. We are now going to read the main data file into R. This is the NAT.csv file.
@@ -247,7 +234,7 @@ library(arm)
 ```
 
 ```
-## Working directory is C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_textbook
+## Working directory is /Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown
 ```
 
 ```r
@@ -569,6 +556,13 @@ We are going to use instead the `plot_model()` function of the `sjPlot` package,
 library(sjPlot)
 ```
 
+```
+## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
+## TMB was built with Matrix version 1.2.15
+## Current Matrix version is 1.2.14
+## Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
+```
+
 Let's try with a more complex example:
 
 
@@ -656,7 +650,7 @@ library(arm)
 ```
 
 ```
-## Working directory is C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_textbook
+## Working directory is /Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown
 ```
 
 ```r

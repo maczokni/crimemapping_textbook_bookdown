@@ -820,7 +820,37 @@ Make sure you think a little bit about this. Not only do you have to consider wh
 
 
 
+```{r, echo=FALSE, eval=FALSE, message=FALSE, warning=FALSE}
 
+city_centre_prems$postcode_coords2 <- geocode(paste(city_centre_prems$LOCATIONTEXT, ", UK", sep=""), source = 'dsk')
+
+city_centre_prems$longitude2 <- city_centre_prems$postcode_coords2$lon
+city_centre_prems$latitude2 <- city_centre_prems$postcode_coords2$lat
+
+m <- leaflet(data = city_centre_prems) %>%
+  addProviderTiles("Stamen.Toner") %>% 
+  addCircleMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "red") %>% 
+  addCircleMarkers(lng=~longitude2, lat=~latitude2, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "blue")
+m  
+
+city_centre_prems$postcode_coords3 <- geocode(paste(city_centre_prems$LOCATIONTEXT, ", ", city_centre_prems$POSTCODE, ", UK", sep=""), source = 'dsk')
+
+city_centre_prems$longitude3 <- city_centre_prems$postcode_coords3$lon
+city_centre_prems$latitude3 <- city_centre_prems$postcode_coords3$lat
+
+m <- leaflet(data = city_centre_prems) %>%
+  addProviderTiles("Stamen.Toner") %>% 
+  addCircleMarkers(lng=~longitude, lat=~latitude, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#a6cee3") %>%
+  addCircleMarkers(lng=~longitude2, lat=~latitude2, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#1f78b4")%>%
+  addCircleMarkers(lng=~longitude3, lat=~latitude3, popup=~as.character(PREMISESNAME), label = ~as.character(PREMISESNAME), radius = 2, color = "#b2df8a") %>% 
+  addLegend("topleft", 
+  colors =c("#a6cee3",  "#1f78b4", "#b2df8a"),
+  labels= c("postcode", "address","both"),
+  title= "Geocoding approach",
+  opacity = 1)
+m  
+
+```
 
 
 

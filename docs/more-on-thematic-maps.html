@@ -61,41 +61,67 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -326,24 +352,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2><span class="header-section-number">5.1</span> Introduction</h2>
 <p>In this session we are going to discuss some additional features around thematic maps we did not cover in week 3. We are going to discuss how to address some of the problems we confront when we are trying to use use choropleth maps, as well as some alternatives to point based maps. We will also introduce the modifieable area unit problem.</p>
 <p>Before we do any of this, we need to load the libraries we will use today:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre></div>
-<pre><code>## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
 <span class="kw">library</span>(sp)
-<span class="kw">library</span>(spdep)</code></pre></div>
+<span class="kw">library</span>(spdep)</code></pre>
 <pre><code>## Loading required package: Matrix</code></pre>
 <pre><code>## Loading required package: spData</code></pre>
 <pre><code>## To access larger datasets in this package, install the spDataLarge
 ## package with: `install.packages(&#39;spDataLarge&#39;,
-## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;)`</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DCluster)</code></pre></div>
+## repos=&#39;https://nowosad.github.io/drat/&#39;, type=&#39;source&#39;))`</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(DCluster)</code></pre>
 <pre><code>## Loading required package: boot</code></pre>
 <pre><code>## Loading required package: MASS</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cartogram)
-<span class="kw">library</span>(ggmap)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cartogram)
+<span class="kw">library</span>(ggmap)</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
-<span class="kw">library</span>(dplyr)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">library</span>(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:MASS&#39;:
@@ -361,9 +387,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>You might have noticed that in your list of available packages you might see more than you remember downloading. The idea of <em>dependencies</em> has come up throughout the semester. Packages have <em>dependencies</em> when their code is <em>dependent</em> on (uses code from) another package. For example, if I write some code that I think will be useful, so I release this in the form of the package “rekaR”, but I use ggplot2 in the code, then ggplot2 will be a dependency of rekaR. As a default, R will install all the dependencies for a package when you install your package. So this way you might end up with some packages there that you didn’t realise you had.</p>
 <p>Why am I telling you this? Well you should always check if you have a package, before installing it. And I wanted to share with you some neat code from a Stackoverflow discussion (if you are not yet familiar with Stackoverflow you have not been Google-ing your error messages enough) <a href="https://stackoverflow.com/questions/4090169/elegant-way-to-check-for-missing-packages-and-install-them">here</a> to do this. I’ll comment it a bit, so you can follow along what it does <strong>but you don’t have to if you don’t want to</strong>. This is just an optional extra.</p>
 <p>So as a first step, you have to assign a list of all the packages you have to check to an object. Let’s say I tell you that today we will be using the following packaes: “sp”, “rgdal”, “classInt”, “RColorBrewer”, “ggplot2”, “hexbin”, “ggmap”, “XML”, and “dplyr”. Then you can add these to an object called <code>libs</code>, using the <code>c()</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">libs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sf&quot;</span>, <span class="st">&quot;tmap&quot;</span>, <span class="st">&quot;sp&quot;</span>, <span class="st">&quot;spdep&quot;</span>, <span class="st">&quot;DCluster&quot;</span>, <span class="st">&quot;cartogram&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">libs &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;sf&quot;</span>, <span class="st">&quot;tmap&quot;</span>, <span class="st">&quot;sp&quot;</span>, <span class="st">&quot;spdep&quot;</span>, <span class="st">&quot;DCluster&quot;</span>, <span class="st">&quot;cartogram&quot;</span>)</code></pre>
 <p>Now you can run the below bit of code, and you will see in the console an output of what is and isn’t installed, as well as install the packages that are not!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (x <span class="cf">in</span> libs){                                                <span class="co">#cycle through each item in libs object</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="cf">for</span> (x <span class="cf">in</span> libs){                                                <span class="co">#cycle through each item in libs object</span>
   <span class="cf">if</span>(x <span class="op">%in%</span><span class="st"> </span><span class="kw">rownames</span>(<span class="kw">installed.packages</span>()) <span class="op">==</span><span class="st"> </span><span class="ot">FALSE</span>) {          <span class="co">#if the package is not installed</span>
     <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;installing &quot;</span>, x, <span class="st">&quot;...&quot;</span>))                      <span class="co">#print a message to tell me</span>
     <span class="kw">install.packages</span>(x)                                         <span class="co">#and then install the packages</span>
@@ -372,7 +398,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
     <span class="kw">print</span> (<span class="kw">paste0</span>(x, <span class="st">&quot; is already installed &quot;</span>))                 <span class="co">#print a message to tell me</span>
   }
   <span class="kw">library</span>(x, <span class="dt">character.only =</span> <span class="ot">TRUE</span>)                             <span class="co">#and then load the packages</span>
-}</code></pre></div>
+}</code></pre>
 <pre><code>## [1] &quot;sf is already installed &quot;
 ## [1] &quot;tmap is already installed &quot;
 ## [1] &quot;sp is already installed &quot;
@@ -384,15 +410,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="data" class="section level3">
 <h3><span class="header-section-number">5.1.2</span> Data</h3>
 <p>Then we will bring back data about homicide across US counties. Some of you that have taken previous classes with us may be familiar with this dataset. The dataset was used as the basis for <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1745-9125.2001.tb00933.x">this study</a>. We will be using it also later on in the semester. It contains data on homicide counts and rates for various decades across the US as well as information on structural factors often thought to be associated with violence.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">##R in Windows have some problems with https addresses, that&#39;s why we need to do this first:</span>
 urlfile&lt;-<span class="st">&#39;https://s3.amazonaws.com/geoda/data/ncovr.zip&#39;</span>
 <span class="kw">download.file</span>(urlfile, <span class="st">&#39;ncovr.zip&#39;</span>)
 <span class="co">#Let&#39;s unzip and create a new directory (ncovr) in our working directory to place the files</span>
-<span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</code></pre></div>
+<span class="kw">unzip</span>(<span class="st">&#39;ncovr.zip&#39;</span>, <span class="dt">exdir =</span> <span class="st">&#39;ncovr&#39;</span>)</code></pre>
 <p>Remember that to treat the data as spatial we need to load the shapefile. With that we can create a spatial object:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">shp_name &lt;-<span class="st"> &quot;ncovr/ncovr/NAT.shp&quot;</span>
-ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre></div>
-<pre><code>## Reading layer `NAT&#39; from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\ncovr\ncovr\NAT.shp&#39; using driver `ESRI Shapefile&#39;
+<pre class="sourceCode r"><code class="sourceCode r">shp_name &lt;-<span class="st"> &quot;ncovr/ncovr/NAT.shp&quot;</span>
+ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre>
+<pre><code>## Reading layer `NAT&#39; from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/ncovr/ncovr/NAT.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -404,48 +430,48 @@ ncovr_sf &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)
 <div id="mapping-rates-learning-from-disease-mapping" class="section level2">
 <h2><span class="header-section-number">5.2</span> Mapping rates, learning from disease mapping</h2>
 <p>In previous sessions we discussed how to map rates. It seems a fairly straightoforward issue, you calculate a rate by dividing your numerator (eg: number of crimes) by your demoninator (eg: daytime population). You get your variable with the relevant rate and you map it using a choropleth map. However, things are not always that simple. Rates are funny animals. Let’s look at the ncvor data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>HR60)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>HR60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.000   0.000   2.783   4.504   6.885  92.937</code></pre>
 <p>We can see that the county with the highest homicide rate in the 1960s had a rate of 92.937 homicides per 100,000 individuals. That is very high. Just to put it into context in the UK is about 0.92. Where is that place? I can tell you is a place call Borden. Check it out:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">borden &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, NAME <span class="op">==</span><span class="st"> &quot;Borden&quot;</span>)
-borden<span class="op">$</span>HR60</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden &lt;-<span class="st"> </span><span class="kw">subset</span>(ncovr_sf, NAME <span class="op">==</span><span class="st"> &quot;Borden&quot;</span>)
+borden<span class="op">$</span>HR60</code></pre>
 <pre><code>## [1] 92.9368</code></pre>
 <p><a href="https://en.wikipedia.org/wiki/Borden_County,_Texas">Borden county</a> in Texas. You may be thinking… “Texas Chainsaw Massacre” perhaps? No, not really. Ed Gein, who inspired the film, was based and operated in Wisconsin. Borden claim to fame is that it was named after Gail Borden, the inventor of condensed milk. So, what’s going on here? Why do we have a homicide rate in Borden that makes it look like a war zone or the setting for Midsomer Murders? Is is that it is only one of the six counties where alcohol is banned in Texas (and people are consequently going nuts?).</p>
 <p>Check this out too:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HC60</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HC60</code></pre>
 <pre><code>## [1] 1</code></pre>
 <p>What? A total homicide count of 1. How can a county with just one homicide have a rate that makes it look like the most dangerous place in the US?</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>PO60</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>PO60</code></pre>
 <pre><code>## [1] 1076</code></pre>
 <p>Well, there were about 1076 people living there.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>PO60)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(ncovr_sf<span class="op">$</span>PO60)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##     208    9417   18408   57845   39165 7781984</code></pre>
 <p>If you contrast that with the average county in the US, that’s tiny. One homicide in such a small place can end up producing a big rate. Remember that the rate is simply dividing the number of relevant events by the exposure variable (in this case population) and multiplying by a constant (in this case 100,000 since we expressed crime rates in those terms). Most times Borden is a very peaceful place:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR70</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR70</code></pre>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR80</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR80</code></pre>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR90</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">borden<span class="op">$</span>HR90</code></pre>
 <pre><code>## [1] 0</code></pre>
 <p>It has a homicide rate of 0 in most decades. But it only takes one homicide and, bang, it goes top of the league. So a standard map of rates is bound to be noisy. There is the instability that is introduced by virtue of having areas that may be sparsely populated and in which one single event, like in this case, will produce a very noticeable change in the rate. In fact, if you look at the counties with the highest homicide rate in the ncovr dataset you will notice all of them are places like Borden, areas that are sparsely populated, not because they are that dangerous, but because of the instability of rates.</p>
 <p>This is a problem that was first noted by epidemiologists doing disease mapping. But a number of other disciplines have now noted this and used some of the approaches developed by public health researchers that confronted this problem when producing maps of disease (PRO TIP: techniques and approaches used by spatial epidemiologists are very similar to those used by criminologists -in case you ever think of changing careers or need inspiration for how to solve a crime analysis problem).</p>
 <p>One way of dealing with this is by <strong>smoothing</strong> the rates. This basically as the word implies aims for a smoother representation that avoids hard spikes associated with random noise. There are different ways of doing that. Some ways use a non-spatial approach to smoothing, using something called a <strong>empirical bayesian smoother</strong>. How does this work? This approach takes the raw rates and tries to “shrunk” them towards the overall average. What does this mean? Essentially, we compute a weighted average between the raw rate for each area and the global average across all areas, with weights proportional to the underlying population at risk. What this procedure does is to have the rates of smaller areas (those with a small population at risk) to have their rates adjusted considerably (brought closer to the global average), whereas the rates for the larger areas will barely change.</p>
 <p>Here we are going to introduce the approach implemented in <code>DCluster</code>, a package developed for epidemiological research and detection of <a href="https://www.r-project.org/conferences/DSC-2003/Proceedings/GomezRubioEtAl.pdf">clusters of disease</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw">empbaysmooth</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">res &lt;-<span class="st"> </span><span class="kw">empbaysmooth</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60)</code></pre>
 <p>In the new object we generate, which is a list, you have an element which contains the computed rates. We can add those to our dataset:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ncovr_sf<span class="op">$</span>HR60EBS &lt;-<span class="st"> </span>res<span class="op">$</span>smthrr <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sf<span class="op">$</span>HR60EBS &lt;-<span class="st"> </span>res<span class="op">$</span>smthrr <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></code></pre>
 <p>Instead of shrinking to the global rate, we can shrink to a rate based on the neighbours of each county. If instead of shrinking to a global rate, we shrink to a local rate, we may be able to take unobserved heterogeneity into account; for this we need the list of neighbours (we will discuss this code in a later session, so for now just trust us we are computing the rate of the areas that surround each country):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ncovr_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_sf, <span class="st">&quot;Spatial&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">ncovr_sp &lt;-<span class="st"> </span><span class="kw">as</span>(ncovr_sf, <span class="st">&quot;Spatial&quot;</span>)
 w_nb &lt;-<span class="st"> </span><span class="kw">poly2nb</span>(ncovr_sp, <span class="dt">row.names=</span>ncovr_sp<span class="op">$</span>FIPSNO)
 eb2 &lt;-<span class="st"> </span><span class="kw">EBlocal</span>(ncovr_sf<span class="op">$</span>HC60, ncovr_sf<span class="op">$</span>PO60, w_nb)
-ncovr_sf<span class="op">$</span>HR60EBSL &lt;-<span class="st"> </span>eb2<span class="op">$</span>est <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></code></pre></div>
+ncovr_sf<span class="op">$</span>HR60EBSL &lt;-<span class="st"> </span>eb2<span class="op">$</span>est <span class="op">*</span><span class="st"> </span><span class="dv">100000</span></code></pre>
 <p>We can now plot the maps and compare them:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</code></pre>
 <pre><code>## tmap style set to &quot;col_blind&quot;</code></pre>
 <pre><code>## other available styles are: &quot;white&quot;, &quot;gray&quot;, &quot;natural&quot;, &quot;cobalt&quot;, &quot;albatross&quot;, &quot;beaver&quot;, &quot;bw&quot;, &quot;classic&quot;, &quot;watercolor&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map1&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r">map1&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;HR60&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Raw rate&quot;</span>, <span class="dt">palette =</span> <span class="st">&quot;Reds&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;left&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
@@ -463,7 +489,7 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
             <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)
 
-<span class="kw">tmap_arrange</span>(map1, map2, map3) </code></pre></div>
+<span class="kw">tmap_arrange</span>(map1, map2, map3) </code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>Notice that the quantiles are not the same, so that will make your comparison difficult.</p>
 </div>
@@ -476,14 +502,13 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
 </blockquote>
 <p>Researchers and practitioners often require a way to systematically divide a region into equal-sized portions. As well as making maps with many points easier to read, binning data into regions can help identify spatial influence of neighbourhoods, and can be an essential step in developing systematic sampling designs.</p>
 <p>This approach to binning generates an array of repeating shapes over a user-specified area. These shapes can be hexagons, squares, rectangles, triangles, circles or points, and they can be generated with any directional orientation.</p>
-<div class="figure">
-<img src="http://www.jennessent.com/images/shape_patterns_manual.jpg" />
-
-</div>
+<p><img src="http://www.jennessent.com/images/shape_patterns_manual.jpg" /></p>
 <div id="the-binning-process" class="section level3">
 <h3><span class="header-section-number">5.3.1</span> The Binning Process</h3>
 <p>Binning is a data modification technique that changes the way data is shown at small scales. It is done in the pre-processing stage of data analysis to convert the original data values into a range of small intervals, known as a bin. These bins are then replaced by a value that is representative of the interval to reduce the number of data points.</p>
-<p>Spatial binning (also called <em>spatial discretization</em>) discretizes the location values into a small number of groups associated with geographical areas or shapes. The assignment of a location to a group can be done by any of the following methods: - Using the coordinates of the point to identify which “bin” it belongs to. - Using a common variable in the attribute table of the bin and the point layers.</p>
+<p>Spatial binning (also called <em>spatial discretization</em>) discretizes the location values into a small number of groups associated with geographical areas or shapes. The assignment of a location to a group can be done by any of the following methods:
+- Using the coordinates of the point to identify which “bin” it belongs to.
+- Using a common variable in the attribute table of the bin and the point layers.</p>
 </div>
 <div id="different-binning-techniques" class="section level3">
 <h3><span class="header-section-number">5.3.2</span> Different Binning Techniques</h3>
@@ -503,17 +528,17 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
 <p>In many applications binning is done using a technique called <strong>hexagonal binning</strong>. This technique uses hexagon shapes to create a grid of points and develops a spatial histogram that shows different data points as a range or group of pairs with common distances and directions. In hexagonal binning the number of points falling within a particular rectangular or hexagon in a gridded surface is what makes the different colors to easily visualize data <a href="https://www.mapbox.com/blog/binning-alternative-point-maps/">(Smith, 2012)</a>. Hexagonnal binning was first developed in 1987 and today “hexbinning” is conducted by laying a hexagonal grid on top of 2-dimensional data <a href="http://indiemaps.com/blog/2011/10/hexbins/">(Johnson, 2011)</a>. Once this is done users can conduct data point counts to determine the number of points for each hexagon <a href="http://indiemaps.com/blog/2011/10/hexbins/">(Johnson, 2011)</a>. The bins are then symbolized differently to show meaningful patterns in the data.</p>
 <p>So how can we use hexbinning to solve our antisocial behaviour days of action task? Well let’s say we split Manchester city centre into hexagons, and count the number of antisocial behaviour instances in these. We can then identify the top hexagons, and locate our booths somewhere within these.</p>
 <p>First make sure you have the appropriate packages loaded:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">library</span>(ggmap)
-<span class="kw">library</span>(hexbin)</code></pre></div>
+<span class="kw">library</span>(hexbin)</code></pre>
 <p>Also let’s get some data. You could go and get this data yourself from police.uk, we’ve been through all the steps for downloading data from there a few times now. But for now, I have a tidied set of data ready for you. This data is one year’s worth of antisocial behaviour from the <a href="data.police.uk">police.uk</a> data, from May 2016 to May 2017, for the borough of Manchester.</p>
 <p>We can take our GMP crimes data, and select only the cases from ASB using the crime.type variable. If you want, however, I have already done this, so you can also download from my dropbox using the link here:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">manchester_asb &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester_asb.csv?dl=1&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">manchester_asb &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://www.dropbox.com/s/4tk0aps3jfd9nh4/manchester_asb.csv?dl=1&quot;</span>)</code></pre>
 <p>This is currently just a text dataframe, so we need to let R know that actually this is a spatial object, who’s geometry can be find in its longitude and latitude coordinates. As we have long/lat we can assure it’s in WGS 84 projection.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ma_spatial &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(manchester_asb, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>), 
-                 <span class="dt">crs =</span> <span class="dv">4326</span>, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ma_spatial &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(manchester_asb, <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>), 
+                 <span class="dt">crs =</span> <span class="dv">4326</span>, <span class="dt">agr =</span> <span class="st">&quot;constant&quot;</span>)</code></pre>
 <p>Now one thing that this does is it consumes our Long and Lat columnsinto a geometry attribute. This is generally OK, but for the binning we will do, we would like to have them as separate coordinates. To do this, we can use a bespoke function, <code>sfc_as_cols()</code> created by <a href="https://github.com/jmlondon">Josh M. London</a> in response to this <a href="https://github.com/r-spatial/sf/issues/231">issue opened on github for the sf package</a>. To create this function here, run the below code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">sfc_as_cols &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>)) {
+<pre class="sourceCode r"><code class="sourceCode r">sfc_as_cols &lt;-<span class="st"> </span><span class="cf">function</span>(x, <span class="dt">names =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;y&quot;</span>)) {
   <span class="kw">stopifnot</span>(<span class="kw">inherits</span>(x,<span class="st">&quot;sf&quot;</span>) <span class="op">&amp;&amp;</span><span class="st"> </span><span class="kw">inherits</span>(sf<span class="op">::</span><span class="kw">st_geometry</span>(x),<span class="st">&quot;sfc_POINT&quot;</span>))
   ret &lt;-<span class="st"> </span>sf<span class="op">::</span><span class="kw">st_coordinates</span>(x)
   ret &lt;-<span class="st"> </span>tibble<span class="op">::</span><span class="kw">as_tibble</span>(ret)
@@ -521,24 +546,24 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
   x &lt;-<span class="st"> </span>x[ , <span class="op">!</span><span class="kw">names</span>(x) <span class="op">%in%</span><span class="st"> </span>names]
   ret &lt;-<span class="st"> </span><span class="kw">setNames</span>(ret,names)
   dplyr<span class="op">::</span><span class="kw">bind_cols</span>(x,ret)
-}</code></pre></div>
+}</code></pre>
 <p>As we are not covering making your own function much here, don’t worry too much about the above code, but if you’re curious, raise your hand in the labs and we can come around and talk through it.</p>
 <p>Now finally, let’s use this function we just created to extract the coords to some columns. So in this function, we have to pass as parameters the name of the dataframe, ma_spatial in our case, and also what we want the columnd to be called in a concatenated list (created with the <code>c()</code> function). Let’s call these “lng” and “lat”:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ma_spatial &lt;-<span class="st"> </span><span class="kw">sfc_as_cols</span>(ma_spatial, <span class="kw">c</span>(<span class="st">&quot;lng&quot;</span>, <span class="st">&quot;lat&quot;</span>))</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">ma_spatial &lt;-<span class="st"> </span><span class="kw">sfc_as_cols</span>(ma_spatial, <span class="kw">c</span>(<span class="st">&quot;lng&quot;</span>, <span class="st">&quot;lat&quot;</span>))</code></pre>
 <p>As a first step, we can plot asb in the borough of Manchester using simple ggplot! Remember the data visualisation session from weeks ago? We discussed how ggplot is such a great tool for building visualisations, because you can apply whatever geometry best suits your data. So for us to just have a look at the hexbinned version of our point data of antisocial behaviour, we can use the <code>stat_binhex()</code> function. We can also recreate the thematic map element, as we can use the frequency of points in each hex to shade each hexbin from white (least number of incidents) to red (most nuber of incidents).</p>
 <p>So let’s have a go:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(lng, lat)) <span class="op">+</span><span class="st">                        </span><span class="co">#define data and variables for x and y axes</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(lng, lat)) <span class="op">+</span><span class="st">                        </span><span class="co">#define data and variables for x and y axes</span>
 <span class="st">  </span><span class="kw">stat_binhex</span>() <span class="op">+</span><span class="st">                                                         </span><span class="co">#add binhex layer (hexbin)</span>
-<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents</span></code></pre></div>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents</span></code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
 <p>Neat, but doesn’t quite tell us <em>where</em> that really dark hexbon actually is. So it would be much better if we could do this with a basemap as the backrgound, rather than our grey ggplot theme.</p>
 <p>Now, we can apply the same code as we used above, for the ggplot, to this ggmap, to add our hexbins on top of this basemap:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggspatial) <span class="co">#load ggspatial package for background map tiles</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggspatial) <span class="co">#load ggspatial package for background map tiles</span>
 
 <span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">stat_binhex</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st">                                                         </span><span class="co">#add binhex layer (hexbin)</span>
-<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents </span></code></pre></div>
+<span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)    <span class="co">#add shading based on number of ASB incidents </span></code></pre>
 <pre><code>## Zoom: 10</code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
 <p>Now this should give you some more context! Woo!</p>
@@ -552,42 +577,39 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
 <li>Finding neighbors is more straightforward with a hexagon grid. Since the edge or length of contact is the same on each side, the centroid of each neighbor is equidistant. However, with a fishnet grid, the Queen’s Case (above/below/right/left) neighbor’s centroids are N units away, while the centroids of the diagonal (Rook) neighbors are farther away (exactly the square root of 2 times N units away).</li>
 <li>Since the distance between centroids is the same in all six directions with hexagons, if you are using a distance band to find neighbors or are using the Optimized Hot Spot Analysis, Optimized Outlier Analysis or Create Space Time Cube By Aggregating Points tools, you will have more neighbors included in the calculations for each feature if you are using hexagonal grid as opposed to a fishnet grid.</li>
 </ul>
-<div class="figure">
-<img src="img/EE17F7E03F82-web.png" />
-
-</div>
+<p><img src="img/EE17F7E03F82-web.png" /></p>
 <p>Now, to again illustrate the differences of different approaches, let’s see what this map would look like with:</p>
 <ol style="list-style-type: lower-alpha">
 <li>rectangular binning:</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">stat_bin2d</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), 
-                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </code></pre></div>
+                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </code></pre>
 <pre><code>## Zoom: 10</code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>hexagonal binning:</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">stat_binhex</span>(<span class="dt">alpha=</span><span class="fl">0.7</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), 
-                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)</code></pre></div>
+                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>)</code></pre>
 <pre><code>## Zoom: 10</code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <ol start="3" style="list-style-type: lower-alpha">
 <li>a simple “heatmap” (we will discuss these more thoroughly next week):</li>
 </ol>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(ma_spatial, <span class="kw">aes</span>(<span class="dt">x =</span> lng, <span class="dt">y =</span> lat)) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">annotation_map_tile</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">stat_density2d</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> ..level.., <span class="co"># value corresponding to discretized density estimates </span>
                      <span class="dt">alpha =</span> ..level..), 
                  <span class="dt">geom =</span> <span class="st">&quot;polygon&quot;</span>) <span class="op">+</span><span class="st">  </span><span class="co"># creates the bands of differenc colors</span>
-<span class="st">  </span>## Configure the colors, transparency and panel
+<span class="st">  </span><span class="co">## Configure the colors, transparency and panel</span>
 <span class="st">  </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>), 
-                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </code></pre></div>
+                       <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) </code></pre>
 <pre><code>## Zoom: 11</code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 </div>
@@ -616,18 +638,24 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
 <blockquote>
 <p>When spatial analysis of crime is conducted, the analyst should not ignore the spatial units that data are aggregated into and the impact of this choice on the interpretation of findings. Just as several independent variables are considered to determine whether they have statistical significance, a consideration of multiple spatial units of analysis should be made as well, in order to determine whether the choice of aggregation level used in a spatial analysis can result in biased findings.</p>
 </blockquote>
-<p>In particular, they highlight four main issues inherent in most studies of space: - issues associated with politically bounded units of aggregation, - edge effects of bounded space - the modifiable aerial unit problem (MAUP) - and ways in which the results of statistical analyses can be manipulated by changes in the level of aggregation.</p>
+<p>In particular, they highlight four main issues inherent in most studies of space:
+- issues associated with politically bounded units of aggregation,
+- edge effects of bounded space
+- the modifiable aerial unit problem (MAUP)
+- and ways in which the results of statistical analyses can be manipulated by changes in the level of
+aggregation.</p>
 <p>In this lab we will focus on <strong>MAUP</strong>, but if you are interested in this kind of work, you should definitely read their paper to consider the other issues as well. There are techniques that can be used to alleviate each of the methodological difficulties, and they are described in accessible detail in their paper: <a href="https://link.springer.com/chapter/10.1007/978-0-387-09688-9_5">Rengert, George F., and Brian Lockwood. “Geographical units of analysis and the analysis of crime.” Putting crime in its place. Springer, New York, NY, 2009. 109-122.</a></p>
 <div id="what-is-maup" class="section level3">
 <h3><span class="header-section-number">5.4.1</span> What is MAUP?</h3>
 <p>The Modifiable Areal Unit Problem (MAUP) is an important issue for those who conduct spatial analysis using units of analysis at aggregations higher than incident level. It is one of the better-known problems in geography and spatial analysis. This phenomenon illustrates both the need for considering space in one’s analysis, and the fundamental uncertainties that accompany real-world analysis.</p>
-<p>The MAUP is “a problem arising from the imposition of artificial units of spatial reporting on continuous geographical phenomena, leading to artifacts or errors are created when one groups data into units for analysis.</p>
+<p>The MAUP is &quot;a problem arising from the imposition of artificial units of spatial reporting on continuous geographical phenomena, leading to artifacts or errors are created when one groups data into units for analysis.</p>
 <p>The classic text on MAUP is the 1983 paper <a href="https://www.uio.no/studier/emner/sv/iss/SGO9010/openshaw1983.pdf">Openshaw, Stan. “The modifiable areal unit problem. CATMOG (Concepts and techniques in modern geography) 38.” Geo Abstracts, Norwich. 1984.</a>.</p>
 <p>There are two distinct types of MAUP: Scale (i.e. determining the appropriate size of units for aggregation) and zone (i.e. drawing boundaries or grouping).</p>
 <div id="scale" class="section level4">
 <h4><span class="header-section-number">5.4.1.1</span> Scale</h4>
 <p>The scale problem involves results that change based on data that are analyzed at higher or lower levels of aggregation (Changing the number of units). For example, evaluating data at the state level vs. Census tract level.</p>
-<p>The scale problem has moved to the forefront of geographical criminology as a result of the recent interest in small-scale geographical units of analysis. It has been suggested that smaller is better since small areas can be directly perceived by individuals and are likely to be more homogenous than larger areas. - <a href="https://link.springer.com/article/10.1007/s10940-016-9297-6">Gerell, Manne. “Smallest is better? The spatial distribution of arson and the modifiable areal unit problem.” Journal of quantitative criminology 33.2 (2017): 293-318.</a></p>
+<p>The scale problem has moved to the forefront of geographical criminology as a result of the recent interest in small-scale geographical units of analysis. It has been suggested that smaller is better since small areas can be directly perceived by individuals and are likely to be more homogenous than larger areas.
+- <a href="https://link.springer.com/article/10.1007/s10940-016-9297-6">Gerell, Manne. “Smallest is better? The spatial distribution of arson and the modifiable areal unit problem.” Journal of quantitative criminology 33.2 (2017): 293-318.</a></p>
 </div>
 <div id="zone" class="section level4">
 <h4><span class="header-section-number">5.4.1.2</span> Zone</h4>
@@ -669,19 +697,16 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
 <li>hexmap</li>
 <li>grid</li>
 </ul>
-<p>Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on two methods that have been developed recently: the <code>geogrid</code> package on CRAN and some [open code]<a href="https://rpubs.com/profrichharris/hexograms" class="uri">https://rpubs.com/profrichharris/hexograms</a> shared by Richard Harris to make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about <strong>cartograms</strong>, but I’ll leave that to the next section.</p>
+<p>Selecting the appropriate method might depend on the research question being posed (e.g. clustering) and the data itself. Even once a method has been selected, there are different ways of operationalising them. We focus on methods for transforming our maps to hex and gridap. We make grid and hex maps where instead of creating a grid, we reshape the existing polygons into grid or hex shapes. We will also speak about <strong>cartograms</strong>, but I’ll leave that to the next section.</p>
 <p>Let’s explore this using the example of the results of the 2016 EU referendum at Local Authority level, where remain areas clustered in London. A simple thematic map does not necessarily communicate this well because Local Authorities are both small and densely populated in London.</p>
 <p>You can download the full set of EU referendum result data as a csv from <a href="https://www.electoralcommission.org.uk/find-information-by-subject/elections-and-referendums/past-elections-and-referendums/eu-referendum/eu-referendum-result-visualisations">the Electoral Commission webside</a>. Let’s read it straight into R:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eu_ref &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">eu_ref &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://www.electoralcommission.org.uk/__data/assets/file/0014/212135/EU-referendum-result-data.csv&quot;</span>)</code></pre>
 <p>OKAY, now we need a shapefile to join it to. Remember when we got the Manchester lsoa shapefile with the <a href="https://borders.ukdataservice.ac.uk/bds.html">boundary selector</a>? Let’s go back, and this time get <em>Local Authority Districts</em> for <em>England</em>.</p>
 <p>In this case that means select “English Districts, UAs and London Boroughs, 2011”:</p>
-<div class="figure">
-<img src="img/la_shp_dl.png" />
-
-</div>
+<p><img src="img/la_shp_dl.png" /></p>
 <p>Once you have the file, download, extract (unzip) and put the folder in your working directory. Mine is in a subfolder in my working directory called data, so I point R inside that folder to find my shape file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">las &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/England_lad_2011_gen/england_lad_2011_gen.shp&quot;</span>)</code></pre></div>
-<pre><code>## Reading layer `england_lad_2011_gen&#39; from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\data\England_lad_2011_gen\england_lad_2011_gen.shp&#39; using driver `ESRI Shapefile&#39;
+<pre class="sourceCode r"><code class="sourceCode r">las &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;data/England_lad_2011_gen/england_lad_2011_gen.shp&quot;</span>)</code></pre>
+<pre><code>## Reading layer `england_lad_2011_gen&#39; from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/data/England_lad_2011_gen/england_lad_2011_gen.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 326 features and 4 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -689,21 +714,21 @@ map3&lt;-<span class="st"> </span><span class="kw">tm_shape</span>(ncovr_sf) <sp
 ## epsg (SRID):    NA
 ## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs</code></pre>
 <p>We can now join the EU referendum data, as we have learned in the past weeks:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">eu_sf &lt;-<span class="st"> </span><span class="kw">left_join</span>(las, eu_ref, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;name&quot;</span> =<span class="st"> &quot;Area&quot;</span>))</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">eu_sf &lt;-<span class="st"> </span><span class="kw">left_join</span>(las, eu_ref, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;name&quot;</span> =<span class="st"> &quot;Area&quot;</span>))</code></pre>
 <pre><code>## Warning: Column `name`/`Area` joining factors with different levels,
 ## coercing to character vector</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#make sure we are in British National Grid Projection</span>
-eu_sf &lt;-<span class="st"> </span><span class="kw">st_transform</span>(eu_sf, <span class="dv">27700</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#make sure we are in British National Grid Projection</span>
+eu_sf &lt;-<span class="st"> </span><span class="kw">st_transform</span>(eu_sf, <span class="dv">27700</span>)</code></pre>
 <p>Now we can have a look at these data:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> eu_sf, <span class="kw">aes</span>(<span class="dt">fill =</span> Pct_Leave)) </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> eu_sf, <span class="kw">aes</span>(<span class="dt">fill =</span> Pct_Leave)) </code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>We can see that in smaller LAs we don’t even really see the result, as the boundary lines pretty much cover everything. Hmm. Now what we can do is transform the shapes into squares of hexagons. Let’s have a go at squares.</p>
 <p>We can use the functions in the geogrid package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(geogrid)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(geogrid)</code></pre>
 <p>Now we can use the <code>calculate_grid()</code> function. This function, given an input multipolgyon spatial data frame this function calculates a hexagonal or regular grid, that strives to preserve the original geography. Once this is done, we assign each polygon in the original file to a new location in the gridded geometry. <strong>NOTE THIS WILL TAKE A WHILE</strong> again this is something that is quite computationally intensive, so you set it running, and go for a short break. You need short breaks in coding.</p>
 <p>However this particular bit of code will actually take about 10 minutes. So if you’re about to leave, wait until you are home to run it.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#first make our sf object into an sp object</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#first make our sf object into an sp object</span>
 eu_sp &lt;-<span class="st"> </span><span class="kw">as</span>(eu_sf, <span class="st">&#39;Spatial&#39;</span>)
 
 <span class="co">#then use the calculate_grid function. Note how we specify grid type to be &quot;regular&quot;.</span>
@@ -712,11 +737,11 @@ eu_reg &lt;-<span class="st"> </span><span class="kw">calculate_grid</span>(<spa
 eu_reg &lt;-<span class="st"> </span><span class="kw">assign_polygons</span>(eu_sp, eu_reg)
 
 <span class="co">#now turn it back into sf object for easy ggplot plotting</span>
-eu_reg &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(eu_reg)</code></pre></div>
+eu_reg &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(eu_reg)</code></pre>
 <p>While you’re waiting for that, you can have a read about how the polygons are assigned. The help file will tell you they use “the Hungarian algorithm”. This is from a paper called <a href="https://pdfs.semanticscholar.org/b6a0/f30260302a2001da9999096cfdd89bc1f7fb.pdf">The Hungarian Method for the Assignment Problem</a> by Harold W. Kuhn. Apparently, this method was so promising, that when Kuhn came across it referenced in a paper, even though the original paper is in Hungarian, Kuhn describes he “took out a Hungarian grammar and a large Hungarian-English dictionary and taught myself enough Hungarian to translate Egervary’s paper.” I can assure you, Hungarian is not an easy language to learn, so this must have been a most excellent theory to prompt such an act.</p>
 <p>Now that your code has run, and you have your eu_reg shapefile, we can plot this!</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> eu_reg, <span class="kw">aes</span>(<span class="dt">fill =</span> Pct_Leave)) </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> eu_reg, <span class="kw">aes</span>(<span class="dt">fill =</span> Pct_Leave)) </code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 <p>Cool, eh?</p>
 <div id="homework-5.3" class="section level3">
@@ -729,28 +754,25 @@ eu_reg &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(eu_reg)</c
 <p>The last thing we will do today is make some cartograms! Cartogram types of maps distort reality to convey information. They resize and exaggerate any variable on an attribute value.</p>
 <p>There are different types of cartograms.</p>
 <p>Density-equalizing (contiguous) cartograms are your traditional cartograms. In density-equalizing cartograms, map features bulge out a specific variable. Even though it distorts each feature, it remains connected during its creation. On the other hand, you can have Non-Contiguous Cartograms, where features in non-contiguous cartograms don’t have to stay connected. Finally, Dorling Cartogram (named after professor <a href="https://www.geog.ox.ac.uk/staff/ddorling.html">Danny Dorling</a>) uses shapes like circles and rectangles to depict area. These types of cartograms make it easy to recognize patterns. For example, here is a Darling Cartogram I made of <a href="www.fixmystreet.org">FixMyStreet</a> reports in London:</p>
-<div class="figure">
-<img src="img/notNaAll3CartogramNewFrame.png" />
-
-</div>
+<p><img src="img/notNaAll3CartogramNewFrame.png" /></p>
 <p>Now we can make our own as well, using the cartogram package.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cartogram)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(cartogram)</code></pre>
 <p>Within that there is the <code>cartogram()</code> function, which takes 2 arguments, 1 - the shape file (it can be a SpatialPolygonDataFrame or an sf object), and 2 - the variable which it should use to distort the polygon by.</p>
 <p>In our data set we have a variable “electorate” which refers to the total number of registered electors</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># construct a cartogram using the percentage voting leave</span>
-eu_cartogram &lt;-<span class="st"> </span><span class="kw">cartogram</span>(eu_sf, <span class="st">&quot;Electorate&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># construct a cartogram using the percentage voting leave</span>
+eu_cartogram &lt;-<span class="st"> </span><span class="kw">cartogram</span>(eu_sf, <span class="st">&quot;Electorate&quot;</span>)</code></pre>
 <p>Again this is some labour intensive work, much like the grid making, you have some time to chill now. Maybe read up on the maths behind this tranformation as well, in the paper <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0033-0124.1985.00075.x">Dougenik, J. A., Chrisman, N. R., &amp; Niemeyer, D. R. (1985). An Algorithm To Construct Continuous Area Cartograms. In The Professional Geographer, 37(1), 75-81.</a>.</p>
 <p>I do have a tip for you if you want to make sure the process does not take too long. You can set a parameter in the cartogram function which is the “itermax” parameter. This specifies the maximum number of iterations we are happy with. If you don’t specify it’s set to 15. Let’s set to 5 for the sake of speed:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># construct a cartogram using the percentage voting leave</span>
-eu_cartogram &lt;-<span class="st"> </span><span class="kw">cartogram_cont</span>(eu_sf, <span class="st">&quot;Electorate&quot;</span>, <span class="dt">itermax =</span> <span class="dv">5</span>)</code></pre></div>
-<pre><code>## Mean size error for iteration 1: 4.11884641548981</code></pre>
-<pre><code>## Mean size error for iteration 2: 21.1096264532847</code></pre>
-<pre><code>## Mean size error for iteration 3: 3.0584895516181</code></pre>
-<pre><code>## Mean size error for iteration 4: 2.51480274957159</code></pre>
-<pre><code>## Mean size error for iteration 5: 2.92812678108472</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># construct a cartogram using the percentage voting leave</span>
+eu_cartogram &lt;-<span class="st"> </span><span class="kw">cartogram_cont</span>(eu_sf, <span class="st">&quot;Electorate&quot;</span>, <span class="dt">itermax =</span> <span class="dv">5</span>)</code></pre>
+<pre><code>## Mean size error for iteration 1: 4.11884641548982</code></pre>
+<pre><code>## Mean size error for iteration 2: 21.1096264523744</code></pre>
+<pre><code>## Mean size error for iteration 3: 3.05848955161026</code></pre>
+<pre><code>## Mean size error for iteration 4: 2.51480274961733</code></pre>
+<pre><code>## Mean size error for iteration 5: 2.92812677999131</code></pre>
 <p>And if your cartogram has been created, you can now plot again the referendum results, but using the electorate to change the size of the locad authority:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> eu_cartogram, <span class="kw">aes</span>(<span class="dt">fill =</span> Pct_Leave)) </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> eu_cartogram, <span class="kw">aes</span>(<span class="dt">fill =</span> Pct_Leave)) </code></pre>
 <p><img src="05-week5_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>We can now see London much better, and see that darker coloured cluster where much smaller percentage of people voted leave.</p>
 <p>Okay that’s probably enough for the day. Nice work crime mappers!</p>

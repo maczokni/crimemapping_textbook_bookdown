@@ -24,12 +24,12 @@ By the way, the police data for Manchester we have used in previous sessions cor
 
 
 ```r
-#Read a geojson file with Manchester wards
+#Read a geojson file with Manchester wards (remember we learned about geojson files in week 4)
 manchester_ward <- st_read("https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson")
 ```
 
 ```
-## Reading layer `wards' from data source `https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson' using driver `GeoJSON'
+## Reading layer `OGRGeoJSON' from data source `https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson' using driver `GeoJSON'
 ## Simple feature collection with 215 features and 12 fields
 ## geometry type:  POLYGON
 ## dimension:      XY
@@ -39,17 +39,20 @@ manchester_ward <- st_read("https://raw.githubusercontent.com/RUMgroup/Spatial-d
 ```
 
 ```r
-#Create a new object that only has the city centre ward
+#Create a new object that only has the fallowfield ward
 df1 <- manchester_ward %>%
   filter(wd16nm == "Fallowfield")
+
 #Change coordinate systems
 fallowfield <- st_transform(df1, 4326)
+
 #Get rid of objects we no longer need
 rm(manchester_ward)
 rm(df1)
 
 #Read Greater Manchester police data
 crimes <- read.csv("https://raw.githubusercontent.com/jjmedinaariza/CrimeMapping/master/gmpcrime.csv")
+
 burglary <- filter(crimes, crime_type == "Burglary")
 
 #Transform the dataframe with crime information into a sf object
@@ -68,31 +71,52 @@ bur_fal <- st_intersects(fallowfield, burglary_spatial)
 ```r
 # subsetting
 bur_fal <- burglary_spatial[unlist(bur_fal),]
+#again remove things we don't need
 rm(crimes)
 rm(burglary)
+```
 
-#Let's see the results
+Now we have all our data cleaned and all our files prepared. Let's see the results!
+
+
+```r
 tm_shape(fallowfield) + 
   tm_fill() +
   tm_shape(bur_fal) +
   tm_dots()
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-2-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-3-1.png" width="672" />
 
 In the point pattern analysis literature each point is often referred to as an **event** and these events can have **marks**, attributes or characteristics that are also encoded in the data. In our spatial object one of these *marks* is the type of crime (altough in this case it's of little interest since we have filtered on it).
 
 ## Getting the data into spatstat: the problem with duplicates
 
-So let's start using spatstat.The first thing we need to do is to transform our `sf` object into a `ppp` object which is how `spatstat` likes to store its point patterns. Unfortunately, spatstat and many other packages for analysis of spatial data precede sf, so the transformation is a bit awkard. Also before we do that, it is important to realise that a point pattern is defined as a series of events in a given area, or window, of observation. It is therefore extremely important to precisely define this window. In `spatstat` the function `owin()` is used to set the observation window. However, the standard function takes the coordinates of a rectangle or of a polygon from a matrix, and therefore it may be a bit tricky to use. Luckily the package `maptools` provides a way to transform a `SpatialPolygons` into an object of class `owin`, using the function `as.owin()`. 
+So let's start using spatstat.The first thing we need to do is to transform our `sf` object into a `ppp` object which is how `spatstat` likes to store its point patterns. Unfortunately, spatstat and many other packages for analysis of spatial data precede sf, so the transformation is a bit awkard. Also before we do that, it is important to realise that a point pattern is defined as a series of events in a given area, or window, of observation. It is therefore extremely important to precisely define this window. In `spatstat` the function `owin()` is used to set the observation window. However, the standard function takes the coordinates of a rectangle or of a polygon from a matrix, and therefore it may be a bit tricky to use. Luckily the package `maptools` provides a way to transform a `SpatialPolygons` into an object of class `owin`, using the function `as.owin()`. Here are the steps: 
+
+
+First we transform our Falllowfield polygon into a sp object:
 
 
 ```r
-#First we transform our Falllowfield polygon into a sp object
 fallowfield_sp <-as(fallowfield, "Spatial")
-#Then we use the as.owin function to define the window
+```
+
+
+
+Then we use the as.owin function to define the window:
+
+
+```r
 window <- maptools::as.owin.SpatialPolygons(fallowfield_sp)
-#Check that this worked
+```
+
+
+
+Now, use the class function and print the window object to check that this worked:
+
+
+```r
 class(window)
 ```
 
@@ -132,7 +156,7 @@ bur_ppp <- ppp(x = sf_bur_fal_coords[,1], y = sf_bur_fal_coords[,2],
 plot(bur_ppp)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 
 
@@ -177,9 +201,11 @@ tm_shape(fallowfield) +
   tm_dots(alpha=0.4, size=1)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-12-1.png" width="672" />
 
-In the case of crime, as we have hinted some of this may be linked to the nature of crime itself. Hint: repeat victimisation. However, this pattern of duplication is fairly obvious across all crime categories in the police.uk website and, although I have not explored this in detail, I strongly suspect it is a function of the anonimisation process used to create these maps. The coordinates provided in the open data are not the exact locations of crimes, but they come from a list of points generated for purposes of data publication. You can see the details [here](https://data.police.uk/about/#anonymisation). This process is likely inflating the amount of duplication we observe. So keep in mind when analysing and working with this data set that it is not the same as working with the real locations.
+In the case of crime, as we have hinted some of this may be linked to the nature of crime itself. Hint: repeat victimisation. However, this pattern of duplication is fairly obvious across all crime categories in the police.uk website and.
+
+This is due to the way in which spatial anonymisation of police.uk data is carried out. This is done using geomasking, whereby there exist a pre-determined list of points that each crime event gets "snapped" to its nearest one. So, the coordinates provided in the open data are not the exact locations of crimes, but they come from a list of points generated for purposes of data publication. You can see the details [here](https://data.police.uk/about/#anonymisation). This process is likely inflating the amount of duplication we observe, because each snap point might have many crimes near it, resulting in those crimes being geo-coded to the same exact location. So keep in mind when analysing and working with this data set that it is not the same as working with the real locations. If you are interested in the effects of this read the paper [Lisa Tompson, Shane Johnson, Matthew Ashby, Chloe Perkins & Phillip Edwards (2015) UK open source crime data: accuracy and possibilities for research, Cartography and Geographic Information Science, 42:2, 97-111, DOI: 10.1080/15230406.2014.972456](https://www.tandfonline.com/doi/abs/10.1080/15230406.2014.972456).
 
 What to do about duplicates in spatial point pattern analysis is not always clear. You could simply delete the duplicates, but of course that may ignore issues such as repeat victimisation. You could also use jittering, which will add a small perturbation to the duplicate points so that they do not occupy the exact same space. Which again, may ignore things like repeat victimisation. Another alternative is to make each point "unique" and then attach the multiplicites of the points to the patterns as *marks*, as attributes of the points. Then you would need analytical techniques that take into account these marks.
 
@@ -191,7 +217,7 @@ jitter_bur <- rjitter(bur_ppp, retry=TRUE, nsim=1, drop=TRUE)
 plot(jitter_bur)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-13-1.png" width="672" />
 
 Notice the difference with the original plot. Can you see how the circumferences do not overlap perfectly now?
 
@@ -206,7 +232,7 @@ plot(jitter_bur)
 plot(Q, add = TRUE, cex = 2)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-11-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 In the video lectures for this week, Luc Anselin  introduced the notion of **complete spatial randomness** (CSR for short). When we look at a point pattern process the first step in the process is to ask whether it has been generated in a random manner. Under CSR, points are independent of each other and have the same propensity to be found at any location. We can generate data that conform to complete spatial randomness using the *rpoispp()* function. The r at the beginning is used to denote we are simulating data (you will see this is common in R) and we are using a Poisson point process, a good probability distribution for these purposes. Let's generate 223 points in a random manner:
 
@@ -215,7 +241,7 @@ In the video lectures for this week, Luc Anselin  introduced the notion of **com
 plot(rpoispp(223))
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-12-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
 You will notice that the points in a homogeneous Poisson process are not ‘uniformly spread’: there are empty gaps and clusters of points. Run the previous command a few times. You will see the map generated is different each time.
 
@@ -232,7 +258,7 @@ quadrat.test(jitter_bur, nx = 3, ny = 2)
 ## 	Pearson X2 statistic
 ## 
 ## data:  jitter_bur
-## X2 = 113.09, df = 5, p-value < 2.2e-16
+## X2 = 109.07, df = 5, p-value < 2.2e-16
 ## alternative hypothesis: two.sided
 ## 
 ## Quadrats: 6 tiles (irregular windows)
@@ -244,7 +270,7 @@ Observing the results we see that the p value is well below convential standards
 
 In the presentations by Luc Anselin and the recommended reading materials we introduced the notion of density maps. **Kernel density estimation** involves applying a function (known as a “kernel”) to each data point, which averages the location of that point with respect to the location of other data points.  The surface that results from this model allows us to produce **isarithmic maps**, also referred to in common parlor as heatmaps. Beware though, cartographers [really dislike](http://cartonerd.blogspot.com/2015/02/when-is-heat-map-not-heat-map.html) this common parlor. We saw this kind of maps when covering the various types of thematic maps. 
 
-Kernel density estimation maps are very popular among crime analysts. According to Chainey (2012), 9 out of 10 intelligence professionals prefer it1 to other techniques for hot spot analysis. As compared to visualisations of crime that relies on point maps or thematic maps of geographic administrative units (such as LSOAs), kernel density estimation maps are considered best for location, size, shape and orientation of the hotspot (Chainey, 2012). [Spencer Chainey and his colleagues (2008)](http://discovery.ucl.ac.uk/112873/1/PREPRINT_-_Chainey%2C_Tompson_%26_Uhlig_2008.pdf) have also suggested that this method produces some of the best prediction accuracy. The areas identified as hotspots by KDE (using historical data) tend to be the ones that better identify the areas that will have high levels of crime in the future. Yet, producing these maps (as with any map, really) requires you to take a number of decisions that will significantly affect the resulting product and the conveyed message. Like any other data visualisation technique they can be powerful, but they have to be handled with great care.
+Kernel density estimation maps are very popular among crime analysts. According to Chainey (2012), 9 out of 10 intelligence professionals prefer it to other techniques for hot spot analysis. As compared to visualisations of crime that relies on point maps or thematic maps of geographic administrative units (such as LSOAs), kernel density estimation maps are considered best for location, size, shape and orientation of the hotspot (Chainey, 2012). [Spencer Chainey and his colleagues (2008)](http://discovery.ucl.ac.uk/112873/1/PREPRINT_-_Chainey%2C_Tompson_%26_Uhlig_2008.pdf) have also suggested that this method produces some of the best prediction accuracy. The areas identified as hotspots by KDE (using historical data) tend to be the ones that better identify the areas that will have high levels of crime in the future. Yet, producing these maps (as with any map, really) requires you to take a number of decisions that will significantly affect the resulting product and the conveyed message. Like any other data visualisation technique they can be powerful, but they have to be handled with great care.
 
 Essentially this method uses a statistical technique (kernel density estimation) to generate a smooth continuous surface aiming to represent the density or volume of crimes across the target area. The technique, in one of its implementations (quartic kernel), is described in this way by Eck and colleagues (2005):
 
@@ -273,7 +299,7 @@ class(ds)
 plot(ds, main='Burglary density in Fallowfield')
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 The density function is estimating a kernel density estimate. Density is nothing but the number of points per unit area. This method computes the intensity continuously across the study area and the object returns a raster image. 
 
@@ -288,7 +314,7 @@ bw.diggle(jitter_bur)
 
 ```
 ##        sigma 
-## 4.249614e-05
+## 4.553158e-05
 ```
 
 ```r
@@ -297,7 +323,7 @@ bw.ppl(jitter_bur)
 
 ```
 ##        sigma 
-## 0.0005520984
+## 0.0004387607
 ```
 
 ```r
@@ -306,7 +332,7 @@ bw.scott(jitter_bur)
 
 ```
 ##      sigma.x      sigma.y 
-## 0.0040695837 0.0008407289
+## 0.0040708492 0.0008412524
 ```
 
 You can see the Diggle algorithm gives you the narrower bandwith. We can test how they work with our dataset using the following code:
@@ -327,7 +353,7 @@ plot(density.ppp(jitter_bur, sigma = bw.scott(jitter_bur)[1],edge=T),
      main=paste("h = 0.004"))
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-19-1.png" width="672" />
 
 Baddeley et (2016) suggest the use of the `bw.ppl()` algorithm because in their experience it tends to produce the more appropriate values when the pattern consists predominantly of tight clusters. But they also insist that if your purpose it to detect a single tight cluster in the midst of random noise then the `bw.diggle()` method seems to work best.
 
@@ -358,15 +384,16 @@ plot(density.ppp(jitter_bur, kernel = "disc", sigma = bw.ppl(jitter_bur),edge=T)
      main=paste("Disc"))
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-20-1.png" width="672" />
 
-When reading these maps you need to understand you are only looking at counts of crime in a smooth surface. Nothing more, nothing less. Unlike with choropleth maps we are not normalising the data. We are simply showing the areas where there is more crime, but we are not adjusting for anything (like number of people in the area). So, it is important you keep this in the back of your mind. As [this comic](https://xkcd.com/1138/) suggests you may end up reading too much into it if you don’t remember this. There are ways to produce density maps adjusting for a second variable, such as population size, but we do not have the time to cover this. 
+When reading these maps you need to understand you are only looking at counts of crime in a smooth surface. Nothing more, nothing less. Unlike with choropleth maps we are not normalising the data. We are simply showing the areas where there is more crime, but we are not adjusting for anything (like number of people in the area, or number of houses to burgle). So, it is important you keep this in the back of your mind. As [this comic](https://xkcd.com/1138/) suggests you may end up reading too much into it if you don’t remember this. There are ways to produce density maps adjusting for a second variable, such as population size, but we do not have the time to cover this. 
+
 
 There are also general considerations to keep in mind. Hot spots of crime are a simply a convenient perceptual construct. As Ned Levine (2013: 7.1) highlights *“Hot spots do not exist in reality, but are areas where there is sufficient clustering of certain activities (in this case, crime) such that they get labeled such. There is not a border around these incidents, but a gradient where people draw an imaginary line to indicate the location at which the hot spot starts.”*  Equally, there is not a unique solution to the identification of hot spots. Different techniques and algorithms will give you different answers. As Levine (2013: 7.7) emphasises: *“It would be very naive to expect that a single technique can reveal the existence of hot spots in a jurisdiction that are unequivocally clear. In most cases, analysts are not sure why there are hot spots in the first place. Until that is solved, it would be unreasonable to expect a mathematical or statistical routine to solve that problem.”* So, as with most data analysis exercises one has to try different approaches and use professional judgement to select a particular representation that may work best for a particular use. Equally, we should not reify what we produce and, instead, take the maps as a starting point for trying to understand the underlying patterns that are being revealed. Critically you want to try several different methods. You will be more persuaded a location is a hot spot if several methods for hot spot analysis point to the same location.
 
 ## Adding some context
 
-Often it is convenient to use a basemap to provide context. In order to do that we first need to turn the image object generated by the `spatstat` package into a raster object, a more generic format for raster image used in R. 
+Often it is convenient to use a basemap to provide context. In order to do that we first need to turn the image object generated by the `spatstat` package into a raster object, a more generic format for raster image used in R. Remember rasters from the first week? Now we finally get to use them a bit!
 
 
 ```r
@@ -413,8 +440,8 @@ leaflet() %>%
     title = "Burglary map")
 ```
 
-<!--html_preserve--><div id="htmlwidget-b23fe5d4ff78702bc2d1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b23fe5d4ff78702bc2d1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[53.441315,-2.225814],14,[]],"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,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",[[53.4514517532155,-2.25810740373087],[53.4390428798791,-2.21419214050652]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["#0C2C84 , #2E5C9C 18.2149247262139%, #3D8FB3 36.4298494533835%, #5CBDC5 54.6447741805531%, #A6D7C8 72.8596989077226%, #E3F2CB 91.0746236348922%, #FFFFCC "],"labels":["2,000,000","4,000,000","6,000,000","8,000,000","10,000,000"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Burglary map","extra":{"p_1":0.182149247262139,"p_n":0.910746236348922},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[53.4390428798791,53.4514517532155],"lng":[-2.25810740373087,-2.21419214050652]}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
+<!--html_preserve--><div id="htmlwidget-5d022c33aad75dbd17de" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5d022c33aad75dbd17de">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[53.441315,-2.225814],14,[]],"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addRasterImage","args":["data:image/png;base64,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",[[53.4514517532155,-2.25810740373087],[53.4390428798791,-2.21419214050653]],0.8,null,null,null]},{"method":"addLegend","args":[{"colors":["#0C2C84 , #264B93 11.6341634849983%, #336AA2 23.2683269705849%, #3C8AB1 34.9024904561715%, #41ACC0 46.5366539417581%, #6DC2C6 58.1708174273446%, #9BD3C8 69.8049809129312%, #C4E4CA 81.4391443985178%, #E9F5CB 93.0733078841044%, #FFFFCC "],"labels":["2,000,000","4,000,000","6,000,000","8,000,000","10,000,000","12,000,000","14,000,000","16,000,000"],"na_color":null,"na_label":"NA","opacity":0.5,"position":"topright","type":"numeric","title":"Burglary map","extra":{"p_1":0.116341634849983,"p_n":0.930733078841044},"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[53.4390428798791,53.4514517532155],"lng":[-2.25810740373087,-2.21419214050653]}},"evals":[],"jsHooks":[]}</script><!--/html_preserve-->
 
 And there you have it. Perhaps those familiar with Fallowfield have some guesses as to what may be going on there?
 
@@ -424,18 +451,18 @@ And there you have it. Perhaps those familiar with Fallowfield have some guesses
 ### Homework 2
 *Produce a kernel density estimate for burglary across the whole of the city. Where is burglary more concentrated?*
 
-##Spatial point patterns along networks
+## Spatial point patterns along networks
 
 Have a look at this maps.  Can we say that the spatial point process is random here? Can you identify the areas where we have hotspots of crime? Think about these questions for a little while.
 
-![](img/nonrandompoints.PNG)
+![](img/nonrandompoints.png)
 (Source: Okabe and Sugihara, 2012)
 
 Ok, so most likely you concluded that the process wasn't random, which it isn't in truth. It is also likely that you identified a number of potential hotspots?
 
 Now, look at the two maps below:
 
-![](img/randompoints.PNG)
+![](img/randompoints.png)
 (Source: Okabe and Sugihara, 2012)
 
 We are representing the same spatial point pattern process in each of them. But we do have additional information in map B. We now know the street layout. The structure we observed in the map is accounted by the street layout. So what look like a non random spatial point process when we considered the full two dimensional space, now looks less random when we realise that the points can only appear alongside the linear network. 
@@ -452,7 +479,7 @@ data("chicago")
 plot(chicago)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-20-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-23-1.png" width="672" />
 
 ```r
 summary(chicago)
@@ -493,7 +520,7 @@ We use `unmark()` to ignore the fact the data points are marked (that is they pr
 plot(d60)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-22-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-25-1.png" width="672" />
  
 If rather than colour you want to use the thickness of the street segment to identify hotpspots you would need to modify the code as shown below:
  
@@ -502,5 +529,19 @@ If rather than colour you want to use the thickness of the street segment to ide
 plot(d60, style="width", adjust=2.5)
 ```
 
-<img src="06-week6_files/figure-html/unnamed-chunk-23-1.png" width="672" />
+<img src="06-week6_files/figure-html/unnamed-chunk-26-1.png" width="672" />
+
+
+
+This is very important for crime research, as offending will be constrained by all sorts of networks. Traditionally, hotspot analysis has been directed at crimes that are assumed to be situated across an infinite homogeneous environment (e.g., theft of motor vehicle), we must develop an increased awareness of perceptible geographical restrictions. There has been increasing recognition in recent years that the spatial existence of many phenomena is constrained by networks. 
+
+These networks may be roads or rail networks, but there may be many more: 
+
+> Environmental crimes could exist along waterways such as streams, canals, and rivers; and thefts of metal could occur along utility networks such as pipelines. Those
+sociologically inclined might be able to offer more examples in the way of interpersonal networks. 
+
+- [Tompson, Lisa, Henry Partridge, and Naomi Shepherd. "Hot routes: Developing a new technique for the spatial analysis of crime." Crime Mapping: A Journal of Research and Practice 1, no. 1 (2009): 77-96.](http://discovery.ucl.ac.uk/20057/)
+
+
+While sometimes there may be issues with linking points to routes due to problems such as bad geocoding, as we had discusses in great detail in week 4, there are obivious advantages to considering crime as distributed along networks, rather than continuous space. 
 

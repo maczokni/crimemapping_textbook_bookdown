@@ -61,41 +61,67 @@
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -327,30 +353,30 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Last week we showed you fairly quickly how to create maps of spatial point patterns using <code>leaflet</code> and we also introduced the <code>tmap</code> package for thematic maps. Besides doing that we introduced a set of key concepts we hope you have continued studying over the week. We also discussed the <code>sf</code> package for storing spatial objects in R.</p>
 <p>This week we will carry on where we left the session last week. In the presentations last week we introduced various kind of thematic maps and in our lecture this week we discuss in detail issues with choropleth maps. So the focus of today’s lab is going to be around thematic maps and some of the choices we discussed in our presentation last week and also this week.</p>
 <p>We will also introduce faceting and <strong>small multiples</strong>, which is a format for comparing the geographical distribution of different social phenomena. For this session we will be using the spatial object that you created last week and complement it with additional information from the census. So first of all you will have to rerun the code you used to create the <em>manchester_lsoa</em> <code>sf</code> object. Apart from doing so, you want to start your session loading the libraries you know for sure you will need:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)
 <span class="kw">library</span>(tmap)
-<span class="kw">library</span>(dplyr)</code></pre></div>
+<span class="kw">library</span>(dplyr)</code></pre>
 <p>You may not remember all of what you did to generate that file so let’s not waste time and just cut and paste from below (but try to remember what each of the lines of code is doing and if you are not clear look at the notes from last week). Imagine you had to do all of this again by pointing and clicking in a graphical user interface rather than just sending the code to the console! As you will see time and time again, code in the end is a much more efficient way of talking to a computer.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">crimes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/2018_labs/master/data/2017-11-greater-manchester-street.csv&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">crimes &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/2018_labs/master/data/2017-11-greater-manchester-street.csv&quot;</span>)
 <span class="co">#The following assumes you have a subdirectory called BoundaryData in your working directory, otherwise you will need to change to the pathfile where you store your LSOA shapefile</span>
 shp_name &lt;-<span class="st"> &quot;data/BoundaryData/england_lsoa_2011.shp&quot;</span>
-manchester_lsoa &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre></div>
-<pre><code>## Reading layer `england_lsoa_2011&#39; from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\data\BoundaryData\england_lsoa_2011.shp&#39; using driver `ESRI Shapefile&#39;
+manchester_lsoa &lt;-<span class="st"> </span><span class="kw">st_read</span>(shp_name)</code></pre>
+<pre><code>## Reading layer `england_lsoa_2011&#39; from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/data/BoundaryData/england_lsoa_2011.shp&#39; using driver `ESRI Shapefile&#39;
 ## Simple feature collection with 282 features and 3 fields
 ## geometry type:  POLYGON
 ## dimension:      XY
 ## bbox:           xmin: 378833.2 ymin: 382620.6 xmax: 390350.2 ymax: 405357.1
 ## epsg (SRID):    NA
 ## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +datum=OSGB36 +units=m +no_defs</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">crimes_per_lsoa &lt;-<span class="st"> </span>crimes <span class="op">%&gt;%</span>
+<pre class="sourceCode r"><code class="sourceCode r">crimes_per_lsoa &lt;-<span class="st"> </span>crimes <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(LSOA.code) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">group_by</span>(LSOA.code) <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">summarise</span>(<span class="dt">count=</span><span class="kw">n</span>())
-manchester_lsoa &lt;-<span class="st"> </span><span class="kw">left_join</span>(manchester_lsoa, crimes_per_lsoa, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>=<span class="st">&quot;LSOA.code&quot;</span>))</code></pre></div>
+manchester_lsoa &lt;-<span class="st"> </span><span class="kw">left_join</span>(manchester_lsoa, crimes_per_lsoa, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>=<span class="st">&quot;LSOA.code&quot;</span>))</code></pre>
 <pre><code>## Warning: Column `code`/`LSOA.code` joining factors with different levels,
 ## coercing to character vector</code></pre>
 <p>You may not want to have to go through this process all the time. One thing you could do is to save the <em>manchester_lsoa</em> object as a physical file in your machine. You can use the <code>st_write()</code> function from the <code>sf</code> package to do this. If we want to write into a shapefile format we would do as shown below:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_write</span>(manchester_lsoa, <span class="st">&quot;data/BoundaryData/manchester_crime_lsoa.shp&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_write</span>(manchester_lsoa, <span class="st">&quot;data/BoundaryData/manchester_crime_lsoa.shp&quot;</span>)</code></pre>
 <p>Notice how four files have appeared in your working directory, in your “BoundaryData”&quot; subdirectory or whatever you called it. Remember what we said last week about shapefiles, there are a collection of files that need to be kept together.</p>
 <p>If you wanted to bring this shapefile back into R at any future point, you would only need to use the <code>st_read()</code> function.</p>
 <p>Before we carry on, can you tell What is different between <em>manchester_lsoa.shp</em> and <em>manchester_crime_lsoa.shp</em>? Think about it.</p>
@@ -359,38 +385,38 @@ manchester_lsoa &lt;-<span class="st"> </span><span class="kw">left_join</span>(
 <h2><span class="header-section-number">3.2</span> Creating choropleth maps</h2>
 <p>The <code>tmap</code> package was developed to easily produce thematic maps. It is inspired by the <code>ggplot2</code> package and the layered grammar of graphics. It was written by Martjin Tennekes a Dutch data scientist. There are a number of <a href="https://cran.r-project.org/web/packages/tmap/index.html">vignettes in the CRAN repository</a> and the <a href="https://github.com/mtennekes/tmap">GitHub repo for this package</a> that you can explore. GitHub is a collaborative website used by software developers and data scientist, also contains a useful <em>readme</em> section with additional resources to familiarise yourself with this package. Each map can be plotted as a static map (<em>plot mode</em>) and shown interactively (<em>view mode</em>) as we briefly saw last week. We will start by focusing on static maps.</p>
 <p>Every time you use this package you will need a line of code that specifies the spatial object you will be using. Although originally developed to handle <code>sp</code> objects only, it now also has support for <code>sf</code> objects. For specifying the spatial object we use the <code>tm_shape()</code> function and inside we specify the name of the spatial object we are using. On its own, this will do nothing apparent. No map will be created. We need to add additional functions to specify what we are doing with that spatial object. If you try to run this line on its own, you’ll get an error telling you you must “Specify at least one layer after each tm_shape”.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa)</code></pre>
 <p>The main plotting method consists of elements that we can add. The first element is the <code>tm_shape()</code> function specifying the spatial object, and then we can add a series of elements specifying layers in the visualisation. They can include polygons, symbols, polylines, raster, and text labels as base layers. We will add a polygon using <code>tm_polygon()</code>. As noted, with <code>tmap</code> you can produce both static and interactive maps. The interactive maps rely on <code>leaflet</code>. You can control whether the map is static or interactive with the <code>tmap_mode()</code> function. If you want a static map you pass <code>plot</code> as an argument, if you want an interactive map you pass <code>view</code> as an argument. Let’s create a static map first.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</code></pre>
 <pre><code>## tmap mode set to plotting</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_polygons</span>()</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_polygons</span>()</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>Given that we are not passing any additional arguments all we are getting is a map with the shape of the geographies that we are representing, the census LSOAs for Manchester city. We can, however, ask R to produce a choropleth map by mapping the values of a variable in our data table using colour. In tmap we need to denote our variables between quotes. The first argument we pass then would be the name of the variable we want to visualise. If you remember we have a count for crimes (“count”), so let’s visualise that by creating a thematic map.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;count&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_polygons</span>(<span class="st">&quot;count&quot;</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>Notice how this map is different from last week. What do you think the reason for this is? You may remember last week we used one additional argument <code>style</code> specifying the classification method we were going to use. If you remember we used quantiles. We will in a second look at how a map of the counts of crime looks different when we use different classification systems. But before we get to that, let’s think about aesthetics a bit more.</p>
 <p>We have been using <code>tm_polygons()</code> but we can also add the elements of a polygon map using different functions that break down what we represent here. In the map above you see the polygons have a dual representation, the borders are represented by lines and the colour is mapped to the intensity of the quantitative variable we are representing. With darker colours representing more of the variable, the areas with more crimes. Instead of using <code>tm_polygon()</code> we can use the related functions <code>tm_fill()</code>, for the colour inside the polygons, and <code>tm_borders()</code>, for the aesthetics representing the border of the polygons. Say we find the borders distracting and we want to set them to be transparent. In that case we could just use <code>tm_fill()</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>As you can see here, the look is a bit cleaner. We don’t need to get rid of the borders completely. Perhaps we want to make them a bit more translucent. We could do that by adding the border element but making the drawing of the borders less pronounced.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>The alpha parameter that we are inserting within <code>tm_borders()</code> controls the transparency of the borders, we can go from 0 (totally transparent) to 1 (not transparent). You can play around with this value and see the results.</p>
 <p>Notice in the last few maps we did not have to specify whether we wanted the map to be static or interactive. When you use <code>tmap</code>, R will remember the mode you want to use. So once you specify <code>tmap_mode(&quot;plot&quot;)</code>, all the subsequent maps will be static. It is only when you want to change this behaviour that you would need another <code>tmap_mode</code> call.</p>
 <p>Notice as well that the legend in this map is (a) not very informative and (b) located in a place that is less than optimal, since it covers part of the map. We can add a title within the <code>tm_fill</code> to clarify what count is and we can use the <code>tm_layout()</code> function to control the appearance of the legend. This later function <code>tm_layout</code> allows you to think about many of the more general cosmetics of the map.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Crime counts&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">main.title =</span> <span class="st">&quot;Crime in Manchester City, Nov/2017&quot;</span>, <span class="dt">main.title.size =</span> <span class="fl">0.7</span> ,
-            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</code></pre></div>
+            <span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We are also going to change the current style of the maps by making them more friendly to colour blind people. We can use the tmap_style() function to do so.</span>
-current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We are also going to change the current style of the maps by making them more friendly to colour blind people. We can use the tmap_style() function to do so.</span>
+current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<span class="st">&quot;col_blind&quot;</span>)</code></pre>
 <pre><code>## tmap style set to &quot;col_blind&quot;</code></pre>
 <pre><code>## other available styles are: &quot;white&quot;, &quot;gray&quot;, &quot;natural&quot;, &quot;cobalt&quot;, &quot;albatross&quot;, &quot;beaver&quot;, &quot;bw&quot;, &quot;classic&quot;, &quot;watercolor&quot;</code></pre>
 </div>
@@ -401,37 +427,37 @@ current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<
 <p>Let’s make four maps, each one using a different classification method: Equal interval, Natural breaks (Jenks), Quantile, and Unclassed (no classification). You should be familiar with these methods from the reading and lecturing material. If not, please, do make sure you read the material before continuing.</p>
 <p>For each map, instead of visualising them one by one, just assign them to a new object. Let’s call them <em>map1</em>, <em>map2</em>, <em>map3</em> and <em>map4</em>.</p>
 <p>So let’s make <em>map1</em>. This will create a choropleth map using equal intervals:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map1 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st">                   </span><span class="co">#use tm_shape function to specify spatial object</span>
+<pre class="sourceCode r"><code class="sourceCode r">map1 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st">                   </span><span class="co">#use tm_shape function to specify spatial object</span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>, <span class="dt">style=</span><span class="st">&quot;equal&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Equal&quot;</span>) <span class="op">+</span><span class="st">  </span><span class="co">#use tm_fill to specify variable, classification method, and give the map a title</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>),   <span class="co">#use tm_layout to make the legend look nice</span>
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
-            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre></div>
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre>
 <p>Now create <em>map2</em>, with the jenks method often preferred by geographers:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map2 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r">map2 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>, <span class="dt">style=</span><span class="st">&quot;jenks&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Jenks&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
-            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre></div>
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre>
 <p>Now create <em>map3</em>, with the quantile method often preferred by epidemiologists:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map3 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r">map3 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>, <span class="dt">style=</span><span class="st">&quot;quantile&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Quantile&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
-            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre></div>
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre>
 <p>And finally make <em>map4</em>, an unclassed choropleth map, which maps the values of our variable to a smooth gradient.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map4 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r">map4 &lt;-<span class="st"> </span><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;count&quot;</span>, <span class="dt">style=</span><span class="st">&quot;cont&quot;</span>, <span class="dt">title =</span> <span class="st">&quot;Unclassed&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), 
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
-            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre></div>
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre>
 <p>Notice that we are not plotting the maps, we are storing them into R objects (map1 to map4). This way they are saved, and you can call them later, which is what we need in order to plot them together using the <code>tmap_arrange()</code> function.</p>
 <p>So if you wanted to map just <em>map3</em> for example, all you need to do, is call the map3 object. Like so:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">map3</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">map3</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>But now we will plot all 4 maps together, arranged using the <code>tmap_arrange()</code> function. Like so:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#And now we deploy tmap_arrange to plot these maps together</span>
-<span class="kw">tmap_arrange</span>(map1, map2, map3, map4) </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#And now we deploy tmap_arrange to plot these maps together</span>
+<span class="kw">tmap_arrange</span>(map1, map2, map3, map4) </code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <div id="homework-3.1" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> Homework 3.1</h3>
@@ -441,16 +467,16 @@ current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<
 <div id="using-graduated-symbols" class="section level2">
 <h2><span class="header-section-number">3.4</span> Using graduated symbols</h2>
 <p>The literature on thematic cartography highlights how counts, like the ones above, are best represented using graduated symbols rather than choropleth maps. So let’s try to go for a more appropriate representation. In <code>tmap</code> you can use tm_symbols for this. We will use <code>tm_borders</code> to provide some context.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_bubbles</span>(<span class="st">&quot;count&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_bubbles</span>(<span class="st">&quot;count&quot;</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>First thing you see is that we loose the context (provided by the polygon borders) that we had earlier. The <code>border.lwd</code> argument set to NA in the <code>tm_symbols()</code> is asking R not to draw a border to the circles. Whereas <code>tm_borders()</code> brings back a layer with the borders of the polygons representing the different LSOAs in Manchester city. Notice how I am modifying the transparency of the borders with the alpha parameter.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st">                         </span><span class="co">#use tm_shape function to specify spatial object</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(manchester_lsoa) <span class="op">+</span><span class="st">                         </span><span class="co">#use tm_shape function to specify spatial object</span>
 <span class="st">  </span><span class="kw">tm_bubbles</span>(<span class="st">&quot;count&quot;</span>, <span class="dt">border.lwd=</span><span class="ot">NA</span>) <span class="op">+</span><span class="st">              </span><span class="co">#use tm_bubbles to add the bubble visualisation, but set the &#39;border.lwd&#39; parameter to NA, meaning no symbol borders are drawn</span>
 <span class="st">  </span><span class="kw">tm_borders</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) <span class="op">+</span><span class="st">                           </span><span class="co">#add the LSOA border outlines using tm_borders, but set their transparency using the alpha parameter (0 is totally transparent, 1 is not at all)</span>
 <span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.position =</span> <span class="kw">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>), <span class="co">#use tm_layout to make the legend look nice</span>
             <span class="dt">legend.title.size =</span> <span class="fl">0.8</span>,
-            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre></div>
+            <span class="dt">legend.text.size =</span> <span class="fl">0.5</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
 </div>
 <div id="bringing-additional-census-data-in" class="section level2">
@@ -458,38 +484,29 @@ current_style &lt;-<span class="st"> </span><span class="kw">tmap_style</span>(<
 <p>Last week you learned how to obtain crime data from the police UK website and you also developed the skills to obtain shapefiles with the boundaries for the UK census geographies. Specifically you learnt how to obtain LSOAs boundaries. Then we taught you how to join these data tables using <code>dplyr</code>. If you open your <em>manchester_lsoa</em> object you will see that at the moment you only have one field in this dataframe providing you with statistical information. However, there is a great deal of additional information that you could add to these data frame. Given that you are using census geographies you could add to it all kind of socio demographic variables available from the census.</p>
 <p>You may want to watch <a href="https://www.youtube.com/watch?v=AzK04BOFd_s#t=17">this 4 minute video</a> to get a sense for how to obtain the data. If you don’t have headphones make sure you read <a href="http://infuse.ukdataservice.ac.uk/help/tutorial.html">this brief tutorial</a> before carrying on. We are going to get some data for Manchester city LSOAs. Let me warn you though, the census data portal is one of the closest things to hell you are going to come across on the internet. Using it will be a good reminder of why point and click interfaces can suck the life out of you.</p>
 <p>From the main Infuse portal select the 2011 census data then when queried pick selection by geography:</p>
-<div class="figure">
-<img src="img/infuse1.PNG" />
-
-</div>
+<p><img src="img/infuse1.PNG" /></p>
 <p>Expand the local authorities and select Manchester. Expand Manchester and select LSOAs:</p>
-<div class="figure">
-<img src="img/infuse2.PNG" />
-
-</div>
+<p><img src="img/infuse2.PNG" /></p>
 <p>At the bottom of the page click in <em>Add</em> and then where it says <em>Next</em>. Now big tip. Do not press back in your browser. If you need to navigate back once you get to that point use the <em>previous</em> button at the bottom of the screen. You will regret it if you don’t do this.</p>
 <p>Now you will need to practice navigating the Infuse system to generate a data table that has a number of relevant fields we are going to use today and at a later point this semester. I want you to create a file with information about: the resident population, the workday population, and the number of deprivation households. This will involve some trial and error but you should end up with a selection like the one below:</p>
-<div class="figure">
-<img src="img/infuseselection.PNG" />
-
-</div>
+<p><img src="img/infuseselection.PNG" /></p>
 <p>Once you have those fields click next to get the data and download the file. Unzip them and open the .csv file in Excel. If you view the data in Excel you will notice it is a bit untidy. The first row has no data but the labels for the variable names and the second row has the data for Manchester as a whole. We don’t need those rows. Because this data is a bit untidy we are going to use <code>read_csv()</code> function from the <code>readr</code> package rather than the base <code>read.csv</code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
-census_lsoa_m &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://www.dropbox.com/s/e4nkqmefovlsvib/Data_AGE_APPSOCG_DAYPOP_UNIT_URESPOP.csv?dl=1&quot;</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+census_lsoa_m &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://www.dropbox.com/s/e4nkqmefovlsvib/Data_AGE_APPSOCG_DAYPOP_UNIT_URESPOP.csv?dl=1&quot;</span>)</code></pre>
 <pre><code>## Warning: Missing column names filled in: &#39;X14&#39; [14]</code></pre>
 <p>Notice that even all the variables that begin with “f” are numbers they have been read into R as characters. This is to do with the fact the first two lines do not represent cases and do have characters. R is coercing everything into character vectors. Let’s clean this a bit.</p>
 <p>First we will get rid of the first two rows. In particular we will use the <em>slice()</em> function from <em>dplyr</em>. We can use slice to select cases based on row number. We don’t need the first two rows so we can select rows 3 to 284.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m &lt;-<span class="st"> </span><span class="kw">slice</span>(census_lsoa_m, <span class="dv">3</span><span class="op">:</span><span class="dv">284</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m &lt;-<span class="st"> </span><span class="kw">slice</span>(census_lsoa_m, <span class="dv">3</span><span class="op">:</span><span class="dv">284</span>)</code></pre>
 <p>There are also fields that we don’t need. We only need the variables beginning with F for those have the information about population and deprivation, and the <em>GEO_CODE</em> tag which will allow us to link this table to the <em>manchester_lsoa</em> file.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m &lt;-<span class="st"> </span><span class="kw">select</span>(census_lsoa_m, GEO_CODE, F996<span class="op">:</span>F323339)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m &lt;-<span class="st"> </span><span class="kw">select</span>(census_lsoa_m, GEO_CODE, F996<span class="op">:</span>F323339)</code></pre>
 <p>We also want to convert the character variables into numeric ones, whilst preserving the <em>id</em> as a character variable. For this we will use the <code>lapply</code> function. This is a convenient function that will administer a function to the elements we pass as an argument. In this case we are asking to apply the <code>as.numeric()</code> function to the columns 2 to 9 of the <em>census_lsoa_m</em> data frame. This is turning into numeric all those character columns.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m[<span class="dv">2</span><span class="op">:</span><span class="dv">9</span>] &lt;-<span class="st"> </span><span class="kw">lapply</span>(census_lsoa_m[<span class="dv">2</span><span class="op">:</span><span class="dv">9</span>], as.numeric)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m[<span class="dv">2</span><span class="op">:</span><span class="dv">9</span>] &lt;-<span class="st"> </span><span class="kw">lapply</span>(census_lsoa_m[<span class="dv">2</span><span class="op">:</span><span class="dv">9</span>], as.numeric)</code></pre>
 <p>The only problem we have now is that the variable names are not very informative. If you look at the metadata file that came along you can see that there is a key there to understand what these variables mean. We could use that information to create more meaningful names for the variables we have. We will use the <code>rename()</code> function from the <code>dplyr</code> package to do the renaming:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m &lt;-<span class="st"> </span><span class="kw">rename</span>(census_lsoa_m, <span class="dt">tothouse =</span> F996, <span class="dt">notdepr =</span> F997, <span class="dt">depriv1 =</span> F998,
+<pre class="sourceCode r"><code class="sourceCode r">census_lsoa_m &lt;-<span class="st"> </span><span class="kw">rename</span>(census_lsoa_m, <span class="dt">tothouse =</span> F996, <span class="dt">notdepr =</span> F997, <span class="dt">depriv1 =</span> F998,
                         <span class="dt">depriv2 =</span> F999, <span class="dt">depriv3 =</span> F1000, <span class="dt">depriv4 =</span> F1001, <span class="dt">respop =</span> F2384,
-                        <span class="dt">wkdpop =</span> F323339)</code></pre></div>
+                        <span class="dt">wkdpop =</span> F323339)</code></pre>
 <p>The rename function takes as the first argument the name of the dataframe. Then for each variable you want to change you write down the new name followed by the old name. Now that we have the file ready we can link it to our <em>manchester_lsoa</em> file using code we learnt last week. We use again the <code>left_join()</code> function to add to the <em>manchester_lsoa</em> dataframe the variables that are present in the <em>census_lsoa_m</em>. The first argument in the function is the name of the dataframe to which we want to add fields, the second argument the name of the dataframe from which those fields come, and then you need to specify using “by” the name of the variables on each of these two dataframes that have the id variable that will allow us to ensure that we are linking the information across the same observations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">manchester_lsoa &lt;-<span class="st"> </span><span class="kw">left_join</span>(manchester_lsoa, census_lsoa_m, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>=<span class="st">&quot;GEO_CODE&quot;</span>))</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">manchester_lsoa &lt;-<span class="st"> </span><span class="kw">left_join</span>(manchester_lsoa, census_lsoa_m, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;code&quot;</span>=<span class="st">&quot;GEO_CODE&quot;</span>))</code></pre>
 <p>And there you go… Now you have a datafile with quite a few pieces of additional information about LSOAs in Manchester. The next step is to use this information.</p>
 </div>
 <div id="computing-and-mapping-crime-rates" class="section level2">
@@ -497,22 +514,19 @@ census_lsoa_m &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<sp
 <p>Ok, so now we have a field that provides us with the number of crimes and two alternative counts of population for each LSOA in Manchester in the same dataframe. We could compute the rate of crime in each using the population counts as our denominator. Let’s see how the maps may compare using these different denominators.</p>
 <p>But first we need to create new variables. For this we can use the <code>mutate()</code> function from the <code>dplyr</code> package. This is a very helpful function to create new variables in a dataframe based on transformations or mathematical operations performed in other variables within the dataframe. In this function, the first argument is the name of the data frame, and then we can pass as arguments all new variables we want to create as well as the instructions as to how we are creating those variables.</p>
 <p>First we want to create a rate using the usual residents, since crime rates are often expressed by 100,000 inhabitants we will multiply the division of the number of crimes by the number of usual residents by 100,000. We will then create another variable, <em>crimr2</em>, using the workday population as the denominator. We will store this new variables in our existing <em>manchester_lsoa</em> dataset. You can see that below then I specify the name of a new variable <em>crimr1</em> and then I tell the function I want that variable to equal (for each case) the division of the values in the variable <em>count</em> (number of crimes) by the variable <em>respop</em> (number of people residing in the area) and then we multiply the result of this division by 100,000 to obtain a rate expressed in those terms. Then we do likewise for the alternative measure of crime.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">manchester_lsoa &lt;-<span class="st"> </span><span class="kw">mutate</span>(manchester_lsoa, <span class="dt">crimr1 =</span> (count<span class="op">/</span>respop)<span class="op">*</span><span class="dv">100000</span>, <span class="dt">crimr2 =</span> (count<span class="op">/</span>wkdpop)<span class="op">*</span><span class="dv">100000</span>)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">manchester_lsoa &lt;-<span class="st"> </span><span class="kw">mutate</span>(manchester_lsoa, <span class="dt">crimr1 =</span> (count<span class="op">/</span>respop)<span class="op">*</span><span class="dv">100000</span>, <span class="dt">crimr2 =</span> (count<span class="op">/</span>wkdpop)<span class="op">*</span><span class="dv">100000</span>)</code></pre>
 <p>It should not be difficult for you to produce now a choropleth map like the one below. Clue: to change the colors for the fill of the polygons you can use the palette argument within the <code>tm_fill</code> calls. You can explore different palettes running the following code:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tmaptools<span class="op">::</span><span class="kw">palette_explorer</span>()</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">tmaptools<span class="op">::</span><span class="kw">palette_explorer</span>()</code></pre>
 <div id="homework-2-1" class="section level3">
 <h3><span class="header-section-number">3.6.1</span> Homework 2</h3>
 <p><em>Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?</em></p>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Once you have completed this activity, let’s explore your map with the crime rate using the usual residents as the denominator using the interactive way. Assuming you name that visualisation map5 you could use the following code.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)
-map5</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tmap_mode</span>(<span class="st">&quot;view&quot;</span>)
+map5</code></pre>
 <p>You may find it useful to shift to the OpenStreetMap view by clicking in the box to the left, since it will give you a bit more contextual information than the default CartoDB basemap.</p>
 <p>In the first lecture we spoke a bit about Open Street Map, but if you’re interested it’s definitely worth reading up on. As I mentioned, Open Street Map is a non-profit foundation whose aim is to support and enable the development of freely-reusable geospatial data, and relies heavily on volunteers participating in this project to map their local areas. You can have a look <a href="https://www.hotosm.org/get-involved/disaster-mapping">here</a> for ongoing humanitarian projects, or read <a href="https://wiki.openstreetmap.org/wiki/Mapping_parties">here</a> about the mapping parties I told you about. At the very least though, in the spirit of open source and crowdsourcing, take a moment to appreciate that all these volunteers of people just like you have contributed to creating such a detailed geographical database of our world. That’s definitely something kinda cool to think about!</p>
-<div class="figure">
-<img src="img/shiftingbasemap.png" />
-
-</div>
+<p><img src="img/shiftingbasemap.PNG" /></p>
 </div>
 <div id="homework-3" class="section level3">
 <h3><span class="header-section-number">3.6.2</span> Homework 3</h3>
@@ -523,68 +537,68 @@ map5</code></pre></div>
 <h2><span class="header-section-number">3.7</span> More on small multiples and point pattern maps</h2>
 <p>Last week we showed you how to visualise point patterns using data from the Police UK website. One of the homeworks ask you to discuss the map you produced using <code>leaflet</code> in which you used type of crimes to colour your points. One of the problems with that map was that you had so many levels within that variable that it was very difficult to tell what was what. Even some of the colors in different categories were not that different from each other. That’s a typical situation where faceting or using small multiples would have been a better solution.</p>
 <p>What we are going to do require our data to be stored as a spatial object -as it is the case with <code>tmap</code>. So first we need to turn our data into a spatial object. For this we will use the <code>st_as_sf()</code> function. The <code>st_as_sf</code> will return a <code>sf</code> object using the geographical coordinates we specify, below you can see we also specify the coordinate system we are using. Since we didn’t modify the <code>tmap_mode</code> from our last call we would still be running on the view rather than the plot format. We can go back to the plot format with a new <code>tmap_mode</code> call.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">crime_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(<span class="dt">x =</span> crimes, 
+<pre class="sourceCode r"><code class="sourceCode r">crime_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(<span class="dt">x =</span> crimes, 
                         <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>),
                         <span class="dt">crs =</span> <span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)
 <span class="co">#For a simple map with all the points</span>
-<span class="kw">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</code></pre></div>
+<span class="kw">tmap_mode</span>(<span class="st">&quot;plot&quot;</span>)</code></pre>
 <pre><code>## tmap mode set to plotting</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_dots</span>() </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_dots</span>() </code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
 <p>Here we are getting all the data points in the “crime_sf” object, which includes the whole of Greater Manchester. Also, since there are so many crimes, dots, it is hard to see patterns. We can add some transparency with the alpha argument as part of the <code>tm_dots</code> call.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) </code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) </code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>Straight away you can start seeing some patterns, like the concentration of crimes in the town centres of all the different local authorities that conform Greater Manchester. This would be easier for you to see, if you are not familiar with the geography of Greater Manchester, if you place a basemap as a layer.</p>
 <p>You can also use basemaps when working on the plot mode of <code>tmap</code>. We could for example use OpenStreet maps. We use the read_osm function from <code>tmaptools</code> package to do that, by passing <em>crime_sf</em> as an argument we will be bounding the scope of the basemap to the area covered by our point pattern of crimes. We will also need to load the OpenStreetMap package for this to work.</p>
 <p>Remember that the first time you use a package you always have to install it, using the <code>install.packages()</code> function!</p>
 <p>Now load the OpenStreetMap library into your working environment with the <code>library()</code> function:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(OpenStreetMap)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(OpenStreetMap)</code></pre>
 <p><strong>Mac Users’s Note</strong>: <em>So if you’re on a Mac, it’s possible that at this point you’ve experienced an error. It might look something like this:</em></p>
 <p><code>Error: package or namespace load failed for ‘OpenStreetMap’:  .onLoad failed in loadNamespace() for 'rJava', details:   call: dyn.load(file, DLLpath = DLLpath, ...)   error: unable to load shared object '/Library/Frameworks/R.framework/Versions/3.4/Resources/library/rJava/libs/rJava.so':   dlopen(/Library/Frameworks/R.framework/Versions/3.4/Resources/library/rJava/libs/rJava.so, 6): Library not loaded: @rpath/libjvm.dylib   Referenced from: /Library/Frameworks/R.framework/Versions/3.4/Resources/library/rJava/libs/rJava.so   Reason: image not found</code></p>
 <p><em>This is because of some drama between the rJava and your Mac OS’s dealing with Java. Do not despair though, the solution is simple. Open up your <code>Terminal</code> app. This is your command line for Mac. You might have used before for other things, or you might not. If you don’t know what I’m on about with <code>Terminal</code> have a look at this <a href="https://www.macworld.co.uk/feature/mac-software/how-use-terminal-on-mac-3608274/">helpful tutorial</a>.</em></p>
 <p><em>Now, once you have Terminal open, all you have to do is copy and paste the code below, and press Enter to run it:</em></p>
 <p><code>sudo ln -f -s $(/usr/libexec/java_home)/jre/lib/server/libjvm.dylib /usr/local/lib</code></p>
 <p><em>After you press Enter, Terminal will ask you for your password. This is the password to your laptop. Type in your password, and hit enter again. Once that’s all done, you can go back to R, and you will have to load a package called <code>rJava()</code>. Like so:</em></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rJava)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rJava)</code></pre>
 <p><em>Now you can again try loading the OpenStreetMap package.</em></p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(OpenStreetMap)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(OpenStreetMap)</code></pre>
 <p><em>Hopefully should all work smoothly now!</em></p>
 <p><strong>Back to everybody here!</strong></p>
 <p>You will also need another package called <code>tmaptools</code>. This gets installed when you installed tmap, but you still have to load it up.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmaptools)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmaptools)</code></pre>
 <p>We will then add the basemap layer using the <code>qtm()</code> function that is a function provided by tmap for quick plotting.</p>
 <p>First, create an object, let’s call it <code>gm_osm</code>, by reading Open Street Map (OSM) data with the <code>read_osm()</code> function. This function reads and returns OSM tiles are read and returns as a spatial raster, or queries vectorized OSM data and returns as spatial polygons, lines, and/or points.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gm_osm &lt;-<span class="st"> </span><span class="kw">read_osm</span>(crime_sf)</code></pre></div>
+<pre class="sourceCode r"><code class="sourceCode r">gm_osm &lt;-<span class="st"> </span><span class="kw">read_osm</span>(crime_sf)</code></pre>
 <p>It might take a while to get this data, as it is quite a large set of data, being extracted from the open street map database. Just think how long it took all the volunteers to map these areas. Compared to that, the little waiting time to get this onto your computer for your map should be nothing!</p>
 <p>Now you can use the <code>qtm()</code> function to draw a quick thematic map. Any ideas as to why it’s called qtm yet? Let’s try again. You can draw a <strong>Q</strong>uick <strong>T</strong>hematic <strong>M</strong>ap.</p>
 <p>Again we use the <code>tm_shape()</code> and <code>tm_dots()</code> functions to specify the presentation of the map, with <code>tm_shape()</code> specifying the shape object (in this case crime_sf), and <code>tm_dots()</code> to draw symbols, including specifying the color, size, and shape of the symbols. In this case we adjust the transparency with the <code>alpha</code> parameter.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qtm</span>(gm_osm) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qtm</span>(gm_osm) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) </code></pre></div>
+<span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) </code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-36-1.png" width="672" /></p>
 <p>Let’s zoom in into Manchester city, for which we can use our manchester_lsoa map.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mc_osm &lt;-<span class="st"> </span><span class="kw">read_osm</span>(manchester_lsoa, <span class="dt">type =</span> <span class="st">&quot;stamen-toner&quot;</span>)
+<pre class="sourceCode r"><code class="sourceCode r">mc_osm &lt;-<span class="st"> </span><span class="kw">read_osm</span>(manchester_lsoa, <span class="dt">type =</span> <span class="st">&quot;stamen-toner&quot;</span>)
 
 <span class="kw">qtm</span>(mc_osm) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) </code></pre></div>
+<span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">alpha=</span><span class="fl">0.1</span>) </code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
 <p>We can use the <code>bb()</code> function from <code>tmaptols</code> to create a bounding box around the University of Manchester, the width and height parameters I am using determine the degree of zoom in (I got these experimenting with different ones until I got the right zooming around the University location). Once you have this bounding box you can pass it as an argument to the <code>read_osm()</code> function that will look for the basemap around that location.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create the bounding box</span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Create the bounding box</span>
 UoM_bb &lt;-<span class="st"> </span><span class="kw">bb</span>(<span class="st">&quot;University of Manchester&quot;</span>, <span class="dt">width=</span>.<span class="dv">03</span>, <span class="dt">height=</span>.<span class="dv">02</span>)
 <span class="co">#Read the basemap from using the stamen toner background</span>
 UoM_osm &lt;-<span class="st"> </span><span class="kw">read_osm</span>(UoM_bb, <span class="dt">type =</span> <span class="st">&quot;stamen-toner&quot;</span>)
 <span class="co">#Plot the basemap</span>
-<span class="kw">qtm</span>(UoM_osm)</code></pre></div>
+<span class="kw">qtm</span>(UoM_osm)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
 <p>Now that we have our basemap we can run our small multiples. Because we have a variable that determines the types we can use a different way to <code>tmap_arrange()</code> explained above, we can essentially ask <code>tmap</code> to create a map for each of the levels in our organising variable (in this case Crime.type). So instead of <code>tmap_arrange()</code> that requires the creation of each map, when each map simply represents different levels of an organising variable we can simplify the syntax using <code>tm_facets()</code> and within this function we specify as the first argument the name of the variable that has the different categories we want to map out. The second argument you see below <code>free.coords</code> set to FALSE simply ensures that the map gets bounded to the basemap, if you want to see what happens if you change it, just set it to TRUE instead.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qtm</span>(UoM_osm) <span class="op">+</span><span class="st"> </span>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qtm</span>(UoM_osm) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_shape</span>(crime_sf) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_dots</span>(<span class="dt">size=</span><span class="fl">0.5</span>, <span class="dt">col =</span> <span class="st">&quot;Crime.type&quot;</span>) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_facets</span>(<span class="st">&quot;Crime.type&quot;</span>, <span class="dt">free.coords=</span><span class="ot">FALSE</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.show=</span><span class="ot">FALSE</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">tm_layout</span>(<span class="dt">legend.show=</span><span class="ot">FALSE</span>)</code></pre>
 <p><img src="03-week3_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
 <p>We could do some further tweaking around for ensuring things look a bit neater. But we have covered a lot of ground today, and you should all give yourself a congratulatory “well done”.</p>
 
