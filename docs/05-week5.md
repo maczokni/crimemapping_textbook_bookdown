@@ -582,6 +582,7 @@ I borrow here from George Renghert and Brian Lockwood:
 
 
 In particular, they highlight four main issues inherent in most studies of space:
+
 - issues associated with politically bounded units of aggregation, 
 - edge effects of bounded space
 - the modifiable aerial unit problem (MAUP)
@@ -791,7 +792,7 @@ The last thing we will do today is make some cartograms! Cartogram types of maps
 
 There are different types of cartograms. 
 
-Density-equalizing (contiguous) cartograms are your traditional cartograms. In density-equalizing cartograms, map features bulge out a specific variable. Even though it distorts each feature, it remains connected during its creation. On the other hand, you can have Non-Contiguous Cartograms, where features in non-contiguous cartograms don’t have to stay connected. Finally, Dorling Cartogram (named after professor [Danny Dorling](https://www.geog.ox.ac.uk/staff/ddorling.html)) uses shapes like circles and rectangles to depict area. These types of cartograms make it easy to recognize patterns. For example, here is a Darling Cartogram I made of [FixMyStreet](www.fixmystreet.org) reports in London: 
+Density-equalizing (contiguous) cartograms are your traditional cartograms. In density-equalizing cartograms, map features bulge out a specific variable. Even though it distorts each feature, it remains connected during its creation. On the other hand, you can have Non-Contiguous Cartograms, where features in non-contiguous cartograms don’t have to stay connected. Finally, Dorling Cartogram (named after professor [Danny Dorling](https://www.geog.ox.ac.uk/staff/ddorling.html)) uses shapes like circles and rectangles to depict area. These types of cartograms make it easy to recognize patterns. For example, here is a Dorling Cartogram I made of [FixMyStreet](www.fixmystreet.org) reports in London: 
 
 ![](img/notNaAll3CartogramNewFrame.png)
 

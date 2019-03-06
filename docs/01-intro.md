@@ -110,7 +110,7 @@ The R languages uses **functions** to tell the computer what to do. In the R *la
 
 In R, you can pass a number of **arguments** to any function. These arguments control what the function will do in each case. The arguments appear between brackets. Here we passed the text "I hate computers" as an argument. Once you execute the program, by clicking on *Run*, the R engine sends this to the CPU of your machine in the form of binary code and this produces a result. In this case we see that result printed in the main console.
 
-Every R function admits different kind of arguments. Learning R involves not only learning different functions but also learning what are the valid arguments you can pass to each function.
+Every R function admits different kind of arguments. Learning R involves not only learning different functions but also learning what are the valid arguments you can pass to each function. If you want to know more about a specific function, move your cursor onto it and press the `F1`-key. The documentation of the function will then appear in the **Help**-viewer.
 
 ![](img/consoleresults.png)
 As indicated above, the window in the bottom left corner is the main **console**.You will see that the words "I hate computers" appear printed there.  If rather than using R Studio you were working directly from R, that's all you would get: the main console where you can write code interactively (rather than all the different windows you see in R Studio). You can write your code directly in the main console and execute it line by line in an interactive fashion. However, we will be running code from scripts, so that you get used to the idea of properly documenting all the steps you take,
@@ -428,8 +428,8 @@ To create a comment you use the hash-tag/ number sign `#` followed by some text.
 It is good practice to often use annotations. You can use these annotations in your code to explain your reasoning and to create "scannable" headings in your code. That way after you save your script you will be able to share it with others or return to it at a later point and understand what you were doing when you first created it -see [here for further details on annotations and in how to save a script when working with the basic R interface](http://www.screenr.com/1VN8).
 
 Just keep in mind: 
-+ You need one `#` per line, and anything after that is a comment that is not executed by R.
 
++ You need one `#` per line, and anything after that is a comment that is not executed by R.
 + You can use spaces after (its not like a hash-tag on twitter). 
 
 ## Factors

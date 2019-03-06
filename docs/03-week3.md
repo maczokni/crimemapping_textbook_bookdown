@@ -432,7 +432,7 @@ Now load the OpenStreetMap library into your working environment with the `libra
 library(OpenStreetMap)
 ```
 
-**Mac Users's Note**: *So if you're on a Mac, it's possible that at this point you've experienced an error. It might look something like this:* 
+**Mac Users's Note**: *So if you're on a Mac, it's possible that at this point (or when trying to install the package) you've experienced an error. It might look something like this:* 
 
 `Error: package or namespace load failed for ‘OpenStreetMap’:
  .onLoad failed in loadNamespace() for 'rJava', details:
