@@ -1,8 +1,0 @@
-book_filename: "CrimeMapping"
-language:
-  ui:
-    chapter_name: "Chapter "
-new_session: yes
-delete_merged_file: true
-always_allow_html: yes
-output_dir: "docs"
