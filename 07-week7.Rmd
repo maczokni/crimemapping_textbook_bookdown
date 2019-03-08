@@ -86,7 +86,7 @@ tm_shape(burglaries_per_lsoa) +
 Do you see any patterns? Are burglaries randomly spread around the map? Or would you say that areas that are closer to each other tend to be more alike? Is there evidence of clustering? Do burglaries seem to appear in certain pockets of the map? 
 
 
-In this session we are going to discuss ways in which you can quantify the answer to this question. We will discuss measures of global spatial autocorrelation, which essentially aim to answer the degree to which areas that are near each other tend to be more alike. We say global because we are interested in the degree of clustering not on the location of the clusters. Later we will also cover techniques to identify local clusters of autocorrelation, but for now we will focus in quantifying whether areas are (on average) alike their neighbours.
+In this session we are going to discuss ways in which you can quantify the answer to this question. We will discuss measures of **global spatial autocorrelation**, which essentially aim to answer the degree to which areas that are near each other tend to be more alike. We say global because we are interested in the degree of clustering not on the location of the clusters. Later we will also cover techniques to identify local clusters of autocorrelation, but for now we will focus in quantifying whether areas are (on average) alike their neighbours.
 
 
 ## What is a neighbour?
@@ -103,7 +103,7 @@ When defining neighbours by contiguity we may also specify the *order* of contig
 
 Alternatively we may define neighbours **by distance**. You can consider neighbours those areas that distant-wise are close to each other (regardless of whether boundaries are shared). In other words, areas will be defined as neighbours if they are within a specified radius.
 
-In sum, adjacency is an important concept in some spatial analysis. In some cases objects are considered ajacent when they “touch”, e.g. neighboring countries. Contiguity measures tend to be more common when studying areas. It can also be based on distance. This is the most common approach when analyzing point data, but can also be relevant when studying areas.
+In sum, adjacency is an important concept in some spatial analysis. In some cases objects are considered adjacent when they “touch”, e.g. neighboring countries. Contiguity measures tend to be more common when studying areas. It can also be based on distance. This is the most common approach when analyzing point data, but can also be relevant when studying areas.
 
 
 ## Putting 'neighbourness' in our analysis - constructing a spatial weight matrix
@@ -140,7 +140,7 @@ tm_shape(cc_burglary) +
 
 ```
 
-So now we have a new spatial object cc_burglary with the 23 LSOA units that compose the City Centre of Manchester. By focusing in a smaller subset of areas we can understand perhaps a bit better what comes next. But again we carry on. Do you perceive here some degree of spatial autocorrelation?
+So now we have a new spatial object `cc_burglary` with the 23 LSOA units that compose the City Centre of Manchester. By focusing in a smaller subset of areas we can understand perhaps a bit better what comes next. But again we carry on. Do you perceive here some degree of spatial autocorrelation?
 
 ### Homework 1
 
@@ -160,7 +160,7 @@ bur_ccsp <- as(cc_burglary, "Spatial")
 
 ```
 
-Let's also change the code variable to be a character vector (rahter than a factor) as we will need it to be in this format later on: 
+Let's also change the code variable to be a character vector (rather than a factor) as we will need it to be in this format later on: 
 
 ```{r}
 #Before we do that I want to turn the factor identifiying the LSOAs into a character vector (since I will need this later on)
@@ -170,7 +170,7 @@ cc_burglary$lsoa_code <- as.character(cc_burglary$code)
 
 In order to identify neighbours we will use the `poly2nb()` function from the `spdep` package that we loaded at the beginning of our session. The `spdep` package provides basic functions for building neighbour lists and spatial weights, tests for spatial autocorrelation for areal data like Moran's I (more on this below), and functions for fitting spatial regression models. 
 
-This function builds a neigbours list based on regions with contiguous boundaries. If you look at the documentation you will see that you can pass a "queen" argument that takes TRUE or FALSE as options.If you do not specify this argument the default is set to true, that is, if you don't specify queen = FALSE this function will return a list of first order neighbours using the Queen criteria. 
+This function builds a neigbours list based on regions with contiguous boundaries. If you look at the documentation you will see that you can pass a "queen" argument that takes TRUE or FALSE as options.If you do not specify this argument the default is set to true, that is, if you don't specify `queen = FALSE` this function will return a list of first order neighbours using the Queen criteria. 
 
 ```{r}
 
@@ -178,7 +178,7 @@ w <- poly2nb(bur_ccsp, row.names=bur_ccsp$lsoa_code)
 class(w)
 ```
 
-This has created a nb, neighbour list object. We can get some idea of what's there if we ask for a summary.
+This has created a `nb`, neighbour list object. We can get some idea of what's there if we ask for a summary.
 
 ```{r}
 summary(w)
@@ -205,7 +205,7 @@ plot(w, xy, col='red', lwd=2, add=TRUE)
 
 ## Generating the weight matrix
 
-We can transform w into a spatial weights matrix. A spatial weights matrix reflects the intensity of the geographic relationship between observations. For this we use the *spdep* function *nb2mat()*.
+We can transform w into a spatial weights matrix. A spatial weights matrix reflects the intensity of the geographic relationship between observations. For this we use the `spdep` function `nb2mat()`.
 
 ```{r}
 wm <- nb2mat(w, style='B')
@@ -217,7 +217,7 @@ This matrix has values of 0 or 1 indicating whether the elements listed in the r
 ### Homework 2
 *Looking at this matrix identify the other 3 neigbours of E01005065*
 
-In many computations we will see that the matrix is row standardised. We can obtain a row standardise matrix changing the code:
+In many computations we will see that the matrix is **row standardised**. We can obtain a row standardise matrix changing the code:
 
 ```{r}
 wm_rs <- nb2mat(w, style='W')
@@ -230,7 +230,7 @@ Row standardisation of a matrix ensure that the sum of the rows adds up to 1. So
 
 The most well known measure of spatial autocorrelation is the Moran's I. It was developed by Patrick Alfred Pierce Moran, an Australian statistician. You can find the formula and some explanation in [the wikepedia article](https://en.wikipedia.org/wiki/Moran's_I). The video lecture by Luc Anselin covers an explanation of Moran's I. We strongly recommend you watch the video. You can also find helpful [this link](https://pro.arcgis.com/en/pro-app/tool-reference/spatial-statistics/h-how-spatial-autocorrelation-moran-s-i-spatial-st.htm) if things are still unclear. The formula you see may look intimidating but it is nothing but the formula for standard correlation expanded to incorporate the spatial weight matrix.
 
-Before we can use the functions from spdep to compute the global Moran's I we need to create a ‘listw’ type spatial weights object (instead of the matrix we used above). To get the same value as above we use "style='B'" to use binary (TRUE/FALSE) distance weights.
+Before we can use the functions from spdep to compute the global Moran's I we need to create a `listw` type spatial weights object (instead of the matrix we used above). To get the same value as above we use `style='B'` to use binary (TRUE/FALSE) distance weights.
 
 
 ```{r}
@@ -238,7 +238,7 @@ ww <-  nb2listw(w, style='B')
 ww
 ```
 
-Now we can use the `moran()` function. Have a look at ?moran to see a description of this in R. The function is defined as `moran(y, ww, n, Szero(ww))`. Note the odd arguments n and S0. I think they are odd, because “ww” has that information. Anyway, we supply them and it works. There probably are cases where it makes sense to use other values.
+Now we can use the `moran()` function. Have a look at `?moran` to see a description of this in R. The function is defined as `moran(y, ww, n, Szero(ww))`. Note the odd arguments n and S0. I think they are odd, because “ww” has that information. Anyway, we supply them and it works. There probably are cases where it makes sense to use other values.
 
 ```{r}
 moran(bur_ccsp$burglary, ww, n=length(ww$neighbours), S0=Szero(ww))
@@ -312,6 +312,7 @@ To explore local indicators of spatial correlation, let's go back to using all o
 So this is our `burglaries_per_lsoa` object that we're referring back to. To check what our data look like, we can always plot again with tmap:
 
 ```{r}
+tmap_mode("plot")
 tm_shape(burglaries_per_lsoa) + 
   tm_fill("burglary", style = "quantile", palette = "Reds") +
   tm_borders(alpha = 0.1) +
@@ -355,7 +356,7 @@ moran.mc(burglary_m$burglary, ww, nsim=99999)
 
 You can see that the global Moran's is 0.32 and that is highly significant. There is indeed global spatial autocorrelation, when we look at all of Manchester (not just city centre ward). Knowing this we can try to decompose this, figure out what is driving this global measure.
 
-To compute the local Moran we can use a function from the *spdep* package.
+To compute the local Moran we can use a function from the `spdep` package.
 
 ```{r}
 locm_bm <- localmoran(burglary_m$burglary, ww)
