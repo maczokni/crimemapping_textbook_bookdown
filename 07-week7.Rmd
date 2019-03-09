@@ -146,7 +146,7 @@ So now we have a new spatial object `cc_burglary` with the 23 LSOA units that co
 
 *The id argument in the tm_fill ensures that when you click over any of the areas you get not only the count of burglaries in that LSOA (the quantity we are mapping) gets displayed within a bubble, but you also get to see the code that identifies that LSOA.*
 
-*Move your cursor over the LSOA covering Beswick. You will see this area had 58 burglaries in 2017 and that the LSOA identifier is E01033688. Using the rook criteria identify the first order neighbors of this LSOA. List their identifiers. Are things different if we use the queen criteria? If so, how does it change? Now. Think and think hard about what the lecture by Luc Anseling discussed. Have you identified all the neighbours of this area? (there are multiple ways of answering this question, just make sure you reason your answer).*
+*Move your cursor over the LSOA covering the West of Beswick. You will see this area had 58 burglaries in 2017 and that the LSOA identifier is E01033688. Using the rook criteria identify the first order neighbors of this LSOA. List their identifiers. Are things different if we use the queen criteria? If so, how does it change? Now. Think and think hard about what the lecture by Luc Anseling discussed. Have you identified all the neighbours of this area? (there are multiple ways of answering this question, just make sure you reason your answer).*
 
 ## Creating a list of neighbours
 
@@ -163,9 +163,7 @@ bur_ccsp <- as(cc_burglary, "Spatial")
 Let's also change the code variable to be a character vector (rather than a factor) as we will need it to be in this format later on: 
 
 ```{r}
-#Before we do that I want to turn the factor identifiying the LSOAs into a character vector (since I will need this later on)
 cc_burglary$lsoa_code <- as.character(cc_burglary$code)
-
 ```
 
 In order to identify neighbours we will use the `poly2nb()` function from the `spdep` package that we loaded at the beginning of our session. The `spdep` package provides basic functions for building neighbour lists and spatial weights, tests for spatial autocorrelation for areal data like Moran's I (more on this below), and functions for fitting spatial regression models. 
@@ -228,7 +226,7 @@ Row standardisation of a matrix ensure that the sum of the rows adds up to 1. So
 
 ## Moran's I
 
-The most well known measure of spatial autocorrelation is the Moran's I. It was developed by Patrick Alfred Pierce Moran, an Australian statistician. You can find the formula and some explanation in [the wikepedia article](https://en.wikipedia.org/wiki/Moran's_I). The video lecture by Luc Anselin covers an explanation of Moran's I. We strongly recommend you watch the video. You can also find helpful [this link](https://pro.arcgis.com/en/pro-app/tool-reference/spatial-statistics/h-how-spatial-autocorrelation-moran-s-i-spatial-st.htm) if things are still unclear. The formula you see may look intimidating but it is nothing but the formula for standard correlation expanded to incorporate the spatial weight matrix.
+The most well known measure of spatial autocorrelation is the Moran's I. It was developed by Patrick Alfred Pierce Moran, an Australian statistician. You can find the formula and some explanation in [the wikipedia article](https://en.wikipedia.org/wiki/Moran's_I). The video lecture by Luc Anselin covers an explanation of Moran's I. We strongly recommend you watch the video. You can also find helpful [this link](https://pro.arcgis.com/en/pro-app/tool-reference/spatial-statistics/h-how-spatial-autocorrelation-moran-s-i-spatial-st.htm) if things are still unclear. The formula you see may look intimidating but it is nothing but the formula for standard correlation expanded to incorporate the spatial weight matrix.
 
 Before we can use the functions from spdep to compute the global Moran's I we need to create a `listw` type spatial weights object (instead of the matrix we used above). To get the same value as above we use `style='B'` to use binary (TRUE/FALSE) distance weights.
 
@@ -321,7 +319,7 @@ tm_shape(burglaries_per_lsoa) +
 
 ```
 
-Looks good! Now that we have the data we need to coerce into a spatial object, as before, for it to work well with the functions we use from the `sp` package, and then generate the wieght matrix. Again, what we do here is stuff we did above for the global correlation. In fact, if you did the optional homework already, you will also have run this code.
+Looks good! Now that we have the data we need to coerce into a spatial object, as before, for it to work well with the functions we use from the `sp` package, and then generate the weight matrix. Again, what we do here is stuff we did above for the global correlation. In fact, if you did the optional homework already, you will also have run this code.
 
 ```{r}
 #Coerce sf into sp
@@ -337,7 +335,8 @@ ww <-  nb2listw(w, style='W')
 
 The first step before we can generate the LISA map is to compute the local Moran's I. The initial part of the video presentation by Luc Anselin that we expected you to watch explains the formula and logic underpinning these computations and we won't reiterate here that detail. But at least a a general reminder:
 
-*"global tests for spatial autocorrelation introduced last week are calculated from the local relationship between the values observed at a spatial entity and its neighbours, for the neighbourhood definition chosen. Because of this, we can break global measures down into their components, and by extension, construct localised tests intended to detect **'clusters'** -observations with very similar neighbours- and"* **spatial outliers** *"observations with very different neighbours"* (Bivand et al. 201)
+> Global tests for spatial autocorrelation [introduced last week] are calculated from the local relationships between the values observed at a spatial entity and its neighbours, for the neighbour definition chosen. Because of this, we can break global measures down into their components, and by extension, construct localised testsintended to detect **‘clusters’** – observations with very similar neighbours –and **‘hotspots’** [spatial outliers] – observations with very different neighbours.
+ > (Bivand et al. 2008, highlights added)
 
 Let's first look at the Moran's scatterplot:
 
@@ -347,7 +346,7 @@ moran.plot(burglary_m$burglary, ww)
 
 Notice how the plot is split in 4 quadrants. The top right corner belongs to areas that have high level of burglary and are surrounded by other areas that have above the average level of burglary. This are the high-high locations that Luc Anselin referred to. The bottom left corner belongs to the low-low areas. These are areas with low level of burglary and surrounded by areas with below average levels of burglary. Both the high-high and low-low represent clusters. A high-high cluster is what you may refer to as a hot spot. And the low-low clusters represent cold spots. In the opposite diagonal we have *spatial outliers*. They are not outliers in the standard sense, extreme observations, they are outliers in that they are surrounded by areas that are very unlike them. So you could have high-low spatial outliers, areas with high levels of burglary and low levels of surrounding burglary, or low-high spatial outliers, areas that have themselves low levels of burglary (or whatever else we are mapping) and that are surrounded by areas with above average levels of burglary.
 
-You can also see here that the positive spatial autocorrelation is more noticeable when we focus on the whole of Manchester city, unlike what we observed when only looked at Manchester city. You can check this running the global Moran's I.
+You can also see here that the positive spatial autocorrelation is more noticeable when we focus on the whole of Manchester city, unlike what we observed when only looked at the city centre. You can check this running the global Moran's I.
 
 ```{r}
 moran(burglary_m$burglary, ww, n=length(ww$neighbours), S0=Szero(ww))
@@ -396,7 +395,7 @@ There are two types of dependence, spatial error and spatial lag. Here we focus 
 
 ![](img/spatial_lag.png)
 
-This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, becasuse near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighboring places. 
+This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, because near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighboring places.
 
 
 So to be able to account for the spatial lag in our model, we must create a variable to account for this. We can do this with the `lag.listw()` function. Remember from last week: a spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours. 
@@ -444,7 +443,7 @@ We also have our `locm_bm` object, which we created with the `localmoran()` func
 So the data we need for each observation, in order to identify whether it belongs to the high-high, low-low, high-low, or low-high quadrants are the standardised burglary score, the spatial lag score, and the p-value. 
 
 
-Essentially all we'll be doing, is assigning a variable values based on where in the plot it is. So for example, if it's in the upper right, it is high-high, and has values larger than 0 for both the burglary and the spatial lag values.  It it's in the upper left, it's low-hih, and has a value larger than 0 for the spatial lag value, but lower than 0 on the burglary value. And so on, and so on. Here's an image to illustrate: 
+Essentially all we'll be doing, is assigning a variable values based on where in the plot it is. So for example, if it's in the upper right, it is high-high, and has values larger than 0 for both the burglary and the spatial lag values.  It it's in the upper left, it's low-high, and has a value larger than 0 for the spatial lag value, but lower than 0 on the burglary value. And so on, and so on. Here's an image to illustrate:
 
 
 ![](img/moran_plot_annotate.png)
@@ -453,9 +452,9 @@ Essentially all we'll be doing, is assigning a variable values based on where in
 So let's first initialise this variable. In this instance we are creating a new column in the `burglary_m` dataframe and calling it `quad_sig`. 
 
 
-We are using the `mutate()` function from the tidyverse package to create our new variable, just as we have in previous labs. 
+We are using the `mutate()` function from the dplyr package to create our new variable, just as we have in previous labs. 
 
-We also use nested ifelse() statements. Nested ifelse() just means that it's an ifelse() inside and ifelse() statement. To help us with these sorts of situations is the `ifelse()` function. We saw this with the previous exercises, but I'll describe it brielfy again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: "if this condition is true, do first thing, else, do the second thing". It would look something like this:
+We also use nested ifelse() statements. Nested ifelse() just means that it's an ifelse() inside another ifelse() statement. To help us with these sorts of situations is the `ifelse()` function. We saw this with the previous exercises, but I'll describe it brielfy again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: "if this condition is true, do first thing, else, do the second thing". It would look something like this:
 
 
 ```{r, eval=FALSE}
@@ -470,8 +469,8 @@ When nesting these, all you do is put another condition to check in the "thing t
 ```{r}
 burglary_m <- st_as_sf(burglary_m) %>% 
   mutate(quad_sig = ifelse(burglary_m$s_burglary > 0 & 
-                                         burglary_m$lag_s_burglary > 0 & 
-                                         locm_bm[,5] <= 0.05, 
+                              burglary_m$lag_s_burglary > 0 & 
+                              locm_bm[,5] <= 0.05, 
                      "high-high",
                      ifelse(burglary_m$s_burglary <= 0 & 
                               burglary_m$lag_s_burglary <= 0 & 
