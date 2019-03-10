@@ -311,7 +311,7 @@ X
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'X' not found
+## Error in eval(expr, envir, enclos): objeto 'X' no encontrado
 ```
 
 You will get the following message: `"Error in eval(expr, envir, enclos): object 'X' not found"`. R is telling us that `X` does not exist. There isn't an object `X` (upper case), but there is an object `x` (lower case). Error messages in R are pretty good at telling you exactly what went wrong. 
@@ -500,7 +500,7 @@ If you want, give it a try. Try to create a variable called 12 and assign it the
 ```
 
 ```
-## Error in 12 <- "twelve": invalid (do_set) left-hand side to assignment
+## Error in 12 <- "twelve": lado izquierdo de la asignación inválida (do_set)
 ```
 
 You get an error!

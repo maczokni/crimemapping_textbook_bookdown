@@ -13,7 +13,7 @@ library(sf)
 ```
 
 ```
-## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3
+## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3
 ```
 
 ```r
@@ -33,7 +33,7 @@ library(spdep)
 ```
 ## To access larger datasets in this package, install the spDataLarge
 ## package with: `install.packages('spDataLarge',
-## repos='https://nowosad.github.io/drat/', type='source'))`
+## repos='https://nowosad.github.io/drat/', type='source')`
 ```
 
 
@@ -57,7 +57,7 @@ ncovr_sf <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `NAT' from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/ncovr/ncovr/NAT.shp' using driver `ESRI Shapefile'
+## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -590,11 +590,11 @@ data.frame(sums$res)
 
 ```
 ##        direct    indirect      total
-## 1  1.74081057  0.27046015  2.0112707
-## 2  1.00626232  0.15633744  1.1625998
-## 3 -0.17995452 -0.02795854 -0.2079131
-## 4  0.38429438  0.05970570  0.4440001
-## 5  0.08827089  0.01371416  0.1019851
+## 1  1.74080007  0.27047066  2.0112707
+## 2  1.00625625  0.15634351  1.1625998
+## 3 -0.17995343 -0.02795963 -0.2079131
+## 4  0.38429206  0.05970802  0.4440001
+## 5  0.08827036  0.01371470  0.1019851
 ```
 
 
@@ -604,12 +604,12 @@ data.frame(sums$pzmat)
 ```
 
 ```
-##            Direct     Indirect        Total
-## RD60 0.000000e+00 0.0009452697 0.000000e+00
-## DV60 0.000000e+00 0.0004916268 0.000000e+00
-## MA60 0.000000e+00 0.0009524881 0.000000e+00
-## PS60 1.649989e-06 0.0039673498 2.043865e-06
-## UE60 7.166586e-03 0.0375243261 7.245939e-03
+##            Direct    Indirect        Total
+## RD60 0.000000e+00 0.001716018 0.000000e+00
+## DV60 0.000000e+00 0.001175314 0.000000e+00
+## MA60 0.000000e+00 0.001268570 0.000000e+00
+## PS60 3.419777e-07 0.007441782 3.893202e-07
+## UE60 2.128066e-03 0.028351626 2.061803e-03
 ```
 
 We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.

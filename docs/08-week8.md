@@ -234,7 +234,7 @@ library(arm)
 ```
 
 ```
-## Working directory is /Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown
+## Working directory is C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_textbook
 ```
 
 ```r
@@ -556,17 +556,6 @@ We are going to use instead the `plot_model()` function of the `sjPlot` package,
 library(sjPlot)
 ```
 
-```
-## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
-## TMB was built with Matrix version 1.2.15
-## Current Matrix version is 1.2.14
-## Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
-```
-
-```
-## Learn more about sjPlot with 'browseVignettes("sjPlot")'.
-```
-
 Let's try with a more complex example:
 
 
@@ -654,7 +643,7 @@ library(arm)
 ```
 
 ```
-## Working directory is /Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown
+## Working directory is C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_textbook
 ```
 
 ```r

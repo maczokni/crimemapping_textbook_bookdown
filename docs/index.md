@@ -1,7 +1,7 @@
 --- 
 title: "Crime Mapping in R"
 author: "Juanjo Medina and Reka Solymosi"
-date: "2019-03-06"
+date: "2019-03-10"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
