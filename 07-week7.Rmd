@@ -103,7 +103,7 @@ When defining neighbours by contiguity we may also specify the *order* of contig
 
 Alternatively we may define neighbours **by distance**. You can consider neighbours those areas that distant-wise are close to each other (regardless of whether boundaries are shared). In other words, areas will be defined as neighbours if they are within a specified radius.
 
-In sum, adjacency is an important concept in some spatial analysis. In some cases objects are considered adjacent when they “touch”, e.g. neighboring countries. Contiguity measures tend to be more common when studying areas. It can also be based on distance. This is the most common approach when analyzing point data, but can also be relevant when studying areas.
+In sum, adjacency is an important concept in some spatial analysis. In some cases objects are considered adjacent when they “touch”, e.g. neighbouring countries. Contiguity measures tend to be more common when studying areas. It can also be based on distance. This is the most common approach when analysing point data, but can also be relevant when studying areas.
 
 
 ## Putting 'neighbourness' in our analysis - constructing a spatial weight matrix
@@ -168,7 +168,7 @@ cc_burglary$lsoa_code <- as.character(cc_burglary$code)
 
 In order to identify neighbours we will use the `poly2nb()` function from the `spdep` package that we loaded at the beginning of our session. The `spdep` package provides basic functions for building neighbour lists and spatial weights, tests for spatial autocorrelation for areal data like Moran's I (more on this below), and functions for fitting spatial regression models. 
 
-This function builds a neigbours list based on regions with contiguous boundaries. If you look at the documentation you will see that you can pass a "queen" argument that takes TRUE or FALSE as options.If you do not specify this argument the default is set to true, that is, if you don't specify `queen = FALSE` this function will return a list of first order neighbours using the Queen criteria. 
+This function builds a neighbours list based on regions with contiguous boundaries. If you look at the documentation you will see that you can pass a "queen" argument that takes TRUE or FALSE as options.If you do not specify this argument the default is set to true, that is, if you don't specify `queen = FALSE` this function will return a list of first order neighbours using the Queen criteria. 
 
 ```{r}
 
@@ -228,7 +228,7 @@ Row standardisation of a matrix ensure that the sum of the rows adds up to 1. So
 
 The most well known measure of spatial autocorrelation is the Moran's I. It was developed by Patrick Alfred Pierce Moran, an Australian statistician. You can find the formula and some explanation in [the wikipedia article](https://en.wikipedia.org/wiki/Moran's_I). The video lecture by Luc Anselin covers an explanation of Moran's I. We strongly recommend you watch the video. You can also find helpful [this link](https://pro.arcgis.com/en/pro-app/tool-reference/spatial-statistics/h-how-spatial-autocorrelation-moran-s-i-spatial-st.htm) if things are still unclear. The formula you see may look intimidating but it is nothing but the formula for standard correlation expanded to incorporate the spatial weight matrix.
 
-Before we can use the functions from spdep to compute the global Moran's I we need to create a `listw` type spatial weights object (instead of the matrix we used above). To get the same value as above we use `style='B'` to use binary (TRUE/FALSE) distance weights.
+Before we can use the functions from `spdep` to compute the global Moran's I we need to create a `listw` type spatial weights object (instead of the matrix we used above). To get the same value as above we use `style='B'` to use binary (TRUE/FALSE) distance weights.
 
 
 ```{r}
@@ -244,7 +244,7 @@ moran(bur_ccsp$burglary, ww, n=length(ww$neighbours), S0=Szero(ww))
 
 So the Moran's I here is 0.12, which is not very large. The Index is bounded by -1 and 1, and 0.12 is not large, but it is still above zero, so we might want to explore whether this is significant using a test of statistical significance for this statistic. 
 
-The Spatial Autocorrelation (Global Moran's I) tool is an inferential statistic, which means that the results of the analysis are always interpreted within the context of its null hypothesis. For the Global Moran's I statistic, the null hypothesis states that the attribute being analyzed is randomly distributed among the features in your study area; said another way, the spatial processes promoting the observed pattern of values is random chance. Imagine that you could pick up the values for the attribute you are analyzing and throw them down onto your features, letting each value fall where it may. This process (picking up and throwing down the values) is an example of a random chance spatial process. When the p-value returned by this tool is statistically significant, you can reject the null hypothesis. 
+The Spatial Autocorrelation (Global Moran's I) tool is an inferential statistic, which means that the results of the analysis are always interpreted within the context of its null hypothesis. For the Global Moran's I statistic, the null hypothesis states that the attribute being analysed is randomly distributed among the features in your study area; said another way, the spatial processes promoting the observed pattern of values is random chance. Imagine that you could pick up the values for the attribute you are analysing and throw them down onto your features, letting each value fall where it may. This process (picking up and throwing down the values) is an example of a random chance spatial process. When the p-value returned by this tool is statistically significant, you can reject the null hypothesis. 
 
 In some software you can use statistical tests invoking asymptotic theory, but the only appropriate way of doing these tests is by using a Monte Carlo procedure. The way Monte Carlo works is that the values of burglary are randomly assigned to the polygons, and the Moran’s I is computed. This is repeated several times to establish a distribution of expected values. The observed value of Moran’s I is then compared with the simulated distribution to see how likely it is that the observed values could be considered a random draw.
 
@@ -252,7 +252,7 @@ If confused, watch [this quick video](https://www.youtube.com/watch?v=5nM5e2_1OQ
 
 We use the function `moran.mc()` to run a permutation test for Moran's I statistic calculated by using some number of random permutations of our numeric vector, for the given spatial weighting scheme, to establish the rank of the observed statistic in relation to the simulated values.
 
-We need to specify our variable of interest (*burglary*), the listw object we created earlier (*ww*), and the number of permutations we want to run (here we choose 99).
+We need to specify our variable of interest (*burglary*), the `listw` object we created earlier (*ww*), and the number of permutations we want to run (here we choose 99).
 
 ```{r}
 set.seed(1234) # The seed number you choose is the starting point used in the generation of a sequence of random numbers, which is why (provided you use the same pseudo-random number generator) you'll obtain the same results given the same seed number. 
@@ -260,7 +260,7 @@ burg_moranmc_results <- moran.mc(bur_ccsp$burglary, ww, nsim=99)
 burg_moranmc_results
 ```
 
-So, the probability of observing this Moran's I if the null hypothis was true is `r I(burg_moranmc_results$p.value)`. This is higher than our alpha level of 0.05. In this case, we can conclude that there isn't a significant global spatial autocorrelation.
+So, the probability of observing this Moran's I if the null hypothesis was true is `r I(burg_moranmc_results$p.value)`. This is higher than our alpha level of 0.05. In this case, we can conclude that there isn't a significant global spatial autocorrelation.
 
 We can make a “Moran scatter plot” to visualize spatial autocorrelation. Note the row standardisation of the weights matrix.
 
@@ -278,7 +278,7 @@ Now we can plot:
 moran.plot(bur_ccsp$burglary, rwm)
 ```
 
-The X axis represents the values of our burglary variable in each unit (each LSOA) and the Y axis represents a spatial lag of this variable. A spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours. And you can see the correlation is almost flat here. As with any correlation measure, you could get **positive spatial autocorrelation**, that would mean that as you move further to the right in the X axis you have higher levels of burglary in the surrounding area. This is what we see here. But the correlation is fairly low and as we saw is not statistically significant. You can also obtain **negative spatial autocorrelation**. That is, that would mean that areas with high level of crime *tend* (it's all about the global average effect!) to be surrounded by areas with low levels of crime. This is clearly not what we see here.
+The X axis represents the values of our burglary variable in each unit (each LSOA) and the Y axis represents a spatial lag of this variable. A spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighbours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours. And you can see the correlation is almost flat here. As with any correlation measure, you could get **positive spatial autocorrelation**, that would mean that as you move further to the right in the X axis you have higher levels of burglary in the surrounding area. This is what we see here. But the correlation is fairly low and as we saw is not statistically significant. You can also obtain **negative spatial autocorrelation**. That is, that would mean that areas with high level of crime *tend* (it's all about the global average effect!) to be surrounded by areas with low levels of crime. This is clearly not what we see here.
 
 It is very important to understand that global statistics like the spatial autocorrelation (Global Moran's I) tool assess the overall pattern and trend of your data. They are most effective when the spatial pattern is consistent across the study area. In other words, you may have clusters (local pockets of autocorrelation), without having clustering (global autocorrelation). This may happen if the sign of the clusters negate each other.
 
@@ -297,7 +297,7 @@ So now we know about global measures of spatial association, in particular the M
 ![](img/philly_rob.png)
 
 
-Aggregated to the police districts, this returns a global Moran’s I value (range 1 to 1) of 0.56, which suggests that police sectors with high robbery counts adjoin sectors that also have high robbery counts, and low crime sectors are often neighbors of other low crime sectors, something that should hardly be surprising given the above map [(Ratcliffe, Jerry. "Crime mapping: spatial and temporal challenges." Handbook of quantitative criminology. Springer, New York, NY, 2010. 5-24.)](https://pdfs.semanticscholar.org/26d2/356618cd759d04348f1e51c8209b0175bfce.pdf). 
+Aggregated to the police districts, this returns a global Moran’s I value (range 1 to 1) of 0.56, which suggests that police sectors with high robbery counts adjoin sectors that also have high robbery counts, and low crime sectors are often neighbours of other low crime sectors, something that should hardly be surprising given the above map [(Ratcliffe, Jerry. "Crime mapping: spatial and temporal challenges." Handbook of quantitative criminology. Springer, New York, NY, 2010. 5-24.)](https://pdfs.semanticscholar.org/26d2/356618cd759d04348f1e51c8209b0175bfce.pdf). 
 
 
 In this section we will learn about local indicators of spatial association (LISA) and show how they allow for the decomposition of global indicators, such as Moran's I, into the contribution of each observation. The LISA statistics serve two purposes. On one hand, they may be interpreted as indicators of local pockets of nonstationarity, or hot spots. On the other hand, they may be used to assess the influence of individual locations on the magnitude of the global statistic and to identify “outliers” [(Anselin, Luc. "Local indicators of spatial association—LISA." Geographical analysis 27.2 (1995): 93-115.)](http://onlinelibrary.wiley.com/doi/10.1111/j.1538-4632.1995.tb00338.x/full). 
@@ -307,7 +307,7 @@ In this section we will learn about local indicators of spatial association (LIS
 
 To explore local indicators of spatial correlation, let's go back to using all of Manchester, rather than just City Centre ward. We want to have enough data to see local variation, and while the code may take slightly longer to run, we can have a go at more meaningful stats. 
 
-So this is our `burglaries_per_lsoa` object that we're referring back to. To check what our data look like, we can always plot again with tmap:
+So this is our `burglaries_per_lsoa` object that we're referring back to. To check what our data look like, we can always plot again with `tmap`:
 
 ```{r}
 tmap_mode("plot")
@@ -381,7 +381,7 @@ We've also added `as.vector()` to the end, to make sure that the data type we ge
 Now we also want to account for the spatial dependence of our values. Remember how we keep saying about "The First Law of Geography", according to [Waldo Tobler](https://en.wikipedia.org/wiki/Waldo_R._Tobler), is "everything is related to everything else, but near things are more related than distant things." Seriously, we should all just tattoo this onto our foreheads because this is the key message of the module...!
 
 
-So what do we mean by this spatial dependence? When a value observed in one location depends on the values observed at neighboring locations, there is a **spatial dependence**. And spatial data may show spatial dependence in the variables and error terms.
+So what do we mean by this spatial dependence? When a value observed in one location depends on the values observed at neighbouring locations, there is a **spatial dependence**. And spatial data may show spatial dependence in the variables and error terms.
 
 
 *Why should spatial dependence occur?* There are two reasons commonly given. First, data collection of observations associated with spatial units may reflect measurement error. This happens when the boundaries for which information is collected do not accurately reflect the nature of the underlying process generating the sample data. A second reason for spatial dependence is that the spatial dimension of a social or economic characteristic may be an important aspect of the phenomenon. For example, based on the premise that location and distance are important forces at work, regional science theory relies on notions of spatial interaction and diffusion effects, hierarchies of place and spatial spillovers. 
@@ -395,13 +395,17 @@ There are two types of dependence, spatial error and spatial lag. Here we focus 
 
 ![](img/spatial_lag.png)
 
+<<<<<<< HEAD
+This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, because near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighbouring places. 
+=======
 This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, because near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighboring places.
+>>>>>>> 9420134dbb8265a7da557e1557a5967184e16de4
 
 
-So to be able to account for the spatial lag in our model, we must create a variable to account for this. We can do this with the `lag.listw()` function. Remember from last week: a spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours. 
+So to be able to account for the spatial lag in our model, we must create a variable to account for this. We can do this with the `lag.listw()` function. Remember from last week: a spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighbours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours. 
 
 
-For this we need our listw object, which is the `ww` object created earlier, when we generated the list with weights using row standardisation. We then pass this listw object into the `lag.listw()` function, which computes  the spatial lag of a numeric vector using a listw sparse representation of a spatial weights matrix. 
+For this we need our `listw` object, which is the `ww` object created earlier, when we generated the list with weights using row standardisation. We then pass this `listw` object into the `lag.listw()` function, which computes  the spatial lag of a numeric vector using a `listw` sparse representation of a spatial weights matrix. 
 
 
 
@@ -420,7 +424,7 @@ summary(burglary_m$s_burglary)
 summary(burglary_m$lag_s_burglary)
 ```
 
-We can create a Moran scatter plot so that you see that nothing has changed apart from the scale in wich we are using the variables. The observations that are influential are higlighted in the plot as you can see.
+We can create a Moran scatter plot so that you see that nothing has changed apart from the scale in winch we are using the variables. The observations that are influential are highlighted in the plot as you can see.
 
 ```{r}
 x <- burglary_m$s_burglary
@@ -443,7 +447,11 @@ We also have our `locm_bm` object, which we created with the `localmoran()` func
 So the data we need for each observation, in order to identify whether it belongs to the high-high, low-low, high-low, or low-high quadrants are the standardised burglary score, the spatial lag score, and the p-value. 
 
 
+<<<<<<< HEAD
+Essentially all we'll be doing, is assigning a variable values based on where in the plot it is. So for example, if it's in the upper right, it is high-high, and has values larger than 0 for both the burglary and the spatial lag values.  It it's in the upper left, it's low-high, and has a value larger than 0 for the spatial lag value, but lower than 0 on the burglary value. And so on, and so on. Here's an image to illustrate: 
+=======
 Essentially all we'll be doing, is assigning a variable values based on where in the plot it is. So for example, if it's in the upper right, it is high-high, and has values larger than 0 for both the burglary and the spatial lag values.  It it's in the upper left, it's low-high, and has a value larger than 0 for the spatial lag value, but lower than 0 on the burglary value. And so on, and so on. Here's an image to illustrate:
+>>>>>>> 9420134dbb8265a7da557e1557a5967184e16de4
 
 
 ![](img/moran_plot_annotate.png)
@@ -452,9 +460,15 @@ Essentially all we'll be doing, is assigning a variable values based on where in
 So let's first initialise this variable. In this instance we are creating a new column in the `burglary_m` dataframe and calling it `quad_sig`. 
 
 
+<<<<<<< HEAD
+We are using the `mutate()` function from the `tidyverse` package to create our new variable, just as we have in previous labs. 
+
+We also use nested `ifelse()` statements. Nested `ifelse()` just means that it's an `ifelse()` inside and `ifelse()` statement. To help us with these sorts of situations is the `ifelse()` function. We saw this with the previous exercises, but I'll describe it briefly again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: "if this condition is true, do first thing, else, do the second thing". It would look something like this:
+=======
 We are using the `mutate()` function from the dplyr package to create our new variable, just as we have in previous labs. 
 
 We also use nested ifelse() statements. Nested ifelse() just means that it's an ifelse() inside another ifelse() statement. To help us with these sorts of situations is the `ifelse()` function. We saw this with the previous exercises, but I'll describe it brielfy again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: "if this condition is true, do first thing, else, do the second thing". It would look something like this:
+>>>>>>> 9420134dbb8265a7da557e1557a5967184e16de4
 
 
 ```{r, eval=FALSE}
@@ -463,7 +477,7 @@ dataframe$new_variable <- ifelse(dataframe$some_numeric_var < 100, "smaller than
 
 ```
 
-When nesting these, all you do is put another condition to check in the "thing to do if false", so it checks all conditions. So in the first instance we check if the value for burglary is greater than zero, and the value for the lag is greater than zero, and the p-value is smaller than our threshol of 0.05. If it is, then this should belong to the "high-high" group. If any one of these conditions is not met, then we move into the 'thing to do if false' section, where we now check agains another set of criteria, and so on and so on. If none of these are met, we assign it the non-significant value: 
+When nesting these, all you do is put another condition to check in the "thing to do if false", so it checks all conditions. So in the first instance we check if the value for burglary is greater than zero, and the value for the lag is greater than zero, and the p-value is smaller than our threshold of 0.05. If it is, then this should belong to the "high-high" group. If any one of these conditions is not met, then we move into the 'thing to do if false' section, where we now check again another set of criteria, and so on and so on. If none of these are met, we assign it the non-significant value: 
 
 
 ```{r}
