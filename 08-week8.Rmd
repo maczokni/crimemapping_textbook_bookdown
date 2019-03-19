@@ -20,7 +20,7 @@ Today we will cover something that is called linear regression or ordinary least
 
 We will use a dataset that includes information about homicides in the US, as well as information in a number of sociodemographic variables that are often thought of as associated with the geographical distribution of homicides.
 
-```{r}
+```{r, eval=FALSE}
 ##R in Windows have some problems with https addresses, that's why we need to do this first:
 urlfile<-'https://s3.amazonaws.com/geoda/data/ncovr.zip'
 download.file(urlfile, 'ncovr.zip')
