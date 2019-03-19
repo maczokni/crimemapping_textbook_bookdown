@@ -29,7 +29,7 @@ manchester_lsoa <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `england_lsoa_2011' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\data\BoundaryData\england_lsoa_2011.shp' using driver `ESRI Shapefile'
+## Reading layer `england_lsoa_2011' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_bookdown\data\BoundaryData\england_lsoa_2011.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 282 features and 3 fields
 ## geometry type:  POLYGON
 ## dimension:      XY

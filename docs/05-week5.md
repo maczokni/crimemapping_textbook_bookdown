@@ -151,7 +151,7 @@ ncovr_sf <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
+## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_bookdown\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -696,7 +696,7 @@ las <- st_read("data/England_lad_2011_gen/england_lad_2011_gen.shp")
 ```
 
 ```
-## Reading layer `england_lad_2011_gen' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\data\England_lad_2011_gen\england_lad_2011_gen.shp' using driver `ESRI Shapefile'
+## Reading layer `england_lad_2011_gen' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_bookdown\data\England_lad_2011_gen\england_lad_2011_gen.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 326 features and 4 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY

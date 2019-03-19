@@ -57,7 +57,7 @@ ncovr_sf <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_textbook\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
+## Reading layer `NAT' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\crime_mapping_bookdown\ncovr\ncovr\NAT.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 3085 features and 69 fields
 ## geometry type:  MULTIPOLYGON
 ## dimension:      XY
@@ -590,11 +590,11 @@ data.frame(sums$res)
 
 ```
 ##        direct    indirect      total
-## 1  1.74080007  0.27047066  2.0112707
-## 2  1.00625625  0.15634351  1.1625998
-## 3 -0.17995343 -0.02795963 -0.2079131
-## 4  0.38429206  0.05970802  0.4440001
-## 5  0.08827036  0.01371470  0.1019851
+## 1  1.74082391  0.27044681  2.0112707
+## 2  1.00627003  0.15632973  1.1625998
+## 3 -0.17995590 -0.02795716 -0.2079131
+## 4  0.38429733  0.05970276  0.4440001
+## 5  0.08827157  0.01371349  0.1019851
 ```
 
 
@@ -605,11 +605,11 @@ data.frame(sums$pzmat)
 
 ```
 ##            Direct    Indirect        Total
-## RD60 0.000000e+00 0.001716018 0.000000e+00
-## DV60 0.000000e+00 0.001175314 0.000000e+00
-## MA60 0.000000e+00 0.001268570 0.000000e+00
-## PS60 3.419777e-07 0.007441782 3.893202e-07
-## UE60 2.128066e-03 0.028351626 2.061803e-03
+## RD60 0.000000e+00 0.002474595 0.000000e+00
+## DV60 0.000000e+00 0.001657824 0.000000e+00
+## MA60 0.000000e+00 0.001391221 0.000000e+00
+## PS60 1.405992e-07 0.014185581 6.132203e-07
+## UE60 1.223182e-03 0.024039649 1.219753e-03
 ```
 
 We see that all the variables have signficant direct, indirect and total effects. You may want to have a look at how things differ when you just run a non spatial model.
