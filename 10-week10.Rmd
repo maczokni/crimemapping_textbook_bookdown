@@ -22,11 +22,10 @@ Decomposing these trends is an important part of what **time series** analysis i
 
 We are going to start with fairly simple data. We are just going to look at monthly counts of crime for Greater Manchester obtained from the Police.UK website. We have aggregated 36 months of data into a file for you to use. Grab the data using the following code:
 
-```{r}
-data_url <-"https://raw.githubusercontent.com/maczokni/2018_labs/master/data/2017-11-greater-manchester-street.csv"
-gmpcrime <- read_csv(url(data_url))
-x<-read_csv("https://www.dropbox.com/s/dfjdo7ct6hczu0j/gmp.csv?dl=0")
-x1
+```{r, message=FALSE}
+data_url <-"https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_month.csv"
+gmp_month <- read_csv(url(data_url))
+
 ```
 
 If you view the data you will see it has two columns, the date and the count of crimes for that month. Once you have read the time series data into R, the next step is to store the data in a time series object in R, so that you can use R’s many functions for analysing time series data. To store the data in a time series object, we use the `ts()` function in R. 
@@ -61,27 +60,61 @@ Once you have read a time series into R, the next step is usually to make a plot
 plot.ts(gmp_timeseries)
 ```
 
+## Lubridate: your guardian angel when it comes to working with temporal data
+
+As you saw, the data from police.uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular. 
+
+Cities release their own data. Here, we will be looking at crimes from Dallas, Texas. [You can see more about these data, and find the download link to the data dictionary here](https://www.dallasopendata.com/Public-Safety/Police-Bulk-Data/ftja-9jxd).  Download the file and open bring it into R. 
+
+```{r, eval=FALSE}
+library(readxl)
+data_url <-"https://github.com/maczokni/crimemapping_textbook_bookdown/raw/master/data/dallas_burg_correct.xlsx"
+download.file(data_url, destfile = "D://dallas.xlsx", method= "wininet", mode = "wb")
+dallas <- read_xlsx("D://dallas.xlsx")
+
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(readxl)
+dallas <- read_excel("data/dallas_burg_correct.xlsx")
+```
+
+When you read the data into R, you will see that there is a column for date called **Date.of.Occurrence**. The date is in the format dd/mm/yyyy. So the first date on there you can see is  16/11/2016. 
+
+But what if I asked you the question: which year had the most residential burglaries? Or what if I want to know if residential burglaries happen more in the weekday, when people are at work, or in the weekends, maybe when people are away for a holiday? You have the date, so you should be able to answer these questions, right? 
+
+Well you need to be able to have the right variables to answer these questions. To know what year saw the most residential burglaries, you need to have a variable for year. To know what day of the week has the most burglaries, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the `lubridate` package can help us do this.
+
+```{r, message=FALSE}
+library(lubridate)
+names(dallas)
+dallas$year <- year(dallas$Date.of.Occurrence)
+dallas$month <- month(dallas$Date.of.Occurrence, label = TRUE, abbr=FALSE, locale = "UK")
+dallas$day <- day(dallas$Date.of.Occurrence)
+dallas$wday <- wday(dallas$Date.of.Occurrence, label = TRUE, abbr=FALSE, locale = "UK")
+
+```
+
+And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.
+
 ##Decomposing time series
 
-Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component.
+Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's have a look at the burglary data from Dallas.
 
-### Lubridate: your guardian angel when it comes to working with temporal data
+First we will need to get the data into shape.
 
-This week we will be looking at crime data from the USA. As you saw, the data from police.uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular. 
+```{r}
+table(dallas$year)
+?yday
+```
 
 
-Cities release their own data. Here, we will be looking at crimes from Dallas, Texas. [You can see more about these data, and find the download link to the data dictionary here](https://www.dallasopendata.com/Public-Safety/Police-Bulk-Data/ftja-9jxd). You can download a subset of Dallas crime data from blackboard. Go to course content > week 7 > Data for week 7, and the file is *dallas_burg.xlsx*. Download this and open it up in excel. 
+
 
 ***YOU PROBABLY WANT A CSV HERE***
 
 
-When you read the data into R, you will see that there is a column for date called **Date.of.Occurrence**. The date is in the format dd/mm/yyyy. So the first date on there you can see is  16/11/2016. 
-
-
-But what if I asked you the question: which year had the most residential burglaries? Or what if I want to know if residential burglaries happen more in the weekday, when people are at work, or in the weekends, maybe when people are away for a holiday? You have the date, so you should be able to answer these questions, right? 
-
-
-Well you need to be able to have the right variables to answer these questions. To know what year saw the most residential burglaries, you need to have a variable for year. To know what day of the week has the most burglaries, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the lubridate package can help us do this. 
+ 
 
 ***INSERT HERE TUROTIAL ON LUBRIDATE TO EXTRACT TIME***
 Eg: for Making Sense I had them look at patterns in burgary for day of the week. Then we reach this conclusion: 
