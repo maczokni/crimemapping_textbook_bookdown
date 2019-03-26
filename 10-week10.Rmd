@@ -99,17 +99,49 @@ And as you can see now you have a set of additional variables that have extracte
 
 ##Decomposing time series
 
-Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's have a look at the burglary data from Dallas.
-
-First we will need to get the data into shape.
+Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's get some fresh data. These are femicides from Spain;
 
 ```{r}
-table(dallas$year)
-?yday
+fem <- read.csv("data/fem.csv")
+colnames(fem)<- c("femicidios")
+fem_timeseries <- ts(fem, frequency=12, start=c(2003,1))
+plot.ts(fem_timeseries)
+
 ```
 
+As you can see it is very noisy. Fortunately, the annual count for intimate partner femicides is low in Spain. There seems to be some seasonality too.
 
+A seasonal time series consists of a trend component, a seasonal component and an irregular component. Decomposing the time series means separating the time series into these three components: that is, estimating these three components.
 
+To estimate the trend component and seasonal component of a seasonal time series that can be described using an additive model, we can use the `decompose()` function in R. This function estimates the trend, seasonal, and irregular components of a time series that can be described using an additive model.
+
+The function `decompose()` returns a list object as its result, where the estimates of the seasonal component, trend component and irregular component are stored in named elements of that list objects, called “seasonal”, “trend”, and “random” respectively.
+
+To estimate the trend, seasonal and irregular components of this time series, we type:
+
+```{r}
+fem_timeseriescomponents <- decompose(fem_timeseries)
+```
+
+The estimated values of the seasonal, trend and irregular components are now stored in variables `fem_timeseriescomponents$seasonal`, `fem_timeseriescomponents$trend` and `fem_timeseriescomponents$random`. For example, we can print out the estimated values of the seasonal component by typing:
+
+```{r}
+fem_timeseriescomponents$seasonal
+```
+
+The estimated seasonal factors are given for the months January-December, and are the same for each year. The largest seasonal factor is for July (about 0.70), and the lowest is for February (about -0.76), indicating that there seems to be a peak in femicides in July and a trough in femicides in February each year.
+
+We can plot the estimated trend, seasonal, and irregular components of the time series by using the `plot()` function, for example:
+
+```{r}
+plot(fem_timeseriescomponents)
+```
+
+Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.
+
+If you have a seasonal time series that can be described using an additive model, you can seasonally adjust the time series by estimating the seasonal component, and subtracting the estimated seasonal component from the original time series. We can do this using the estimate of the seasonal component calculated by the “decompose()” function.
+
+For example, in our case
 
 ***YOU PROBABLY WANT A CSV HERE***
 

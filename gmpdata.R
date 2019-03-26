@@ -52,8 +52,7 @@ dfs <- list(gmcrime16_02, gmcrime16_03, gmcrime16_04,
             gmcrime19_01) 
 #This will use a function from the dplyr package to join all these datasets into gmpcrime 
 gmpcrime <- bind_rows(dfs) 
-#This will use a function from the dplyr package to join all these datasets into gmpcrime 
-gmpcrime <- bind_rows(dfs) 
+
 View(gmpcrime)
 library(readr)
 write_csv(gmpcrime, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv")
@@ -65,6 +64,34 @@ by_month <- group_by(gmpcrime, as.factor(Month))
 #and the mean of the response variable
 gmp_month <- summarise(by_month,
                        count = n())
-write_csv(gmp_month, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_bookdown/data/gmp_month.csv")
+write_csv(gmp_month, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_text/data/gmp_month.csv")
+
+First we will need to get the data into shape. Unfortunately `lubridate` doesnt provide a helpful function to extract both month and year simultaneously. So we need to do some computing as below:
+  
+  ```{r}
+
+dallas$monthyear <-  month(dallas$Date.of.Occurrence) + (year(dallas$Date.of.Occurrence) - min(year(dallas$Date.of.Occurrence)))*12
+
+```
+
+Now we have a column that orders the month by year and now we can count the number of instances of burglaries at that level of aggregations:
+  
+  ```{r}
+library(dplyr)
+by_month <- group_by(dallas, as.factor(monthyear))
+#Then we run the summarise function to provide some useful
+#summaries of the groups we are using: the number of cases
+#and the mean of the response variable
+dallas_month <- summarise(by_month,
+                          count = n())
+dallas_month <- select(dallas_month, count)
+
+dallas_timeseries <- ts(dallas_month, frequency=12, start=c(2014,1))
+dallas_timeseries
+```
+
+
+
+
 
           
