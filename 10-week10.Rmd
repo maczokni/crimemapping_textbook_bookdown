@@ -31,7 +31,8 @@ gmp_month <- read.csv(url(data_url))
 
 If you view the data you will see it has two columns, the date and the count of crimes for that month. Once you have read the time series data into R, the next step is to store the data in a time series object in R, so that you can use R’s many functions for analysing time series data. To store the data in a time series object, we use the `ts()` function in R. 
 
-```{r}
+```{r, message=FALSE}
+library(dplyr)
 #First we select the relevant column
 gmp_month_c <- select(gmp_month, count)
 #Then we create the time series object
@@ -64,8 +65,7 @@ plot.ts(gmp_timeseries)
 We can of course also use `ggplot2`to plot a time series like the one we just did but here we would need a variable encoding the date (and preferably a full date, not just month and year as here). If you look a "gmp_month" you will see the name of the variables are not optimal, so we will rename them first.
 
 ```{r}
-library(dplyr)
-names(gmp_month)
+library(ggplot2)
 gmp_month <- rename(gmp_month, date = as.factor.Month., crime = count)
 ggplot(data=gmp_month, aes(x=date, y=crime, group=1)) +
   geom_line()+
@@ -88,42 +88,112 @@ autoplot(gmp_timeseries)
 
 As you saw, the data from Police.Uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular. 
 
-Cities release their own data. Here, we will be looking at crimes from Dallas, Texas. [You can see more about these data, and find the download link to the data dictionary here](https://www.dallasopendata.com/Public-Safety/Police-Bulk-Data/ftja-9jxd).  Download the file and open bring it into R. 
+Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assult. The data from an open source initiative maintained by Matt Ashby [here](https://osf.io/zyaqn/).  I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years. 
 
-```{r, eval=FALSE}
-library(readxl)
-data_url <-"https://github.com/maczokni/crimemapping_textbook_bookdown/raw/master/data/dallas_burg_correct.xlsx"
-download.file(data_url, destfile = "D://dallas.xlsx", method= "wininet", mode = "wb")
-dallas <- read_xlsx("D://dallas.xlsx")
-
+```{r}
+library(readr)
+agassault_ny<-read_csv("https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/agassault.csv")
 ```
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
-library(readxl)
-dallas <- read_excel("data/dallas_burg_correct.xlsx")
+When you read the data into R, you will see that there is a column for date called **date_single**. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is  2014-01-01 00:03:00. What kind of variable is this?
+
+```{r}
+class(agassault_ny$date_single)
 ```
 
-When you read the data into R, you will see that there is a column for date called **Date.of.Occurrence**. The date is in the format dd/mm/yyyy. So the first date on there you can see is  16/11/2016. 
+Our date and time variables are of class `POSIXct` and `POSIXt`.
 
-But what if I asked you the question: which year had the most residential burglaries? Or what if I want to know if residential burglaries happen more in the weekday, when people are at work, or in the weekends, maybe when people are away for a holiday? You have the date, so you should be able to answer these questions, right? 
+Let's plot this data:
 
-Well you need to be able to have the right variables to answer these questions. To know what year saw the most residential burglaries, you need to have a variable for year. To know what day of the week has the most burglaries, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the `lubridate` package can help us do this.
+```{r}
+agassault_ny %>% 
+  ggplot(aes(date_single)) + 
+  geom_freqpoly(binwidth = 604800) # 86400 seconds = 1 day, 604800 one week
+```
+
+Notice what `geom_freqpoly` is doing. We have a dataframe with rows for each case. The data is not aggregated in any form. But this function counts on the fly the number of cases (of rows) for each of the bins as we define them. It is, thus, a convenient function that saves us from having to first do that aggregation ourselves when we want to plot it. This may be helpful when you get your data for the assignment.
+
+An alternative approach to plotting individual components is to round the date to a nearby unit of time, with `floor_date()`, `round_date()`, and `ceiling_date()`. Each function takes a vector of dates to adjust and then the name of the unit round down (floor), round up (ceiling), or round to.
+
+```{r}
+agassault_ny %>% 
+  count(month = floor_date(date_single, "month")) %>% 
+  ggplot(aes(month, n)) +
+    geom_line()
+```
+
+
+What if I asked you the question: which year had the most aggravated assaults? Or what if I want to know if aggravated assaults happen more in the weekday, when people are at work, or in the weekends, maybe when people are away for a holiday? You have the date, so you should be able to answer these questions, right? 
+
+Well you need to be able to have the right variables to answer these questions. To know what year saw the most aggravated assaults, you need to have a variable for year. To know what day of the week has the most aggravated assaults, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the `lubridate` package can help us do this.
 
 ```{r, message=FALSE}
 library(lubridate)
-names(dallas)
-dallas$year <- year(dallas$Date.of.Occurrence)
-dallas$month <- month(dallas$Date.of.Occurrence, label = TRUE, abbr=FALSE, locale = "UK")
-dallas$day <- day(dallas$Date.of.Occurrence)
-dallas$wday <- wday(dallas$Date.of.Occurrence, label = TRUE, abbr=FALSE, locale = "UK")
+agassault_ny$year <- year(agassault_ny$date_single)
+agassault_ny$month <- month(agassault_ny$date_single, label = TRUE, abbr=FALSE, locale = "UK")
+agassault_ny$day <- day(agassault_ny$date_single)
+agassault_ny$wday <- wday(agassault_ny$date_single, label = TRUE, abbr=FALSE, locale = "UK")
 
 ```
 
 And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.
 
+We can now look at the distribution of events per day of the week.
+
+```{r}
+agassault_ny %>% 
+  mutate(wday = wday(date_single, label=TRUE, abbr=FALSE, locale = "UK")) %>% 
+  ggplot(aes(x = wday)) +
+    geom_bar()
+
+```
+
+The `lubridate` package is incredibly helpful for anything date related. We don't have time to go over it on details but you can find more information on [the official page](https://lubridate.tidyverse.org/) or in [this](https://mikoontz.github.io/data-carpentry-week/lesson_lubridate.html) tutorial. The relevant chapter in [R for Data Science](https://r4ds.had.co.nz/dates-and-times.html#introduction-10) is also very helpful.
+
+
+##Calendar heatmaps
+
+We can also parse the temporal information that is available in our date variable. For the next chart we introduce we only need date, month, and year. We don't need the time.
+
+
+```{r}
+
+agassault_ny$date <- format(as.POSIXct(agassault_ny$date_single,format="%Y:%m:%d %H:%M:%S"),"%d:%m:%Y")
+head(agassault_ny$date)
+class(agassault_ny$date)
+
+```
+
+We can now use `dplyr` to counts the evens per day.
+
+```{r}
+by_day <- group_by(agassault_ny, date)
+agassault_ny_d <- summarise(by_day,
+                          assaults = n())
+```
+
+We will now use a `ggplot2` extension that allow us to produce calendar heat visualisations.
+
+```{r, message=FALSE}
+agassault_ny_d$date <- dmy(agassault_ny_d$date)
+library(ggTimeSeries)
+p1 <- ggplot_calendar_heatmap(
+   agassault_ny_d,
+   'date',
+   'assaults')
+#Now we customise the plot a bit more
+p1 +
+   xlab(NULL) +
+   ylab(NULL) +
+   scale_fill_continuous(low = 'green', high = 'red') +
+   facet_wrap(~Year, ncol = 1)
+
+```
+
+
 ##Decomposing time series
 
-Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's get some fresh data. These are femicides from Spain;
+Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's get some fresh data. These are intimate partner femicides from Spain;
 
 ```{r}
 fem <- read.csv("data/fem.csv")
@@ -163,11 +233,31 @@ plot(fem_timeseriescomponents)
 
 Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.
 
-If you have a seasonal time series that can be described using an additive model, you can seasonally adjust the time series by estimating the seasonal component, and subtracting the estimated seasonal component from the original time series. We can do this using the estimate of the seasonal component calculated by the “decompose()” function.
+**Homework 10.1**
+*Try creating a ts object using the aggassault data from New York and decompose the time seties*
 
-For example, in our case
+```{r, echo=FALSE}
+agassault_ny_d2 <-select(agassault_ny_d, assaults)
+ny_timeseries <- ts(agassault_ny_d2, frequency=365, start=c(2014,1,1))
+ny_timeseriescomponents <- decompose(ny_timeseries)
+#plot(ny_timeseriescomponents)
+```
 
-***YOU PROBABLY WANT A CSV HERE***
+We can also use `ggplot2` for these purposes. In particular we can use the `ggseas` extension -see for details [here](https://github.com/ellisp/ggseas). First I use the `tsdf` function that turns the `ts` object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.
+
+```{r}
+library(ggseas)
+ny_df <- tsdf(ny_timeseries)
+ggsdc(ny_df, aes(x = x, y = y), method = "decompose") +
+   geom_line()
+```
+
+
+
+
+
+
+Smmal multiples
 
 
  

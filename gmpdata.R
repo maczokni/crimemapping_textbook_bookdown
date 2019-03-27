@@ -53,7 +53,38 @@ dfs <- list(gmcrime16_02, gmcrime16_03, gmcrime16_04,
 #This will use a function from the dplyr package to join all these datasets into gmpcrime 
 gmpcrime <- bind_rows(dfs) 
 
-View(gmpcrime)
+crime14 <- read.csv("D:/crime/crime_open_database_core_2014.csv")
+crime15 <- read.csv("D:/crime/crime_open_database_core_2015.csv")
+crime16 <- read.csv("D:/crime/crime_open_database_core_2016.csv")
+crime17 <- read.csv("D:/crime/crime_open_database_core_2017.csv")
+crime18 <- read.csv("D:/crime/crime_open_database_core_2018.csv")
+
+dfs <- list(crime14,crime15,crime16,crime17,crime18)
+crime <- bind_rows(dfs)
+names(crime)
+table(crime$city_name)
+crimeny <- filter(crime, city_name == "New York")
+agassault_ny <- filter(crimeny, offense_type == "aggravated assault")
+agassault_ny <- select(agassault_ny, uid, date_single, longitude, latitude, location_type, location_category, census_block, date_start, date_end)
+library(readr)
+write_csv(crimeny, path = "D:/crime/crimeny.csv")
+write_csv(agassault_ny, path = "D:/crime/agassault.csv")
+agassault_ny<-read_csv("D:/crime/agassault.csv")
+
+set.seed(1)
+library(data.table)
+dtData = data.table(
+  DateCol = seq(
+    as.Date("1/01/2014", "%d/%m/%Y"),
+    as.Date("31/12/2015", "%d/%m/%Y"),
+    "days"
+  ),
+  ValueCol = runif(730)
+)
+dtData[, ValueCol := ValueCol + (strftime(DateCol,"%u") %in% c(6,7) * runif(1) * 0.75), .I]
+dtData[, ValueCol := ValueCol + (abs(as.numeric(strftime(DateCol,"%m")) - 6.5)) * runif(1) * 0.75, .I]
+
+
 library(readr)
 write_csv(gmpcrime, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv")
 head(read_csv("C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv"))
