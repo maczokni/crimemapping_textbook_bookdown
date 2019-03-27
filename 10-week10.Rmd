@@ -277,5 +277,5 @@ It is important that you understand the concept of what we are covering, before 
 
 ### Moving average in R
 
-
+http://rpubs.com/jgleeson/boroughpop
 
