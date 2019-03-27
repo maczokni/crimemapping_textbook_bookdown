@@ -23,8 +23,9 @@ Decomposing these trends is an important part of what **time series** analysis i
 We are going to start with fairly simple data. We are just going to look at monthly counts of crime for Greater Manchester obtained from the Police.UK website. We have aggregated 36 months of data into a file for you to use. Grab the data using the following code:
 
 ```{r, message=FALSE}
+
 data_url <-"https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_month.csv"
-gmp_month <- read_csv(url(data_url))
+gmp_month <- read.csv(url(data_url))
 
 ```
 
@@ -60,9 +61,32 @@ Once you have read a time series into R, the next step is usually to make a plot
 plot.ts(gmp_timeseries)
 ```
 
+We can of course also use `ggplot2`to plot a time series like the one we just did but here we would need a variable encoding the date (and preferably a full date, not just month and year as here). If you look a "gmp_month" you will see the name of the variables are not optimal, so we will rename them first.
+
+```{r}
+library(dplyr)
+names(gmp_month)
+gmp_month <- rename(gmp_month, date = as.factor.Month., crime = count)
+ggplot(data=gmp_month, aes(x=date, y=crime, group=1)) +
+  geom_line()+
+  geom_point()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
+If we had a date vector rather than a factor encoding our date we would need to adapt our code. See [here](http://www.sthda.com/english/articles/32-r-graphics-essentials/128-plot-time-series-data-using-ggplot/) for further details.
+
+Alternatively we can use `ggfortify`, an extension to `ggplot2` that would allow us to use `ts` objects as inputs. For this we use the `autoplot` function.
+
+```{r, message=FALSE}
+library(ggfortify)
+autoplot(gmp_timeseries)
+
+```
+
+
 ## Lubridate: your guardian angel when it comes to working with temporal data
 
-As you saw, the data from police.uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular. 
+As you saw, the data from Police.Uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular. 
 
 Cities release their own data. Here, we will be looking at crimes from Dallas, Texas. [You can see more about these data, and find the download link to the data dictionary here](https://www.dallasopendata.com/Public-Safety/Police-Bulk-Data/ftja-9jxd).  Download the file and open bring it into R. 
 
