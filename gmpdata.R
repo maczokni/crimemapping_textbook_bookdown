@@ -71,19 +71,6 @@ write_csv(crimeny, path = "D:/crime/crimeny.csv")
 write_csv(agassault_ny, path = "D:/crime/agassault.csv")
 agassault_ny<-read_csv("D:/crime/agassault.csv")
 
-set.seed(1)
-library(data.table)
-dtData = data.table(
-  DateCol = seq(
-    as.Date("1/01/2014", "%d/%m/%Y"),
-    as.Date("31/12/2015", "%d/%m/%Y"),
-    "days"
-  ),
-  ValueCol = runif(730)
-)
-dtData[, ValueCol := ValueCol + (strftime(DateCol,"%u") %in% c(6,7) * runif(1) * 0.75), .I]
-dtData[, ValueCol := ValueCol + (abs(as.numeric(strftime(DateCol,"%m")) - 6.5)) * runif(1) * 0.75, .I]
-
 
 library(readr)
 write_csv(gmpcrime, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv")
@@ -97,30 +84,11 @@ gmp_month <- summarise(by_month,
                        count = n())
 write_csv(gmp_month, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_text/data/gmp_month.csv")
 
-First we will need to get the data into shape. Unfortunately `lubridate` doesnt provide a helpful function to extract both month and year simultaneously. So we need to do some computing as below:
-  
-  ```{r}
-
-dallas$monthyear <-  month(dallas$Date.of.Occurrence) + (year(dallas$Date.of.Occurrence) - min(year(dallas$Date.of.Occurrence)))*12
-
-```
-
-Now we have a column that orders the month by year and now we can count the number of instances of burglaries at that level of aggregations:
-  
-  ```{r}
-library(dplyr)
-by_month <- group_by(dallas, as.factor(monthyear))
-#Then we run the summarise function to provide some useful
-#summaries of the groups we are using: the number of cases
-#and the mean of the response variable
-dallas_month <- summarise(by_month,
-                          count = n())
-dallas_month <- select(dallas_month, count)
-
-dallas_timeseries <- ts(dallas_month, frequency=12, start=c(2014,1))
-dallas_timeseries
-```
-
+##Try to get the correct wards
+library(sf)
+shp_name <- "data/BoundaryData/england_lsoa_2011.shp"
+manchester_lsoa <- st_read(shp_name)
+plot(manchester_lsoa)
 
 
 

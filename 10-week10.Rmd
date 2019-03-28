@@ -99,6 +99,7 @@ When you read the data into R, you will see that there is a column for date call
 
 ```{r}
 class(agassault_ny$date_single)
+
 ```
 
 Our date and time variables are of class `POSIXct` and `POSIXt`.
@@ -116,6 +117,7 @@ Notice what `geom_freqpoly` is doing. We have a dataframe with rows for each cas
 An alternative approach to plotting individual components is to round the date to a nearby unit of time, with `floor_date()`, `round_date()`, and `ceiling_date()`. Each function takes a vector of dates to adjust and then the name of the unit round down (floor), round up (ceiling), or round to.
 
 ```{r}
+library(lubridate)
 agassault_ny %>% 
   count(month = floor_date(date_single, "month")) %>% 
   ggplot(aes(month, n)) +
@@ -128,7 +130,6 @@ What if I asked you the question: which year had the most aggravated assaults? O
 Well you need to be able to have the right variables to answer these questions. To know what year saw the most aggravated assaults, you need to have a variable for year. To know what day of the week has the most aggravated assaults, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the `lubridate` package can help us do this.
 
 ```{r, message=FALSE}
-library(lubridate)
 agassault_ny$year <- year(agassault_ny$date_single)
 agassault_ny$month <- month(agassault_ny$date_single, label = TRUE, abbr=FALSE, locale = "UK")
 agassault_ny$day <- day(agassault_ny$date_single)
@@ -258,6 +259,17 @@ ggsdc(ny_df, aes(x = x, y = y), method = "decompose") +
 
 
 Smmal multiples
+
+```{r}
+library(sf)
+manchester_ward <- st_read("https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson")
+plot(manchester_ward)
+
+```
+
+
+point in polygon
+
 
 
  
