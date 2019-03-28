@@ -75,7 +75,13 @@ agassault_ny<-read_csv("D:/crime/agassault.csv")
 library(readr)
 write_csv(gmpcrime, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv")
 head(read_csv("C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv"))
-x <-  read_csv("C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv")
+gmp <-  read_csv("C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp.csv")
+names(gmp)
+gmp <- select(gmp, Month, Crime.type, Longitude, Latitude)
+table(gmp$Crime.type)
+gmp_bur <- filter(gmp, Crime.type == "Burglary")
+write_csv(gmp_bur, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/Data for students/GMP/gmp_bur.csv")
+
 by_month <- group_by(gmpcrime, as.factor(Month))
 #Then we run the summarise function to provide some useful
 #summaries of the groups we are using: the number of cases
@@ -84,13 +90,20 @@ gmp_month <- summarise(by_month,
                        count = n())
 write_csv(gmp_month, path = "C:/Users/Juanjo Medina/Dropbox/1_Teaching/1 Manchester courses/31152_60142 GIS and Crime Mapping/crime_mapping_text/data/gmp_month.csv")
 
-##Try to get the correct wards
 library(sf)
-shp_name <- "data/BoundaryData/england_lsoa_2011.shp"
-manchester_lsoa <- st_read(shp_name)
-plot(manchester_lsoa)
+manchester_ward <- st_read("https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson")
 
+library(ggplot2)
+ggplot() + geom_sf(data = manchester_ward, aes()) +
+  geom_sf(data = burglary_sf, aes()) +
+  labs(x = "Longitude", y = "Latitude")
+                   
 
+ggplot() + geom_sf(data = manchester_ward, aes()) + 
+  geom_point(data = gmp_bur, aes(x = Longitude, y = Latitude)) + 
+  labs(x = "Longitude", y = "Latitude")
 
-
+burglary_sf <- st_as_sf(x = gmp_bur, 
+                     coords = c("Longitude", "Latitude"),
+                     crs = "+proj=longlat +datum=WGS84")
           

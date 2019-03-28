@@ -191,6 +191,7 @@ p1 +
 
 ```
 
+There are many things that peak on certain days of the week. If you're interested in some more examples, [read this article in the Guardian about the most dangerous days of the week](https://www.theguardian.com/lifeandstyle/2013/may/29/most-dangerous-day-of-week).
 
 ##Decomposing time series
 
@@ -254,154 +255,184 @@ ggsdc(ny_df, aes(x = x, y = y), method = "decompose") +
 ```
 
 
+##Static maps with ggplot2
 
+So far we have seen how we can produce maps with `tmap`for thematic maps and `leaflet` for interactive maps. But we can also use static maps with `ggplot2`. For the next set of exercises we are going to look at temporal variations on burglary across Greater Manchester. We are going to focus on wards as the unit of analysis. You will likely work with this dataset for crime for your assignment and you may use wards or smaller geographies. So we will focus on this data for this illustration of basic plotting and spatial operations (in the next section).
 
-
-
-Smmal multiples
+To load the ward shapefiles for Manchester into a `sf` object we use code we had already used in a previous session.
 
 ```{r}
 library(sf)
 manchester_ward <- st_read("https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson")
-plot(manchester_ward)
+```
+
+With this data in our environment we can plot a map using `ggplot2`. We use the `geom_sf` function to tell `ggplot2` we are dealing with a `sf` object.
+
+```{r}
+library(ggplot2)
+ggplot() + geom_sf(data = manchester_ward, aes()) +
+  labs(x = "Longitude", y = "Latitude") +
+  theme_bw()
+```
+
+We can also plot objects that are not `sf` but have geographic coordinates.
+
+Let's load the data with the burglaries for Greater Manchester.
+
+```{r}
+gmp_bur <- read_csv("https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_bur.csv")
+```
+
+You can see there is a column with the longitude and another with latitude. For this we can use the standard `geom_point` function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparenci and size of the points to deal with overplotting.
+
+```{r}
+ggplot() + 
+  geom_point(data = gmp_bur, aes(x = Longitude, y = Latitude), 
+             alpha = 0.05, size = 0.5) + 
+  labs(x = "Longitude", y = "Latitude")
+
+```
+
+You could try to have a map with two layers, the points and the wards, so combining what we have done so far.
+
+```{r}
+ggplot() + geom_sf(data = manchester_ward, aes()) + 
+  geom_point(data = gmp_bur, aes(x = Longitude, y = Latitude)) + 
+  labs(x = "Longitude", y = "Latitude")
+```
+
+Ooops. What happened? Can you think of what is going on here? This is something we have already covered in previous lab sessions.
+
+In week 4  we explained how it is important to check that spatial operations that use two spatial objects rely on both objects having the same coordinate reference system, otherwise funny things may happen. We can check the coordinate reference system with the `st_crs` function from `sf`.
+
+```{r}
+st_crs(manchester_ward)
+```
+
+What is `EPGS: 27700`? You can check [here](https://epsg.io/27700). This is the British National Grid. How about the police data? Well, we don't have a `sf` object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGs1984 instead. What do we do? First we need to create a `sf` object for the police data specifying the coordinate system (we covered how to do this in week 3).
+
+```{r}
+burglary_sf <- st_as_sf(x = gmp_bur, 
+                        coords = c("Longitude", "Latitude"),
+                        crs = "+proj=longlat +datum=WGS84")
+```
+
+If we now check:
+
+```{r}
+st_crs(burglary_sf)
+st_crs(manchester_ward) == st_crs(burglary_sf)
+```
+
+We can see the code 4326, which is basically the code for WGS84. And that the coordinate system across our two `sf` objects is different. We also covered this in week 4 but take this as a helpful refresher for the kind of things it is likely you need to do for your assignment. Essentially, we need to use the `st_transform` function. We need to make sure we translate one of these layers into the other coordinate reference system.
+
+```{r}
+wards_WGS84 <- st_transform(manchester_ward, 4326)
+st_crs(wards_WGS84) == st_crs(burglary_sf)
+```
+
+Try now plotting the map.
+
+```{r}
+ggplot() + geom_sf(data = wards_WGS84, aes()) + 
+  geom_point(data = gmp_bur, aes(x = Longitude, y = Latitude),
+             alpha = 0.05, size = 0.5) + 
+  labs(x = "Longitude", y = "Latitude")
+```
+
+
+## Small multiples to show temporal variation
+
+
+We have covered small multiples before. You can indeed use facets to show how things change (or don't change) across time. Let's just focus on 2018 to simplify things a bit.
+
+```{r}
+bur_sf_2018 <- filter(burglary_sf, Month == "2018-01" | Month == "2018-02" |
+                        Month == "2018-03" | Month == "2018-04" |
+                        Month == "2018-05" | Month == "2018-06" |
+                        Month == "2018-07" | Month == "2018-08" |
+                        Month == "2018-09" | Month == "2018-10" |
+                        Month == "2018-11" | Month == "2018-12")
+table(bur_sf_2018$Month)
+```
+
+Let's simplify further by focusing just in Manchester City.
+
+```{r}
+mc_wards_WGS864 <- filter(wards_WGS84, lad16nm == "Manchester")
+```
+
+Ok, let's do a point in polygon operation, count the number of burglaries per ward, so that we can display choropleth maps. Again, this is something we cover in week 4.
+
+```{r, message=FALSE}
+bur_per_ward <- bur_sf_2018 %>% 
+  st_join(mc_wards_WGS864, ., left = FALSE) %>% 
+  count(wd16nm)
+```
+
+The code above only counts for the whole year. But if we want to have a map per month we don't need the total counts for the whole year but rather the monthly counts.
+
+```{r, message=FALSE}
+bur_per_ward <- bur_sf_2018 %>% 
+  st_join(mc_wards_WGS864, ., left = FALSE) %>% 
+  count(wd16nm, Month)
+```
+
+We can now try to produce the small multiples.
+
+
+```{r}
+library(tmap)
+tm_shape(bur_per_ward) + 
+  tm_fill("n") +
+  tm_borders() +
+  tm_facets("Month", free.coords=FALSE)
 
 ```
 
 
-point in polygon
+##Animations!!!
 
+You want a data viz person get excited? Mention animations! Now they are brought to `ggplot2` thanks to the `gganimate` extension.
+
+The next one is a non-spatial plot, in that we do not show a map.
+
+```{r}
+library(gganimate)
+
+anim <- bur_per_ward %>%
+  ggplot(aes(x = wd16nm, y = n)) +
+  geom_bar(stat = 'identity') +
+  scale_y_continuous(labels = scales::comma) +
+  coord_flip() +
+  labs(title="Burglary counts,",
+       x = "",
+       y = "") +
+  transition_reveal(along = Month) +
+  ease_aes("linear") 
+animate(nframes = 200, anim, start_pause = 10, end_pause = 50, height = 500)
+```
+
+The next one shows an animate map.
 
 
  
 
-***INSERT HERE TUROTIAL ON LUBRIDATE TO EXTRACT TIME***
-Eg: for Making Sense I had them look at patterns in burgary for day of the week. Then we reach this conclusion: 
 
-Now you can use this variable to create a pivot table, and see the number of burglaries on weekdays or weekends. Let's create this crosstab: 
 
 
 
-Unsurprisingly, there are a lot more burglaries on weekdays than weekends. Why do you think that is? Take a moment to chat to the person next to you and discuss. 
 
 
 
-![](https://media.giphy.com/media/xT5LMPQWYPMrZOYjug/giphy.gif)
 
 
 
-So what did you discuss? I am hoping that you mentioned that there were a lot more weekdays than weekend-days in our data, and in fact, in all weeks. There are 2.5 times as many weekdays than weekends in a week. I know, it's a sad truth, we work a lot more than we get to rest. But another thing that happens because of this, is that simply looking at the number of burglaries in weekdays and in weekdays might not be a very meaningful measure. Remember earlier, when we spoke about comparing like for like? Or last week, when we talked about the crime rate (per 100,000 population) versus the number of crimes? Well again here, we should calculate a rate; to truly be able to compare, we should look at a rate such as the number of burglaries *per day* for weekdays, and the number of burglaries *per day* for weekend-days. 
 
 
-Remember discussing how do you calculate the rate? Well you do this simply by dividing the numerator (number of burglaries) by an appopriate denominator. What is the best denominator? Well it depends on the question you're looking to answer. Usually it's what comes after the *per*. If we are looking for number of crimes *per population* then we will be dividing by the population. If we are looking at number of burglaries *per household* we will be dividing by the number of households in an area. In this case, we were talking about the number of burglaries *per day* to compare between weekends and weekdays. So, your denominator will be the number of days for each group. 
 
 
-So, to get the burglary rate (per day), we simply take our total number of burglaries from our pivot table, and divide by the number of days for each. As we know, there are 5 weekdays (boo) and 2 weekends (yaay). So let's divide accordingly: 
 
 
 
-
-
-And copy also for the weekends, and voila we have our answer to the question, are there more burglaries on weekdays or weekends:
-
-
-
-
-
-
-Now you can discuss again why you think this might be. For example, during the week, people are away from their homes for work, for the majority of each day, which leaves their home unprotected. I've mentioned the [crime triangle](https://popcenter.asu.edu/content/problem-analysis-triangle-0) before. If the resident is not home, then there is an absence of a capable guardian, and there is an increased risk for a crime (such as burglary) to occur! 
-
-
-
-There are many things that peak on certain days of the week. If you're interested in some more examples, [read this article in the Guardian about the most dangerous days of the week](https://www.theguardian.com/lifeandstyle/2013/may/29/most-dangerous-day-of-week). 
-
-
-
-## Aggregating to simple intervals
-
-Above the activities have you the ability to extract certain types of date categories from the date column. If we want to compare year on year increase or decrease, this is one approach. Or if we want to compare day of week, month of year, and so on. We did this by creating a new variable, and then using a pivot table. We could also look at the date as it is, we could have a look at the number of crimes each day, but often this can be noisy. Instead, sometimes we want to aggregate (group) these into simpler time intervals.
-
-First, we've not had a look at our time variable yet, so we could start with that. 
-
-
-### Aggregating burglary to hour
-
-
-First create a new column for 'Hour':
-
-***INsert activity in R here***
-
-
-## Visualising time on a map
-
-
-Here I had stuff about cyclical variable so line graph vs radar grapgh, but I assume here we want to be spatial about time, so let's get some spacial examples in here. 
-
-
-
-## Time series
-
-A Time Series is an ordered sequence of values of a variable at equally spaced time intervals.
-Time series occur frequently when looking at industrial data. The usage of time series models is threefold:
-
-- To help reveal or clarify trends by obtaining an understanding of the underlying forces and structure that produced the observed data
-- To forecast future patterns of events by fitting a model
-– To test the impact of interventions 
-
-
-Time Series Analysis is an analytic technique that uses a sequence of data points, measured typically at successive, uniform time intervals, to identify trends and other characteristics of the data. For example, a time series analysis may be used to study a city’s crime rate over time and predict future crime trends.
-
-
-
-All time-series data have three basic parts:
-
-- A trend component;
-- A seasonal component; and
-- A random component.
-
-
-Trends are often masked because of the combination of these three components – especially the random noise!
-
-
-Two types of patterns are important:
-- Linear or non-linear trends - i.e., upwards or downwards or both (quadratic); and
-- Seasonal effects which follow the same overall trend but repeat themselves in systematic intervals over time. 
-
-
-Smoothing data removes random variation and shows trends and cyclic components. Inherent in the collection of data taken over time is some form of random variation. There exist methods for reducing of canceling the effect due to random variation. An often-used technique in industry is "smoothing". This technique, when properly applied, reveals more clearly the underlying trend, seasonal and cyclic components.
-
-
-In this course we will stick to the first option, and in particular we will look into producing *moving averages*. You should also know about the existence of *smoothing techniques*, and the sophisticated method for revealing trends is known as *seasonal decomposition*, however we will not be performing these ourselves today. 
-
-
-
-
-
-### Moving averages
-
-
-A moving average is a technique to get an overall idea of the trends in a data set; it is an average of any subset of numbers. The moving average is extremely useful for forecasting long-term trends. You can calculate it for any period of time. For example, if you have sales data for a twenty-year period, you can calculate a five-year moving average, a four-year moving average, a three-year moving average and so on. Stock market analysts will often use a 50 or 200 day moving average to help them see trends in the stock market and (hopefully) forecast where the stocks are headed.
-
-
-
-An average represents the “middling” value of a set of numbers. The moving average is exactly the same, but the average is calculated several times for several subsets of data. For example, if you want a two-year moving average for a data set from 2000, 2001, 2002 and 2003 you would find averages for the subsets 2000/2001, 2001/2002 and 2002/2003. Moving averages are usually plotted and are best visualized.
-
-
-Among the most popular technical indicators, moving averages are used to gauge the direction of the current trend. Every type of moving average (commonly written in this tutorial as MA) is a mathematical result that is calculated by averaging a number of past data points. Once determined, the resulting average is then plotted onto a chart in order to allow traders to look at smoothed data rather than focusing on the day-to-day price fluctuations that are inherent in all financial markets. 
-
-
-The simplest form of a moving average, appropriately known as a simple moving average (SMA), is calculated by taking the arithmetic mean of a given set of values. For example, to calculate a basic 10-day moving average you would add up the closing prices from the past 10 days and then divide the result by 10. In Figure 1, the sum of the prices for the past 10 days (110) is divided by the number of days (10) to arrive at the 10-day average. If a trader wishes to see a 50-day average instead, the same type of calculation would be made, but it would include the prices over the past 50 days. The resulting average below (11) takes into account the past 10 data points in order to give traders an idea of how an asset is priced relative to the past 10 days. 
-
-
-
-Perhaps you're wondering why technical traders call this tool a "moving" average and not just a regular mean? The answer is that as new values become available, the oldest data points must be dropped from the set and new data points must come in to replace them. Thus, the data set is constantly "moving" to account for new data as it becomes available. This method of calculation ensures that only the current information is being accounted for. In Figure 2, once the new value of 5 is added to the set, the red box (representing the past 10 data points) moves to the right and the last value of 15 is dropped from the calculation. Because the relatively small value of 5 replaces the high value of 15, you would expect to see the average of the data set decrease, which it does, in this case from 11 to 10. 
-- [Moving Averages: What Are They?](http://www.investopedia.com/university/movingaverage/movingaverages1.asp#ixzz4xbKq8xgI )
-
-
-
-It is important that you understand the concept of what we are covering, before we move on to the excel part of things, so I really want you to take time and watch this  [video on how to calculate moving average by hand](https://www.youtube.com/watch?v=vvbvVJiJ2fI). If you have any questions about this, ask now!
-
-
-### Moving average in R
-
-http://rpubs.com/jgleeson/boroughpop
 
