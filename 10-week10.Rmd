@@ -102,7 +102,8 @@ class(agassault_ny$date_single)
 
 ```
 
-Our date and time variables are of class `POSIXct` and `POSIXt`.
+Our date and time variables are of class `POSIXct` and `POSIXt`.  These are the two basic classes of date/times. Class "POSIXct" represents the (signed) number of seconds since the beginning of 1970 as a numeric vector. Class "POSIXlt" is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown). 
+
 
 Let's plot this data:
 
@@ -129,7 +130,7 @@ What if I asked you the question: which year had the most aggravated assaults? O
 
 Well you need to be able to have the right variables to answer these questions. To know what year saw the most aggravated assaults, you need to have a variable for year. To know what day of the week has the most aggravated assaults, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the `lubridate` package can help us do this.
 
-```{r, message=FALSE}
+```{r, message=FALSE, eval = FALSE}
 agassault_ny$year <- year(agassault_ny$date_single)
 agassault_ny$month <- month(agassault_ny$date_single, label = TRUE, abbr=FALSE, locale = "UK")
 agassault_ny$day <- day(agassault_ny$date_single)
@@ -137,13 +138,25 @@ agassault_ny$wday <- wday(agassault_ny$date_single, label = TRUE, abbr=FALSE, lo
 
 ```
 
+
+
+```{r, message=FALSE, echo = FALSE}
+agassault_ny$year <- year(agassault_ny$date_single)
+agassault_ny$month <- month(agassault_ny$date_single, label = TRUE, abbr=FALSE)
+agassault_ny$day <- day(agassault_ny$date_single)
+agassault_ny$wday <- wday(agassault_ny$date_single, label = TRUE, abbr=FALSE)
+
+```
+
+
+
 And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.
 
 We can now look at the distribution of events per day of the week.
 
 ```{r}
 agassault_ny %>% 
-  mutate(wday = wday(date_single, label=TRUE, abbr=FALSE, locale = "UK")) %>% 
+  mutate(wday = wday(date_single, label=TRUE, abbr=FALSE)) %>% 
   ggplot(aes(x = wday)) +
     geom_bar()
 
@@ -171,6 +184,7 @@ We can now use `dplyr` to counts the evens per day.
 by_day <- group_by(agassault_ny, date)
 agassault_ny_d <- summarise(by_day,
                           assaults = n())
+
 ```
 
 We will now use a `ggplot2` extension that allow us to produce calendar heat visualisations.
@@ -395,32 +409,78 @@ tm_shape(bur_per_ward) +
 
 You want a data viz person get excited? Mention animations! Now they are brought to `ggplot2` thanks to the `gganimate` extension.
 
-The next one is a non-spatial plot, in that we do not show a map.
+The next one is a non-spatial plot, in that we do not show a map. However we will show the varying rate of burglaries per month within each ward. It is interesting to see this as an animation over time, rather than in the small multiples format, because it can better drive home the message of change (and also it looks very cool!). 
+
+
+So first thing we do is to load the gganimate package: 
 
 ```{r}
 library(gganimate)
 
-anim <- bur_per_ward %>%
-  ggplot(aes(x = wd16nm, y = n)) +
+```
+
+
+Then, we need to make sure that our temporal variable is a date object. We can use the `ymd()` function, from the fantastic lubridate package (really I cannot praise this package enough, it makes handling dates so easy...!) to make sure that our Month variable is a date object. 
+
+But we have no day you say! Only month! How can we use `ymd()` which clearly requires *y*ear *m*onth ad *day*! Well, one approach is to make this up, and just say that everything in our data happened on the 1st of the month. We can use the `paste0()` function to do this: 
+
+```{r}
+bur_per_ward$date_month <- ymd(paste0(bur_per_ward$Month, "-01"))
+
+```
+
+Now, we can create a simple static plot, the way we already know how. Let's plot the number of burglaries per ward, and save this in an object called `anim`:
+
+
+```{r}
+
+anim <- ggplot(bur_per_ward, aes(x = wd16nm, y = n)) +
   geom_bar(stat = 'identity') +
   scale_y_continuous(labels = scales::comma) +
   coord_flip() +
   labs(title="Burglary counts,",
        x = "",
-       y = "") +
-  transition_reveal(along = Month) +
-  ease_aes("linear") 
-animate(nframes = 200, anim, start_pause = 10, end_pause = 50, height = 500)
+       y = "") 
 ```
 
-The next one shows an animate map.
+
+Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use `transition_states()`. This transition splits your data into multiple states based on the levels in a given column, much like ggplot2::facet_wrap() splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the `closest_state` to dynamically label the graph:
+
+```{r}
+anim + transition_states(date_month, transition_length = 1, state_length = 1) +
+  labs(title = "Month: {closest_state}")
+
+```
+
+How cool is that!?
 
 
- 
+We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called `transformr` installed. Install this package, and then we can apply gganimate to a map of burglaries. 
+
+Again make a static map: 
+
+
+```{r}
+
+anim_map <- ggplot(bur_per_ward, aes(fill = n, color = n)) + 
+  geom_sf()
+
+```
+
+
+And use `transition_states()` to animate by month. 
+
+```{r}
+
+anim_map + transition_states(date_month, transition_length = 1, state_length = 1) +
+  labs(title = "Month: {closest_state}")
+```
 
 
 
+Ta-daaa!
 
+What a way to end this course!
 
 
 

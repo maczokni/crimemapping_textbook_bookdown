@@ -1,10 +1,6 @@
 
 # Thematic maps in R
 
-```{r, echo = FALSE, message=FALSE, warning=FALSE, results='hide'}
-Sys.setlocale("LC_ALL","English")
-```
-
 ## Intro and recap
 
 Last week we showed you fairly quickly how to create maps of spatial point patterns using `leaflet` and we also introduced the `tmap` package for thematic maps. Besides doing that we introduced a set of key concepts we hope you have continued studying over the week. We also discussed the `sf` package for storing spatial objects in R. 

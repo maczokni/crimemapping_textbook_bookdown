@@ -395,11 +395,9 @@ There are two types of dependence, spatial error and spatial lag. Here we focus 
 
 ![](img/spatial_lag.png)
 
-<<<<<<< HEAD
-This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, because near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighbouring places. 
-=======
+
 This will be important to keep in mind when considering spatial regression. With spatial lag in ordinary least square regression, the assumption of uncorrelated error terms is violated, because near things will have associated error terms. Similarly, the assumption of independent observations is also violated, as the observations are influenced by the other observations near them. As a result, the estimates are biased and inefficient. Spatial lag is suggestive of a possible diffusion process – events in one place predict an increased likelihood of similar events in neighboring places.
->>>>>>> 9420134dbb8265a7da557e1557a5967184e16de4
+
 
 
 So to be able to account for the spatial lag in our model, we must create a variable to account for this. We can do this with the `lag.listw()` function. Remember from last week: a spatial lag in this context is simply the average value of the burglary count in the areas that are considered neighbours of each LSOA. So we are plotting the value of burglary against the average value of burglary in the neighbours. 
@@ -447,11 +445,9 @@ We also have our `locm_bm` object, which we created with the `localmoran()` func
 So the data we need for each observation, in order to identify whether it belongs to the high-high, low-low, high-low, or low-high quadrants are the standardised burglary score, the spatial lag score, and the p-value. 
 
 
-<<<<<<< HEAD
-Essentially all we'll be doing, is assigning a variable values based on where in the plot it is. So for example, if it's in the upper right, it is high-high, and has values larger than 0 for both the burglary and the spatial lag values.  It it's in the upper left, it's low-high, and has a value larger than 0 for the spatial lag value, but lower than 0 on the burglary value. And so on, and so on. Here's an image to illustrate: 
-=======
+
 Essentially all we'll be doing, is assigning a variable values based on where in the plot it is. So for example, if it's in the upper right, it is high-high, and has values larger than 0 for both the burglary and the spatial lag values.  It it's in the upper left, it's low-high, and has a value larger than 0 for the spatial lag value, but lower than 0 on the burglary value. And so on, and so on. Here's an image to illustrate:
->>>>>>> 9420134dbb8265a7da557e1557a5967184e16de4
+
 
 
 ![](img/moran_plot_annotate.png)
@@ -460,15 +456,11 @@ Essentially all we'll be doing, is assigning a variable values based on where in
 So let's first initialise this variable. In this instance we are creating a new column in the `burglary_m` dataframe and calling it `quad_sig`. 
 
 
-<<<<<<< HEAD
-We are using the `mutate()` function from the `tidyverse` package to create our new variable, just as we have in previous labs. 
 
-We also use nested `ifelse()` statements. Nested `ifelse()` just means that it's an `ifelse()` inside and `ifelse()` statement. To help us with these sorts of situations is the `ifelse()` function. We saw this with the previous exercises, but I'll describe it briefly again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: "if this condition is true, do first thing, else, do the second thing". It would look something like this:
-=======
 We are using the `mutate()` function from the dplyr package to create our new variable, just as we have in previous labs. 
 
 We also use nested ifelse() statements. Nested ifelse() just means that it's an ifelse() inside another ifelse() statement. To help us with these sorts of situations is the `ifelse()` function. We saw this with the previous exercises, but I'll describe it brielfy again. It allows us to conditionally assign some value to some variable. The structure of the function is so that you have to pass it a condition, then a value to assign if the condition is true, and then another value if the condition is false. You are basically using this function to say: "if this condition is true, do first thing, else, do the second thing". It would look something like this:
->>>>>>> 9420134dbb8265a7da557e1557a5967184e16de4
+
 
 
 ```{r, eval=FALSE}
