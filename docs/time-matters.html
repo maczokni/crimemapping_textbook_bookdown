@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Chapter 10 Time matters | Crime Mapping in R</title>
+  <meta name="description" content="Worksheets for labs of Crime Mapping course">
+  <meta name="generator" content="bookdown  and GitBook 2.6.7">
+
+  <meta property="og:title" content="Chapter 10 Time matters | Crime Mapping in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Worksheets for labs of Crime Mapping course" />
+  <meta name="github-repo" content="maczokni/crimemapping_textbook_bookdown" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 Time matters | Crime Mapping in R" />
+  
+  <meta name="twitter:description" content="Worksheets for labs of Crime Mapping course" />
+  
+
+<meta name="author" content="Juanjo Medina and Reka Solymosi">
+
+
+<meta name="date" content="2019-03-24">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="spatial-regression-models.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Crime mapping in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Prelude</a><ul>
+<li class="chapter" data-level="0.1" data-path="index.html"><a href="index.html#introduction"><i class="fa fa-check"></i><b>0.1</b> Introduction</a></li>
+<li class="chapter" data-level="0.2" data-path="index.html"><a href="index.html#disclaimer"><i class="fa fa-check"></i><b>0.2</b> Disclaimer</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html"><i class="fa fa-check"></i><b>1</b> A first lesson about R</a><ul>
+<li class="chapter" data-level="1.1" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#install-r-rstudio"><i class="fa fa-check"></i><b>1.1</b> Install R &amp; RStudio</a></li>
+<li class="chapter" data-level="1.2" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#open-up-and-explore-rstudio"><i class="fa fa-check"></i><b>1.2</b> Open up and explore RStudio</a></li>
+<li class="chapter" data-level="1.3" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#customising-the-rstudio-look"><i class="fa fa-check"></i><b>1.3</b> Customising the RStudio look</a></li>
+<li class="chapter" data-level="1.4" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#getting-organised-r-projects"><i class="fa fa-check"></i><b>1.4</b> Getting organised: R Projects</a></li>
+<li class="chapter" data-level="1.5" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#talk-to-your-computer"><i class="fa fa-check"></i><b>1.5</b> Talk to your computer</a></li>
+<li class="chapter" data-level="1.6" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#more-on-packages"><i class="fa fa-check"></i><b>1.6</b> More on packages</a></li>
+<li class="chapter" data-level="1.7" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#using-objects"><i class="fa fa-check"></i><b>1.7</b> Using objects</a></li>
+<li class="chapter" data-level="1.8" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#more-on-objects"><i class="fa fa-check"></i><b>1.8</b> More on objects</a></li>
+<li class="chapter" data-level="1.9" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#vectors"><i class="fa fa-check"></i><b>1.9</b> Vectors</a></li>
+<li class="chapter" data-level="1.10" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#on-comments"><i class="fa fa-check"></i><b>1.10</b> On comments</a></li>
+<li class="chapter" data-level="1.11" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#factors"><i class="fa fa-check"></i><b>1.11</b> Factors</a></li>
+<li class="chapter" data-level="1.12" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#naming-conventions-for-objects-in-r"><i class="fa fa-check"></i><b>1.12</b> Naming conventions for objects in R</a></li>
+<li class="chapter" data-level="1.13" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#dataframes"><i class="fa fa-check"></i><b>1.13</b> Dataframes</a></li>
+<li class="chapter" data-level="1.14" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#exploring-data"><i class="fa fa-check"></i><b>1.14</b> Exploring data</a></li>
+<li class="chapter" data-level="1.15" data-path="a-first-lesson-about-r.html"><a href="a-first-lesson-about-r.html#quitting-rstudio"><i class="fa fa-check"></i><b>1.15</b> Quitting RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html"><i class="fa fa-check"></i><b>2</b> Making your first maps in R</a><ul>
+<li class="chapter" data-level="2.1" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#a-quick-introduction-of-terms"><i class="fa fa-check"></i><b>2.1</b> A quick introduction of terms</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#geospatial-perspective---the-basics"><i class="fa fa-check"></i><b>2.1.1</b> Geospatial Perspective - The Basics</a></li>
+<li class="chapter" data-level="2.1.2" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#summary"><i class="fa fa-check"></i><b>2.1.2</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#getting-some-spatial-data-to-put-on-a-map"><i class="fa fa-check"></i><b>2.2</b> Getting some spatial data to put on a map</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#a-first-look-at-basemaps"><i class="fa fa-check"></i><b>2.2.1</b> A first look at basemaps</a></li>
+<li class="chapter" data-level="2.2.2" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#find-some-relevant-data-to-show-obtaining-data-on-crime"><i class="fa fa-check"></i><b>2.2.2</b> Find some relevant data to show: obtaining data on crime</a></li>
+<li class="chapter" data-level="2.2.3" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#add-a-point-layer-to-your-basemap"><i class="fa fa-check"></i><b>2.2.3</b> Add a point layer to your basemap</a></li>
+<li class="chapter" data-level="2.2.4" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#homework-1"><i class="fa fa-check"></i><b>2.2.4</b> HOMEWORK 1</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#from-dataframes-to-spatial-objects-finding-shapefiles"><i class="fa fa-check"></i><b>2.3</b> From dataframes to spatial objects: finding shapefiles</a></li>
+<li class="chapter" data-level="2.4" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#reading-shapefiles-into-r-the-wonderful-world-of-sf-objects"><i class="fa fa-check"></i><b>2.4</b> Reading shapefiles into R: the wonderful world of sf objects</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#homework-2"><i class="fa fa-check"></i><b>2.4.1</b> <strong>HOMEWORK 2</strong></a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#add-some-data"><i class="fa fa-check"></i><b>2.5</b> Add some data</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#data-wrangling-with-dplyr"><i class="fa fa-check"></i><b>2.5.1</b> Data wrangling with dplyr</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#join-data-to-spatial-object"><i class="fa fa-check"></i><b>2.6</b> Join data to spatial object</a></li>
+<li class="chapter" data-level="2.7" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#so-left_join-eh"><i class="fa fa-check"></i><b>2.7</b> So left_join(), eh?</a></li>
+<li class="chapter" data-level="2.8" data-path="making-your-first-maps-in-r.html"><a href="making-your-first-maps-in-r.html#lets-make-this-prettier-a-quick-glance-at-tmap"><i class="fa fa-check"></i><b>2.8</b> Let’s make this prettier: a quick glance at tmap</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html"><i class="fa fa-check"></i><b>3</b> Thematic maps in R</a><ul>
+<li class="chapter" data-level="3.1" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#intro-and-recap"><i class="fa fa-check"></i><b>3.1</b> Intro and recap</a></li>
+<li class="chapter" data-level="3.2" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#creating-choropleth-maps"><i class="fa fa-check"></i><b>3.2</b> Creating choropleth maps</a></li>
+<li class="chapter" data-level="3.3" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#producing-small-multiples-to-compare-the-effect-of-different-classification-systems"><i class="fa fa-check"></i><b>3.3</b> Producing small multiples to compare the effect of different classification systems</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#homework-3.1"><i class="fa fa-check"></i><b>3.3.1</b> Homework 3.1</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#using-graduated-symbols"><i class="fa fa-check"></i><b>3.4</b> Using graduated symbols</a></li>
+<li class="chapter" data-level="3.5" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#bringing-additional-census-data-in"><i class="fa fa-check"></i><b>3.5</b> Bringing additional census data in</a></li>
+<li class="chapter" data-level="3.6" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#computing-and-mapping-crime-rates"><i class="fa fa-check"></i><b>3.6</b> Computing and mapping crime rates</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#homework-2-1"><i class="fa fa-check"></i><b>3.6.1</b> Homework 2</a></li>
+<li class="chapter" data-level="3.6.2" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#homework-3"><i class="fa fa-check"></i><b>3.6.2</b> Homework 3</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="thematic-maps-in-r.html"><a href="thematic-maps-in-r.html#more-on-small-multiples-and-point-pattern-maps"><i class="fa fa-check"></i><b>3.7</b> More on small multiples and point pattern maps</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html"><i class="fa fa-check"></i><b>4</b> Performing spatial operations in R</a><ul>
+<li class="chapter" data-level="4.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#getting-some-more-data"><i class="fa fa-check"></i><b>4.1</b> Getting some (more) data</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#reading-data-in-from-the-web"><i class="fa fa-check"></i><b>4.1.1</b> Reading data in from the web</a></li>
+<li class="chapter" data-level="4.1.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#subsetting-using-pattern-matching"><i class="fa fa-check"></i><b>4.1.2</b> Subsetting using pattern matching</a></li>
+<li class="chapter" data-level="4.1.3" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#geocoding-from-an-address"><i class="fa fa-check"></i><b>4.1.3</b> Geocoding from an address</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#making-interactive-maps-with-leaflet"><i class="fa fa-check"></i><b>4.2</b> Making interactive maps with leaflet</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#making-a-map"><i class="fa fa-check"></i><b>4.2.1</b> Making a map</a></li>
+<li class="chapter" data-level="4.2.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#adding-some-content"><i class="fa fa-check"></i><b>4.2.2</b> Adding some content:</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#adding-points-manually"><i class="fa fa-check"></i><b>4.3</b> Adding points manually:</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#adding-data-from-elsewhere"><i class="fa fa-check"></i><b>4.3.1</b> Adding data from elsewhere</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#spatial-operations"><i class="fa fa-check"></i><b>4.4</b> Spatial operations</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#coordinate-reference-systems-revisited"><i class="fa fa-check"></i><b>4.4.1</b> Coordinate reference systems revisited</a></li>
+<li class="chapter" data-level="4.4.2" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#meet-a-new-format-of-shapefile-geojson"><i class="fa fa-check"></i><b>4.4.2</b> Meet a new format of shapefile: geojson</a></li>
+<li class="chapter" data-level="4.4.3" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#subset-points-to-those-within-a-polygon"><i class="fa fa-check"></i><b>4.4.3</b> Subset points to those within a polygon</a></li>
+<li class="chapter" data-level="4.4.4" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#spatial-operations-two-building-buffers"><i class="fa fa-check"></i><b>4.4.4</b> Spatial operations two: building buffers</a></li>
+<li class="chapter" data-level="4.4.5" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#points-in-polygon"><i class="fa fa-check"></i><b>4.4.5</b> Points in Polygon</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#recap"><i class="fa fa-check"></i><b>4.5</b> Recap</a></li>
+<li class="chapter" data-level="4.6" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#homework"><i class="fa fa-check"></i><b>4.6</b> Homework</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="performing-spatial-operations-in-r.html"><a href="performing-spatial-operations-in-r.html#geocode-the-addresses"><i class="fa fa-check"></i><b>4.6.1</b> <strong>Geocode the addresses:</strong></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html"><i class="fa fa-check"></i><b>5</b> More on thematic maps</a><ul>
+<li class="chapter" data-level="5.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a><ul>
+<li class="chapter" data-level="5.1.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#pro-tip-do-i-need-to-install-this-package"><i class="fa fa-check"></i><b>5.1.1</b> Pro-tip: do I need to install this package?</a></li>
+<li class="chapter" data-level="5.1.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#data"><i class="fa fa-check"></i><b>5.1.2</b> Data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#mapping-rates-learning-from-disease-mapping"><i class="fa fa-check"></i><b>5.2</b> Mapping rates, learning from disease mapping</a></li>
+<li class="chapter" data-level="5.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#binning-points"><i class="fa fa-check"></i><b>5.3</b> Binning points</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#the-binning-process"><i class="fa fa-check"></i><b>5.3.1</b> The Binning Process</a></li>
+<li class="chapter" data-level="5.3.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#different-binning-techniques"><i class="fa fa-check"></i><b>5.3.2</b> Different Binning Techniques</a></li>
+<li class="chapter" data-level="5.3.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#homework-5.1"><i class="fa fa-check"></i><b>5.3.3</b> Homework 5.1</a></li>
+<li class="chapter" data-level="5.3.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#multivariate-binning"><i class="fa fa-check"></i><b>5.3.4</b> Multivariate binning</a></li>
+<li class="chapter" data-level="5.3.5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#benefits-of-binning"><i class="fa fa-check"></i><b>5.3.5</b> Benefits of Binning</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#a-note-of-caution-maup"><i class="fa fa-check"></i><b>5.4</b> A note of caution: MAUP</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#what-is-maup"><i class="fa fa-check"></i><b>5.4.1</b> What is MAUP?</a></li>
+<li class="chapter" data-level="5.4.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#why-does-maup-matter"><i class="fa fa-check"></i><b>5.4.2</b> Why does MAUP matter?</a></li>
+<li class="chapter" data-level="5.4.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#what-can-we-do"><i class="fa fa-check"></i><b>5.4.3</b> What can we do?</a></li>
+<li class="chapter" data-level="5.4.4" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#homework-5.2"><i class="fa fa-check"></i><b>5.4.4</b> Homework 5.2</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#replacing-polygons-with-grid-or-hex-shapes"><i class="fa fa-check"></i><b>5.5</b> Replacing polygons with grid or hex shapes</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#homework-5.3"><i class="fa fa-check"></i><b>5.5.1</b> Homework 5.3</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#cartograms"><i class="fa fa-check"></i><b>5.6</b> Cartograms</a></li>
+<li class="chapter" data-level="5.7" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#references-and-further-reading"><i class="fa fa-check"></i><b>5.7</b> References and further reading</a><ul>
+<li class="chapter" data-level="5.7.1" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#binning"><i class="fa fa-check"></i><b>5.7.1</b> Binning</a></li>
+<li class="chapter" data-level="5.7.2" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#maup"><i class="fa fa-check"></i><b>5.7.2</b> MAUP</a></li>
+<li class="chapter" data-level="5.7.3" data-path="more-on-thematic-maps.html"><a href="more-on-thematic-maps.html#transforming-polygons"><i class="fa fa-check"></i><b>5.7.3</b> Transforming polygons</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html"><i class="fa fa-check"></i><b>6</b> Studying spatial point patterns</a><ul>
+<li class="chapter" data-level="6.1" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#what-well-do-today"><i class="fa fa-check"></i><b>6.1</b> What we’ll do today</a></li>
+<li class="chapter" data-level="6.2" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#getting-the-data"><i class="fa fa-check"></i><b>6.2</b> Getting the data</a></li>
+<li class="chapter" data-level="6.3" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#getting-the-data-into-spatstat-the-problem-with-duplicates"><i class="fa fa-check"></i><b>6.3</b> Getting the data into spatstat: the problem with duplicates</a></li>
+<li class="chapter" data-level="6.4" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#inspecting-our-data-with-spatstat"><i class="fa fa-check"></i><b>6.4</b> Inspecting our data with spatstat</a></li>
+<li class="chapter" data-level="6.5" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#density-estimates"><i class="fa fa-check"></i><b>6.5</b> Density estimates</a></li>
+<li class="chapter" data-level="6.6" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#adding-some-context"><i class="fa fa-check"></i><b>6.6</b> Adding some context</a><ul>
+<li class="chapter" data-level="6.6.1" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#homework-1-1"><i class="fa fa-check"></i><b>6.6.1</b> Homework 1</a></li>
+<li class="chapter" data-level="6.6.2" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#homework-2-2"><i class="fa fa-check"></i><b>6.6.2</b> Homework 2</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="studying-spatial-point-patterns.html"><a href="studying-spatial-point-patterns.html#spatial-point-patterns-along-networks"><i class="fa fa-check"></i><b>6.7</b> Spatial point patterns along networks</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html"><i class="fa fa-check"></i><b>7</b> Global and local spatial autocorrelation</a><ul>
+<li class="chapter" data-level="7.1" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#get-data"><i class="fa fa-check"></i><b>7.1</b> Get data</a></li>
+<li class="chapter" data-level="7.2" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#what-is-a-neighbour"><i class="fa fa-check"></i><b>7.2</b> What is a neighbour?</a></li>
+<li class="chapter" data-level="7.3" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#putting-neighbourness-in-our-analysis---constructing-a-spatial-weight-matrix"><i class="fa fa-check"></i><b>7.3</b> Putting ‘neighbourness’ in our analysis - constructing a spatial weight matrix</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#homework-1-2"><i class="fa fa-check"></i><b>7.3.1</b> Homework 1</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#creating-a-list-of-neighbours"><i class="fa fa-check"></i><b>7.4</b> Creating a list of neighbours</a></li>
+<li class="chapter" data-level="7.5" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#generating-the-weight-matrix"><i class="fa fa-check"></i><b>7.5</b> Generating the weight matrix</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#homework-2-3"><i class="fa fa-check"></i><b>7.5.1</b> Homework 2</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#morans-i"><i class="fa fa-check"></i><b>7.6</b> Moran’s I</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#homework-3-optional-practice"><i class="fa fa-check"></i><b>7.6.1</b> Homework 3 (Optional Practice)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#local-spatial-autocorrelation"><i class="fa fa-check"></i><b>7.7</b> Local spatial autocorrelation</a></li>
+<li class="chapter" data-level="7.8" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#getting-manchester-data-and-weights"><i class="fa fa-check"></i><b>7.8</b> Getting Manchester data and weights</a></li>
+<li class="chapter" data-level="7.9" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#generating-and-visualising-the-lisa-measures"><i class="fa fa-check"></i><b>7.9</b> Generating and visualising the LISA measures</a><ul>
+<li class="chapter" data-level="7.9.1" data-path="global-and-local-spatial-autocorrelation.html"><a href="global-and-local-spatial-autocorrelation.html#homework-4"><i class="fa fa-check"></i><b>7.9.1</b> Homework 4</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html"><i class="fa fa-check"></i><b>8</b> Regression analysis (a refresher)</a><ul>
+<li class="chapter" data-level="8.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#introduction-2"><i class="fa fa-check"></i><b>8.1</b> Introduction</a></li>
+<li class="chapter" data-level="8.2" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#motivating-regression"><i class="fa fa-check"></i><b>8.2</b> Motivating regression</a></li>
+<li class="chapter" data-level="8.3" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#fitting-a-simple-regression-model"><i class="fa fa-check"></i><b>8.3</b> Fitting a simple regression model</a></li>
+<li class="chapter" data-level="8.4" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#residuals-revisited-r-squared"><i class="fa fa-check"></i><b>8.4</b> Residuals revisited: R squared</a></li>
+<li class="chapter" data-level="8.5" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#inference-with-regression"><i class="fa fa-check"></i><b>8.5</b> Inference with regression</a></li>
+<li class="chapter" data-level="8.6" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#fitting-regression-with-categorical-predictors"><i class="fa fa-check"></i><b>8.6</b> Fitting regression with categorical predictors</a></li>
+<li class="chapter" data-level="8.7" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#motivating-multiple-regression"><i class="fa fa-check"></i><b>8.7</b> Motivating multiple regression</a></li>
+<li class="chapter" data-level="8.8" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#fitting-and-interpreting-a-multiple-regression-model"><i class="fa fa-check"></i><b>8.8</b> Fitting and interpreting a multiple regression model</a></li>
+<li class="chapter" data-level="8.9" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#presenting-your-regression-results."><i class="fa fa-check"></i><b>8.9</b> Presenting your regression results.</a></li>
+<li class="chapter" data-level="8.10" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#rescaling-input-variables-to-assist-interpretation"><i class="fa fa-check"></i><b>8.10</b> Rescaling input variables to assist interpretation</a></li>
+<li class="chapter" data-level="8.11" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#testing-conditional-hypothesis-interactions"><i class="fa fa-check"></i><b>8.11</b> Testing conditional hypothesis: interactions</a></li>
+<li class="chapter" data-level="8.12" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#model-building-and-variable-selection"><i class="fa fa-check"></i><b>8.12</b> Model building and variable selection</a></li>
+<li class="chapter" data-level="8.13" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#regression-assumptions"><i class="fa fa-check"></i><b>8.13</b> Regression assumptions</a><ul>
+<li class="chapter" data-level="8.13.1" data-path="regression-analysis-a-refresher.html"><a href="regression-analysis-a-refresher.html#homework-5"><i class="fa fa-check"></i><b>8.13.1</b> HOMEWORK</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html"><i class="fa fa-check"></i><b>9</b> Spatial regression models</a><ul>
+<li class="chapter" data-level="9.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
+<li class="chapter" data-level="9.2" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression"><i class="fa fa-check"></i><b>9.2</b> Looking at the residuals and testing for spatial autocorrelation in regression</a></li>
+<li class="chapter" data-level="9.3" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#what-to-do-now"><i class="fa fa-check"></i><b>9.3</b> What to do now?</a></li>
+<li class="chapter" data-level="9.4" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#spatial-regimes"><i class="fa fa-check"></i><b>9.4</b> Spatial Regimes</a></li>
+<li class="chapter" data-level="9.5" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#lagrange-multipliers"><i class="fa fa-check"></i><b>9.5</b> Lagrange multipliers</a></li>
+<li class="chapter" data-level="9.6" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#fitting-and-interpreting-a-spatially-lagged-model"><i class="fa fa-check"></i><b>9.6</b> Fitting and interpreting a spatially lagged model</a></li>
+<li class="chapter" data-level="9.7" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#fitting-an-interpreting-a-spatial-error-model"><i class="fa fa-check"></i><b>9.7</b> Fitting an interpreting a spatial error model</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="time-matters.html"><a href="time-matters.html"><i class="fa fa-check"></i><b>10</b> Time matters</a><ul>
+<li class="chapter" data-level="10.1" data-path="time-matters.html"><a href="time-matters.html#getting-time-series-data-into-r-and-plotting-it"><i class="fa fa-check"></i><b>10.1</b> Getting time series data into R and plotting it</a></li>
+<li class="chapter" data-level="10.2" data-path="time-matters.html"><a href="time-matters.html#lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data"><i class="fa fa-check"></i><b>10.2</b> Lubridate: your guardian angel when it comes to working with temporal data</a></li>
+<li class="chapter" data-level="10.3" data-path="time-matters.html"><a href="time-matters.html#small-multiples-to-show-temporal-variation"><i class="fa fa-check"></i><b>10.3</b> Small multiples to show temporal variation</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Crime Mapping in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="time-matters" class="section level1">
+<h1><span class="header-section-number">Chapter 10</span> Time matters</h1>
+<p>This week we consider another important factor that is present in our data that we don’t always talk about, and that is the importance of <em>time</em>. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or depreived area you have different access to resources, and therefore your outcomes in terms of involvement with criminal justica system also differs. However time is just as important as place. We often hear that crime is “going up” or “going down” over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding.</p>
+<p>When violence increases bewteen March and August, is that because we are seeing an increase in crime and offending? Or is it possible that the time of year has something to do with this? How much must crime increase and over how long of a time, in order to be able to confidently say that crime is on the increase? These are important, and not always easy questions to answer, and this week we will begin to think about this.</p>
+<p>All crimes occur at a specific date and time, however such definite temporal information is only available when victims or witnesses are present, alarms are triggered, etc., at the time of occurrence. This specific temporal data is most often collected in crimes against persons. In these cases, cross-tabulations or histogram of weekday and hour by count will suffice. The great majority of reported events are crimes against property. In these cases, there are seldom victims or witnesses present. These events present the analyst with ‘ranged’ temporal data, that is, an event reported as occurring over a range of hours or even days. In the case of ranged temporal data, analysis is possible through use of equal chance or probability methods. If an event was reported as having occurred from Monday to Tuesday, in the absence of evidence to the contrary, it is assumed the event had an equal chance or probability of occurring on each of the two days, or .5 (%50). In the same manner, if an event was reported as having occurred over a 10 hour span there is a 10% chance the event occurred during any one of the hours. This technique requires a reasonable number of events in the data set to be effective. The resulting probabilities are totalled in each category and graphed or cross-tabulated. This produces a comparison of relative frequency, by weekday or hour <a href="http://cradpdf.drdc-rddc.gc.ca/PDFS/unc76/p530054.pdf">source</a>.</p>
+<p><strong>Temporal crime analysis</strong> looks at trends in crime or incidents. A crime or incident trend is a broad direction or pattern that specific types or general crime and/or incidents are following.</p>
+<p>Three types of trend can be identified:</p>
+<ul>
+<li>overall trend – highlights if the problem is getting worse, better or staying the same over a period of time</li>
+<li>seasonal, monthly, weekly or daily cycles of offences – identified by comparing previous time periods with the same period being analysed</li>
+<li>random fluctuations – caused by a large number of minor influences, or a one-off event, and can include displacement of crime from neighbouring areas due to partnership activity or crime initiatives.</li>
+</ul>
+<p>Decomposing these trends is an important part of what <strong>time series</strong> analysis is all about. Let’s see some examples.</p>
+<div id="getting-time-series-data-into-r-and-plotting-it" class="section level2">
+<h2><span class="header-section-number">10.1</span> Getting time series data into R and plotting it</h2>
+<p>We are going to start with fairly simple data. We are just going to look at monthly counts of crime for Greater Manchester obtained from the Police.UK website. We have aggregated 36 months of data into a file for you to use. Grab the data using the following code:</p>
+<pre class="sourceCode r"><code class="sourceCode r">data_url &lt;-<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_month.csv&quot;</span>
+gmp_month &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">url</span>(data_url))</code></pre>
+<p>If you view the data you will see it has two columns, the date and the count of crimes for that month. Once you have read the time series data into R, the next step is to store the data in a time series object in R, so that you can use R’s many functions for analysing time series data. To store the data in a time series object, we use the <code>ts()</code> function in R.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+<span class="co">#First we select the relevant column</span>
+gmp_month_c &lt;-<span class="st"> </span><span class="kw">select</span>(gmp_month, count)
+<span class="co">#Then we create the time series object</span>
+gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c)</code></pre>
+<p>You can autoprint to see the result:</p>
+<pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries</code></pre>
+<p>Sometimes the time series data set that you have may have been collected at regular intervals that were less than one year, for example, monthly or quarterly. In this case, you can specify the number of times that data was collected per year by using the <code>frequency</code> parameter in the <code>ts()</code> function. For monthly time series data, you set <code>frequency=12</code>, while for quarterly time series data, you set <code>frequency=4.</code></p>
+<p>You can also specify the first year that the data was collected, and the first interval in that year by using the <code>start</code> parameter in the <code>ts()</code> function. So, in our case, we would do as follows:</p>
+<pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c, <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2016</span>,<span class="dv">2</span>))
+gmp_timeseries</code></pre>
+<pre><code>##        Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov
+## 2016       26422 28516 28258 30722 30111 31255 30850 31064 34709 31122
+## 2017 31670 30784 35094 34878 35890 36397 37480 35658 32768 35990 34052
+## 2018 31774 29609 33434 34120 35478 34386 35333 32184 30956 32838 32672
+## 2019 31063                                                            
+##        Dec
+## 2016 32079
+## 2017 31233
+## 2018 30377
+## 2019</code></pre>
+<p>Once you have read a time series into R, the next step is usually to make a plot of the time series data, which you can do with the <code>plot.ts()</code> function in R.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot.ts</span>(gmp_timeseries)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We can of course also use <code>ggplot2</code>to plot a time series like the one we just did but here we would need a variable encoding the date (and preferably a full date, not just month and year as here). If you look a “gmp_month” you will see the name of the variables are not optimal, so we will rename them first.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+gmp_month &lt;-<span class="st"> </span><span class="kw">rename</span>(gmp_month, <span class="dt">date =</span> as.factor.Month., <span class="dt">crime =</span> count)
+<span class="kw">ggplot</span>(<span class="dt">data=</span>gmp_month, <span class="kw">aes</span>(<span class="dt">x=</span>date, <span class="dt">y=</span>crime, <span class="dt">group=</span><span class="dv">1</span>)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_line</span>()<span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_point</span>()<span class="op">+</span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>If we had a date vector rather than a factor encoding our date we would need to adapt our code. See <a href="http://www.sthda.com/english/articles/32-r-graphics-essentials/128-plot-time-series-data-using-ggplot/">here</a> for further details.</p>
+<p>Alternatively we can use <code>ggfortify</code>, an extension to <code>ggplot2</code> that would allow us to use <code>ts</code> objects as inputs. For this we use the <code>autoplot</code> function.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggfortify)
+<span class="kw">autoplot</span>(gmp_timeseries)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+<div id="lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data" class="section level2">
+<h2><span class="header-section-number">10.2</span> Lubridate: your guardian angel when it comes to working with temporal data</h2>
+<p>As you saw, the data from Police.Uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular.</p>
+<p>Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assult. The data from an open source initiative maintained by Matt Ashby <a href="https://osf.io/zyaqn/">here</a>. I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+agassault_ny&lt;-<span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/agassault.csv&quot;</span>)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   uid = col_double(),
+##   date_single = col_datetime(format = &quot;&quot;),
+##   longitude = col_double(),
+##   latitude = col_double(),
+##   location_type = col_character(),
+##   location_category = col_character(),
+##   census_block = col_double(),
+##   date_start = col_datetime(format = &quot;&quot;),
+##   date_end = col_datetime(format = &quot;&quot;)
+## )</code></pre>
+<p>When you read the data into R, you will see that there is a column for date called <strong>date_single</strong>. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is 2014-01-01 00:03:00. What kind of variable is this?</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date_single)</code></pre>
+<pre><code>## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;</code></pre>
+<p>Our date and time variables are of class <code>POSIXct</code> and <code>POSIXt</code>. These are the two basic classes of date/times. Class “POSIXct” represents the (signed) number of seconds since the beginning of 1970 as a numeric vector. Class “POSIXlt” is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown).</p>
+<p>Let’s plot this data:</p>
+<pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(date_single)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_freqpoly</span>(<span class="dt">binwidth =</span> <span class="dv">604800</span>) <span class="co"># 86400 seconds = 1 day, 604800 one week</span></code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>Notice what <code>geom_freqpoly</code> is doing. We have a dataframe with rows for each case. The data is not aggregated in any form. But this function counts on the fly the number of cases (of rows) for each of the bins as we define them. It is, thus, a convenient function that saves us from having to first do that aggregation ourselves when we want to plot it. This may be helpful when you get your data for the assignment.</p>
+<p>An alternative approach to plotting individual components is to round the date to a nearby unit of time, with <code>floor_date()</code>, <code>round_date()</code>, and <code>ceiling_date()</code>. Each function takes a vector of dates to adjust and then the name of the unit round down (floor), round up (ceiling), or round to.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     date</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(<span class="dt">month =</span> <span class="kw">floor_date</span>(date_single, <span class="st">&quot;month&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(month, n)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>()</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>What if I asked you the question: which year had the most aggravated assaults? Or what if I want to know if aggravated assaults happen more in the weekday, when people are at work, or in the weekends, maybe when people are away for a holiday? You have the date, so you should be able to answer these questions, right?</p>
+<p>Well you need to be able to have the right variables to answer these questions. To know what year saw the most aggravated assaults, you need to have a variable for year. To know what day of the week has the most aggravated assaults, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the <code>lubridate</code> package can help us do this.</p>
+<pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">year</span>(agassault_ny<span class="op">$</span>date_single)
+agassault_ny<span class="op">$</span>month &lt;-<span class="st"> </span><span class="kw">month</span>(agassault_ny<span class="op">$</span>date_single, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>, <span class="dt">locale =</span> <span class="st">&quot;UK&quot;</span>)
+agassault_ny<span class="op">$</span>day &lt;-<span class="st"> </span><span class="kw">day</span>(agassault_ny<span class="op">$</span>date_single)
+agassault_ny<span class="op">$</span>wday &lt;-<span class="st"> </span><span class="kw">wday</span>(agassault_ny<span class="op">$</span>date_single, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>, <span class="dt">locale =</span> <span class="st">&quot;UK&quot;</span>)</code></pre>
+<p>And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.</p>
+<p>We can now look at the distribution of events per day of the week.</p>
+<pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">wday =</span> <span class="kw">wday</span>(date_single, <span class="dt">label=</span><span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> wday)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_bar</span>()</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The <code>lubridate</code> package is incredibly helpful for anything date related. We don’t have time to go over it on details but you can find more information on <a href="https://lubridate.tidyverse.org/">the official page</a> or in <a href="https://mikoontz.github.io/data-carpentry-week/lesson_lubridate.html">this</a> tutorial. The relevant chapter in <a href="https://r4ds.had.co.nz/dates-and-times.html#introduction-10">R for Data Science</a> is also very helpful.</p>
+<p>##Calendar heatmaps</p>
+<p>We can also parse the temporal information that is available in our date variable. For the next chart we introduce we only need date, month, and year. We don’t need the time.</p>
+<pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.POSIXct</span>(agassault_ny<span class="op">$</span>date_single,<span class="dt">format=</span><span class="st">&quot;%Y:%m:%d %H:%M:%S&quot;</span>),<span class="st">&quot;%d:%m:%Y&quot;</span>)
+<span class="kw">head</span>(agassault_ny<span class="op">$</span>date)</code></pre>
+<pre><code>## [1] &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot;
+## [6] &quot;01:01:2014&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date)</code></pre>
+<pre><code>## [1] &quot;character&quot;</code></pre>
+<p>We can now use <code>dplyr</code> to counts the evens per day.</p>
+<pre class="sourceCode r"><code class="sourceCode r">by_day &lt;-<span class="st"> </span><span class="kw">group_by</span>(agassault_ny, date)
+agassault_ny_d &lt;-<span class="st"> </span><span class="kw">summarise</span>(by_day,
+                          <span class="dt">assaults =</span> <span class="kw">n</span>())</code></pre>
+<p>We will now use a <code>ggplot2</code> extension that allow us to produce calendar heat visualisations.</p>
+<pre class="sourceCode r"><code class="sourceCode r">agassault_ny_d<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">dmy</span>(agassault_ny_d<span class="op">$</span>date)
+<span class="kw">library</span>(ggTimeSeries)
+p1 &lt;-<span class="st"> </span><span class="kw">ggplot_calendar_heatmap</span>(
+   agassault_ny_d,
+   <span class="st">&#39;date&#39;</span>,
+   <span class="st">&#39;assaults&#39;</span>)
+<span class="co">#Now we customise the plot a bit more</span>
+p1 <span class="op">+</span>
+<span class="st">   </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
+<span class="st">   </span><span class="kw">ylab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
+<span class="st">   </span><span class="kw">scale_fill_continuous</span>(<span class="dt">low =</span> <span class="st">&#39;green&#39;</span>, <span class="dt">high =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span>
+<span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Year, <span class="dt">ncol =</span> <span class="dv">1</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>There are many things that peak on certain days of the week. If you’re interested in some more examples, <a href="https://www.theguardian.com/lifeandstyle/2013/may/29/most-dangerous-day-of-week">read this article in the Guardian about the most dangerous days of the week</a>.</p>
+<p>##Decomposing time series</p>
+<p>Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let’s get some fresh data. These are intimate partner femicides from Spain;</p>
+<pre class="sourceCode r"><code class="sourceCode r">fem &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/fem.csv&quot;</span>)
+<span class="kw">colnames</span>(fem)&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;femicidios&quot;</span>)
+fem_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(fem, <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2003</span>,<span class="dv">1</span>))
+<span class="kw">plot.ts</span>(fem_timeseries)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>As you can see it is very noisy. Fortunately, the annual count for intimate partner femicides is low in Spain. There seems to be some seasonality too.</p>
+<p>A seasonal time series consists of a trend component, a seasonal component and an irregular component. Decomposing the time series means separating the time series into these three components: that is, estimating these three components.</p>
+<p>To estimate the trend component and seasonal component of a seasonal time series that can be described using an additive model, we can use the <code>decompose()</code> function in R. This function estimates the trend, seasonal, and irregular components of a time series that can be described using an additive model.</p>
+<p>The function <code>decompose()</code> returns a list object as its result, where the estimates of the seasonal component, trend component and irregular component are stored in named elements of that list objects, called “seasonal”, “trend”, and “random” respectively.</p>
+<p>To estimate the trend, seasonal and irregular components of this time series, we type:</p>
+<pre class="sourceCode r"><code class="sourceCode r">fem_timeseriescomponents &lt;-<span class="st"> </span><span class="kw">decompose</span>(fem_timeseries)</code></pre>
+<p>The estimated values of the seasonal, trend and irregular components are now stored in variables <code>fem_timeseriescomponents$seasonal</code>, <code>fem_timeseriescomponents$trend</code> and <code>fem_timeseriescomponents$random</code>. For example, we can print out the estimated values of the seasonal component by typing:</p>
+<pre class="sourceCode r"><code class="sourceCode r">fem_timeseriescomponents<span class="op">$</span>seasonal</code></pre>
+<pre><code>##              Jan         Feb         Mar         Apr         May
+## 2003  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2004  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2005  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2006  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2007  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2008  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2009  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2010  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2011  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2012  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2013  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2014  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2015  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+## 2016  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
+##              Jun         Jul         Aug         Sep         Oct
+## 2003 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2004 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2005 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2006 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2007 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2008 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2009 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2010 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2011 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2012 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2013 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2014 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2015 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+## 2016 -0.16639957  0.70860043  0.03231838 -0.18242521  0.29834402
+##              Nov         Dec
+## 2003  0.39449786 -0.65998932
+## 2004  0.39449786 -0.65998932
+## 2005  0.39449786 -0.65998932
+## 2006  0.39449786 -0.65998932
+## 2007  0.39449786 -0.65998932
+## 2008  0.39449786 -0.65998932
+## 2009  0.39449786 -0.65998932
+## 2010  0.39449786 -0.65998932
+## 2011  0.39449786 -0.65998932
+## 2012  0.39449786 -0.65998932
+## 2013  0.39449786 -0.65998932
+## 2014  0.39449786 -0.65998932
+## 2015  0.39449786 -0.65998932
+## 2016  0.39449786 -0.65998932</code></pre>
+<p>The estimated seasonal factors are given for the months January-December, and are the same for each year. The largest seasonal factor is for July (about 0.70), and the lowest is for February (about -0.76), indicating that there seems to be a peak in femicides in July and a trough in femicides in February each year.</p>
+<p>We can plot the estimated trend, seasonal, and irregular components of the time series by using the <code>plot()</code> function, for example:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(fem_timeseriescomponents)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.</p>
+<p><strong>Homework 10.1</strong>
+<em>Try creating a ts object using the aggassault data from New York and decompose the time seties</em></p>
+<p>We can also use <code>ggplot2</code> for these purposes. In particular we can use the <code>ggseas</code> extension -see for details <a href="https://github.com/ellisp/ggseas">here</a>. First I use the <code>tsdf</code> function that turns the <code>ts</code> object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggseas)
+ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
+<span class="kw">ggsdc</span>(ny_df, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y), <span class="dt">method =</span> <span class="st">&quot;decompose&quot;</span>) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_line</span>()</code></pre>
+<pre><code>## Calculating frequency of 365 from the data.</code></pre>
+<pre><code>## Warning: Removed 182 rows containing missing values (geom_path).</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>##Static maps with ggplot2</p>
+<p>So far we have seen how we can produce maps with <code>tmap</code>for thematic maps and <code>leaflet</code> for interactive maps. But we can also use static maps with <code>ggplot2</code>. For the next set of exercises we are going to look at temporal variations on burglary across Greater Manchester. We are going to focus on wards as the unit of analysis. You will likely work with this dataset for crime for your assignment and you may use wards or smaller geographies. So we will focus on this data for this illustration of basic plotting and spatial operations (in the next section).</p>
+<p>To load the ward shapefiles for Manchester into a <code>sf</code> object we use code we had already used in a previous session.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r">manchester_ward &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&quot;</span>)</code></pre>
+<pre><code>## Reading layer `OGRGeoJSON&#39; from data source `https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&#39; using driver `GeoJSON&#39;
+## Simple feature collection with 215 features and 12 fields
+## geometry type:  POLYGON
+## dimension:      XY
+## bbox:           xmin: 351664 ymin: 381168.6 xmax: 406087.5 ymax: 421039.8
+## epsg (SRID):    27700
+## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs</code></pre>
+<p>With this data in our environment we can plot a map using <code>ggplot2</code>. We use the <code>geom_sf</code> function to tell <code>ggplot2</code> we are dealing with a <code>sf</code> object.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> manchester_ward, <span class="kw">aes</span>()) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>We can also plot objects that are not <code>sf</code> but have geographic coordinates.</p>
+<p>Let’s load the data with the burglaries for Greater Manchester.</p>
+<pre class="sourceCode r"><code class="sourceCode r">gmp_bur &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_bur.csv&quot;</span>)</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Month = col_character(),
+##   Crime.type = col_character(),
+##   Longitude = col_double(),
+##   Latitude = col_double()
+## )</code></pre>
+<p>You can see there is a column with the longitude and another with latitude. For this we can use the standard <code>geom_point</code> function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparenci and size of the points to deal with overplotting.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude), 
+             <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p>You could try to have a map with two layers, the points and the wards, so combining what we have done so far.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> manchester_ward, <span class="kw">aes</span>()) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Ooops. What happened? Can you think of what is going on here? This is something we have already covered in previous lab sessions.</p>
+<p>In week 4 we explained how it is important to check that spatial operations that use two spatial objects rely on both objects having the same coordinate reference system, otherwise funny things may happen. We can check the coordinate reference system with the <code>st_crs</code> function from <code>sf</code>.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(manchester_ward)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   EPSG: 27700 
+##   proj4string: &quot;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs&quot;</code></pre>
+<p>What is <code>EPGS: 27700</code>? You can check <a href="https://epsg.io/27700">here</a>. This is the British National Grid. How about the police data? Well, we don’t have a <code>sf</code> object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGs1984 instead. What do we do? First we need to create a <code>sf</code> object for the police data specifying the coordinate system (we covered how to do this in week 3).</p>
+<pre class="sourceCode r"><code class="sourceCode r">burglary_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(<span class="dt">x =</span> gmp_bur, 
+                        <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>),
+                        <span class="dt">crs =</span> <span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)</code></pre>
+<p>If we now check:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(burglary_sf)</code></pre>
+<pre><code>## Coordinate Reference System:
+##   EPSG: 4326 
+##   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(manchester_ward) <span class="op">==</span><span class="st"> </span><span class="kw">st_crs</span>(burglary_sf)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>We can see the code 4326, which is basically the code for WGS84. And that the coordinate system across our two <code>sf</code> objects is different. We also covered this in week 4 but take this as a helpful refresher for the kind of things it is likely you need to do for your assignment. Essentially, we need to use the <code>st_transform</code> function. We need to make sure we translate one of these layers into the other coordinate reference system.</p>
+<pre class="sourceCode r"><code class="sourceCode r">wards_WGS84 &lt;-<span class="st"> </span><span class="kw">st_transform</span>(manchester_ward, <span class="dv">4326</span>)
+<span class="kw">st_crs</span>(wards_WGS84) <span class="op">==</span><span class="st"> </span><span class="kw">st_crs</span>(burglary_sf)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>Try now plotting the map.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> wards_WGS84, <span class="kw">aes</span>()) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude),
+             <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+</div>
+<div id="small-multiples-to-show-temporal-variation" class="section level2">
+<h2><span class="header-section-number">10.3</span> Small multiples to show temporal variation</h2>
+<p>We have covered small multiples before. You can indeed use facets to show how things change (or don’t change) across time. Let’s just focus on 2018 to simplify things a bit.</p>
+<pre class="sourceCode r"><code class="sourceCode r">bur_sf_<span class="dv">2018</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(burglary_sf, Month <span class="op">==</span><span class="st"> &quot;2018-01&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-02&quot;</span> <span class="op">|</span>
+<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-03&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-04&quot;</span> <span class="op">|</span>
+<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-05&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-06&quot;</span> <span class="op">|</span>
+<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-07&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-08&quot;</span> <span class="op">|</span>
+<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-09&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-10&quot;</span> <span class="op">|</span>
+<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-11&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-12&quot;</span>)
+<span class="kw">table</span>(bur_sf_<span class="dv">2018</span><span class="op">$</span>Month)</code></pre>
+<pre><code>## 
+## 2018-01 2018-02 2018-03 2018-04 2018-05 2018-06 2018-07 2018-08 2018-09 
+##    2649    2316    2566    2463    2534    2410    2458    2476    2450 
+## 2018-10 2018-11 2018-12 
+##    2582    2701    2593</code></pre>
+<p>Let’s simplify further by focusing just in Manchester City.</p>
+<pre class="sourceCode r"><code class="sourceCode r">mc_wards_WGS864 &lt;-<span class="st"> </span><span class="kw">filter</span>(wards_WGS84, lad16nm <span class="op">==</span><span class="st"> &quot;Manchester&quot;</span>)</code></pre>
+<p>Ok, let’s do a point in polygon operation, count the number of burglaries per ward, so that we can display choropleth maps. Again, this is something we cover in week 4.</p>
+<pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">st_join</span>(mc_wards_WGS864, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(wd16nm)</code></pre>
+<p>The code above only counts for the whole year. But if we want to have a map per month we don’t need the total counts for the whole year but rather the monthly counts.</p>
+<pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">st_join</span>(mc_wards_WGS864, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">count</span>(wd16nm, Month)</code></pre>
+<p>We can now try to produce the small multiples.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<span class="kw">tm_shape</span>(bur_per_ward) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;n&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_borders</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">tm_facets</span>(<span class="st">&quot;Month&quot;</span>, <span class="dt">free.coords=</span><span class="ot">FALSE</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>##Animations!!!</p>
+<p>You want a data viz person get excited? Mention animations! Now they are brought to <code>ggplot2</code> thanks to the <code>gganimate</code> extension.</p>
+<p>The next one is a non-spatial plot, in that we do not show a map. However we will show the varying rate of burglaries per month within each ward. It is interesting to see this as an animation over time, rather than in the small multiples format, because it can better drive home the message of change (and also it looks very cool!).</p>
+<p>So first thing we do is to load the gganimate package:</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gganimate)</code></pre>
+<pre><code>## Warning: package &#39;gganimate&#39; was built under R version 3.5.2</code></pre>
+<p>Then, we need to make sure that our temporal variable is a date object. We can use the <code>ymd()</code> function, from the fantastic lubridate package (really I cannot praise this package enough, it makes handling dates so easy…!) to make sure that our Month variable is a date object.</p>
+<p>But we have no day you say! Only month! How can we use <code>ymd()</code> which clearly requires <em>y</em>ear <em>m</em>onth ad <em>day</em>! Well, one approach is to make this up, and just say that everything in our data happened on the 1st of the month. We can use the <code>paste0()</code> function to do this:</p>
+<pre class="sourceCode r"><code class="sourceCode r">bur_per_ward<span class="op">$</span>date_month &lt;-<span class="st"> </span><span class="kw">ymd</span>(<span class="kw">paste0</span>(bur_per_ward<span class="op">$</span>Month, <span class="st">&quot;-01&quot;</span>))</code></pre>
+<p>Now, we can create a simple static plot, the way we already know how. Let’s plot the number of burglaries per ward, and save this in an object called <code>anim</code>:</p>
+<pre class="sourceCode r"><code class="sourceCode r">anim &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">x =</span> wd16nm, <span class="dt">y =</span> n)) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales<span class="op">::</span>comma) <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Burglary counts,&quot;</span>,
+       <span class="dt">x =</span> <span class="st">&quot;&quot;</span>,
+       <span class="dt">y =</span> <span class="st">&quot;&quot;</span>) </code></pre>
+<p>Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use <code>transition_states()</code>. This transition splits your data into multiple states based on the levels in a given column, much like ggplot2::facet_wrap() splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the <code>closest_state</code> to dynamically label the graph:</p>
+<pre class="sourceCode r"><code class="sourceCode r">anim <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-42-1.gif" /><!-- --></p>
+<p>How cool is that!?</p>
+<p>We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called <code>transformr</code> installed. Install this package, and then we can apply gganimate to a map of burglaries.</p>
+<p>Again make a static map:</p>
+<pre class="sourceCode r"><code class="sourceCode r">anim_map &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">fill =</span> n, <span class="dt">color =</span> n)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_sf</span>()</code></pre>
+<p>And use <code>transition_states()</code> to animate by month.</p>
+<pre class="sourceCode r"><code class="sourceCode r">anim_map <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-44-1.gif" /><!-- --></p>
+<p>Ta-daaa!</p>
+<p>What a way to end this course!</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="spatial-regression-models.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/10-week10.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": ["CrimeMapping.pdf", "CrimeMapping.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
