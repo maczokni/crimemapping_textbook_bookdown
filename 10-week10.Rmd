@@ -130,24 +130,13 @@ What if I asked you the question: which year had the most aggravated assaults? O
 
 Well you need to be able to have the right variables to answer these questions. To know what year saw the most aggravated assaults, you need to have a variable for year. To know what day of the week has the most aggravated assaults, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the `lubridate` package can help us do this.
 
-```{r, message=FALSE, eval = FALSE}
+```{r, message=FALSE}
 agassault_ny$year <- year(agassault_ny$date_single)
 agassault_ny$month <- month(agassault_ny$date_single, label = TRUE, abbr=FALSE, locale = "UK")
 agassault_ny$day <- day(agassault_ny$date_single)
 agassault_ny$wday <- wday(agassault_ny$date_single, label = TRUE, abbr=FALSE, locale = "UK")
 
 ```
-
-
-
-```{r, message=FALSE, echo = FALSE}
-agassault_ny$year <- year(agassault_ny$date_single)
-agassault_ny$month <- month(agassault_ny$date_single, label = TRUE, abbr=FALSE)
-agassault_ny$day <- day(agassault_ny$date_single)
-agassault_ny$wday <- wday(agassault_ny$date_single, label = TRUE, abbr=FALSE)
-
-```
-
 
 
 And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.
@@ -165,7 +154,7 @@ agassault_ny %>%
 The `lubridate` package is incredibly helpful for anything date related. We don't have time to go over it on details but you can find more information on [the official page](https://lubridate.tidyverse.org/) or in [this](https://mikoontz.github.io/data-carpentry-week/lesson_lubridate.html) tutorial. The relevant chapter in [R for Data Science](https://r4ds.had.co.nz/dates-and-times.html#introduction-10) is also very helpful.
 
 
-##Calendar heatmaps
+## Calendar heatmaps
 
 We can also parse the temporal information that is available in our date variable. For the next chart we introduce we only need date, month, and year. We don't need the time.
 
@@ -207,7 +196,7 @@ p1 +
 
 There are many things that peak on certain days of the week. If you're interested in some more examples, [read this article in the Guardian about the most dangerous days of the week](https://www.theguardian.com/lifeandstyle/2013/may/29/most-dangerous-day-of-week).
 
-##Decomposing time series
+## Decomposing time series
 
 Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's get some fresh data. These are intimate partner femicides from Spain;
 
@@ -250,7 +239,7 @@ plot(fem_timeseriescomponents)
 Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.
 
 **Homework 10.1**
-*Try creating a ts object using the aggassault data from New York and decompose the time seties*
+*Try creating a ts object using the aggassault data from New York and decompose the time series*
 
 ```{r, echo=FALSE}
 agassault_ny_d2 <-select(agassault_ny_d, assaults)
@@ -269,7 +258,7 @@ ggsdc(ny_df, aes(x = x, y = y), method = "decompose") +
 ```
 
 
-##Static maps with ggplot2
+## Static maps with ggplot2
 
 So far we have seen how we can produce maps with `tmap`for thematic maps and `leaflet` for interactive maps. But we can also use static maps with `ggplot2`. For the next set of exercises we are going to look at temporal variations on burglary across Greater Manchester. We are going to focus on wards as the unit of analysis. You will likely work with this dataset for crime for your assignment and you may use wards or smaller geographies. So we will focus on this data for this illustration of basic plotting and spatial operations (in the next section).
 
@@ -405,14 +394,14 @@ tm_shape(bur_per_ward) +
 ```
 
 
-##Animations!!!
+## Animations!!!
 
 You want a data viz person get excited? Mention animations! Now they are brought to `ggplot2` thanks to the `gganimate` extension.
 
 The next one is a non-spatial plot, in that we do not show a map. However we will show the varying rate of burglaries per month within each ward. It is interesting to see this as an animation over time, rather than in the small multiples format, because it can better drive home the message of change (and also it looks very cool!). 
 
 
-So first thing we do is to load the gganimate package: 
+So first thing we do is to load the `gganimate` package: 
 
 ```{r}
 library(gganimate)
@@ -454,8 +443,7 @@ anim + transition_states(date_month, transition_length = 1, state_length = 1) +
 
 How cool is that!?
 
-
-We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called `transformr` installed. Install this package, and then we can apply gganimate to a map of burglaries. 
+We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called `transformr` installed. Install this package, and then we can apply `gganimate` to a map of burglaries. 
 
 Again make a static map: 
 
@@ -475,7 +463,6 @@ And use `transition_states()` to animate by month.
 anim_map + transition_states(date_month, transition_length = 1, state_length = 1) +
   labs(title = "Month: {closest_state}")
 ```
-
 
 
 Ta-daaa!
