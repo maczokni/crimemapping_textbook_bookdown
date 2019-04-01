@@ -1,7 +1,7 @@
 # Time matters
 
 
-This week we consider another important factor that is present in our data that we don't always talk about, and that is the importance of *time*. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or depreived area you have different access to resources, and therefore your outcomes in terms of involvement with criminal justica system also differs. However time is just as important as place. We often hear that crime is "going up" or "going down" over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding. 
+This week we consider another important factor that is present in our data that we don't always talk about, and that is the importance of *time*. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or depreived area you have different access to resources, and therefore your outcomes in terms of involvement with the criminal justice system also differs. However time is just as important as place. We often hear that crime is "going up" or "going down" over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding. 
 
 When violence increases bewteen March and August, is that because we are seeing an increase in crime and offending? Or is it possible that the time of year has something to do with this? How much must crime increase and over how long of a time, in order to be able to confidently say that crime is on the increase? These are important, and not always easy questions to answer, and this week we will begin to think about this. 
 
@@ -95,14 +95,14 @@ library(readr)
 agassault_ny<-read_csv("https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/agassault.csv")
 ```
 
-When you read the data into R, you will see that there is a column for date called **date_single**. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is  2014-01-01 00:03:00. What kind of variable is this?
+When you read the data into R, you will see that there is a column for date called **date_single**. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is *2014-01-01 00:03:00*. What kind of variable is this?
 
 ```{r}
 class(agassault_ny$date_single)
 
 ```
 
-Our date and time variables are of class `POSIXct` and `POSIXt`.  These are the two basic classes of date/times. Class "POSIXct" represents the (signed) number of seconds since the beginning of 1970 as a numeric vector. Class "POSIXlt" is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown). 
+Our date and time variables are of class `POSIXct` and `POSIXt`. These are the two basic classes of date/times. Class "POSIXct" represents the (signed) [number of seconds since the beginning of 1970](https://en.wikipedia.org/wiki/Unix_time) as a numeric vector. Class "POSIXt" is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown). 
 
 
 Let's plot this data:
@@ -110,7 +110,7 @@ Let's plot this data:
 ```{r}
 agassault_ny %>% 
   ggplot(aes(date_single)) + 
-  geom_freqpoly(binwidth = 604800) # 86400 seconds = 1 day, 604800 one week
+  geom_freqpoly(binwidth = 7*24*60*60) # 7 days in seconds
 ```
 
 Notice what `geom_freqpoly` is doing. We have a dataframe with rows for each case. The data is not aggregated in any form. But this function counts on the fly the number of cases (of rows) for each of the bins as we define them. It is, thus, a convenient function that saves us from having to first do that aggregation ourselves when we want to plot it. This may be helpful when you get your data for the assignment.
@@ -161,25 +161,25 @@ We can also parse the temporal information that is available in our date variabl
 
 ```{r}
 
-agassault_ny$date <- format(as.POSIXct(agassault_ny$date_single,format="%Y:%m:%d %H:%M:%S"),"%d:%m:%Y")
+agassault_ny$date <- format(as.POSIXct(agassault_ny$date_single,format="%Y-%m-%d %H:%M:%S"),"%Y-%m-%d")
 head(agassault_ny$date)
 class(agassault_ny$date)
 
 ```
 
-We can now use `dplyr` to counts the evens per day.
+On this character vector can now use `dplyr` to counts the events per day.
 
 ```{r}
-by_day <- group_by(agassault_ny, date)
-agassault_ny_d <- summarise(by_day,
-                          assaults = n())
+agassault_ny_d <- agassault_ny %>%
+                    group_by(date) %>%
+                    summarise(assaults = n())
 
 ```
 
 We will now use a `ggplot2` extension that allow us to produce calendar heat visualisations.
 
 ```{r, message=FALSE}
-agassault_ny_d$date <- dmy(agassault_ny_d$date)
+agassault_ny_d$date <- ymd(agassault_ny_d$date) # we parse the date again from the character vector we made. If you open the help function on this command, you can see that you can also load any other order than the year, month, and date order we used here
 library(ggTimeSeries)
 p1 <- ggplot_calendar_heatmap(
    agassault_ny_d,
@@ -201,7 +201,7 @@ There are many things that peak on certain days of the week. If you're intereste
 Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let's get some fresh data. These are intimate partner femicides from Spain;
 
 ```{r}
-fem <- read.csv("data/fem.csv")
+fem <- read.csv("https://github.com/maczokni/crimemapping_textbook_bookdown/raw/master/data/fem.csv")
 colnames(fem)<- c("femicidios")
 fem_timeseries <- ts(fem, frequency=12, start=c(2003,1))
 plot.ts(fem_timeseries)
@@ -236,7 +236,7 @@ We can plot the estimated trend, seasonal, and irregular components of the time 
 plot(fem_timeseriescomponents)
 ```
 
-Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.
+Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend. Notice that while random and seasonal components still look messy, their scales are different and centred around zero.
 
 **Homework 10.1**
 *Try creating a ts object using the aggassault data from New York and decompose the time series*
@@ -248,7 +248,7 @@ ny_timeseriescomponents <- decompose(ny_timeseries)
 #plot(ny_timeseriescomponents)
 ```
 
-We can also use `ggplot2` for these purposes. In particular we can use the `ggseas` extension -see for details [here](https://github.com/ellisp/ggseas). First I use the `tsdf` function that turns the `ts` object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.
+We can also use `ggplot2` for these purposes. In particular we can use the `ggseas` extension which allows for seasonal decomposition within ggplot — see [here](https://github.com/ellisp/ggseas) for details. First I use the `tsdf` function that turns the `ts` object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.
 
 ```{r}
 library(ggseas)
@@ -286,7 +286,7 @@ Let's load the data with the burglaries for Greater Manchester.
 gmp_bur <- read_csv("https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_bur.csv")
 ```
 
-You can see there is a column with the longitude and another with latitude. For this we can use the standard `geom_point` function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparenci and size of the points to deal with overplotting.
+You can see there is a column with the longitude and another with latitude. For this we can use the standard `geom_point` function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparency and size of the points to deal with overplotting.
 
 ```{r}
 ggplot() + 
@@ -314,7 +314,7 @@ In week 4  we explained how it is important to check that spatial operations tha
 st_crs(manchester_ward)
 ```
 
-What is `EPGS: 27700`? You can check [here](https://epsg.io/27700). This is the British National Grid. How about the police data? Well, we don't have a `sf` object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGs1984 instead. What do we do? First we need to create a `sf` object for the police data specifying the coordinate system (we covered how to do this in week 3).
+What is `EPGS: 27700`? You can check [here](https://epsg.io/27700). This is the British National Grid. How about the police data? Well, we don't have a `sf` object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGS1984 instead. What do we do? First we need to create a `sf` object for the police data specifying the coordinate system (we covered how to do this in week 3).
 
 ```{r}
 burglary_sf <- st_as_sf(x = gmp_bur, 
@@ -353,12 +353,7 @@ ggplot() + geom_sf(data = wards_WGS84, aes()) +
 We have covered small multiples before. You can indeed use facets to show how things change (or don't change) across time. Let's just focus on 2018 to simplify things a bit.
 
 ```{r}
-bur_sf_2018 <- filter(burglary_sf, Month == "2018-01" | Month == "2018-02" |
-                        Month == "2018-03" | Month == "2018-04" |
-                        Month == "2018-05" | Month == "2018-06" |
-                        Month == "2018-07" | Month == "2018-08" |
-                        Month == "2018-09" | Month == "2018-10" |
-                        Month == "2018-11" | Month == "2018-12")
+bur_sf_2018 <- filter(burglary_sf, stringr::str_detect(Month, '2018')) # detect if there is 2018 anywhere in the Month value of a crime
 table(bur_sf_2018$Month)
 ```
 
@@ -381,7 +376,7 @@ The code above only counts for the whole year. But if we want to have a map per 
 ```{r, message=FALSE}
 bur_per_ward <- bur_sf_2018 %>% 
   st_join(mc_wards_WGS864, ., left = FALSE) %>% 
-  count(wd16nm, Month)
+  count(wd16nm, Month) # by default, this saves the count to a column named 'n'
 ```
 
 We can now try to produce the small multiples.
@@ -398,7 +393,7 @@ tm_shape(bur_per_ward) +
 
 ## Spaghetti plots
 
-In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectores. You can read more about them [here](https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph). Let's first get rid of the "spatial component"" for the data.
+In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectores. You can read more about them [here](https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph). Let's first get rid of the "spatial component" for the data.
 
 ```{r}
 spa_df <- bur_per_ward
@@ -445,7 +440,7 @@ ggplot(spa_df, aes(x=Month, y=n, group=wd16nm)) +
   theme_bw()
 ```
 
-But typically you may want to use this kind of plots in different ways (see the article we linked to above). Here we are going to produce a plot higliting the trajectory in Fallowfield. Before I do that I will create a new variable identifying Fallowfield.
+But typically you may want to use this kind of plots in different ways (see the article we linked to above). Here we are going to produce a plot highlighting the trajectory in Fallowfield. Before I do that I will create a new variable identifying Fallowfield.
 
 ```{r}
 spa_df$fallowfield <- "No"
@@ -497,17 +492,18 @@ Now, we can create a simple static plot, the way we already know how. Let's plot
 
 ```{r}
 
-anim <- ggplot(bur_per_ward, aes(x = wd16nm, y = n)) +
+anim <- ggplot(bur_per_ward, aes(x = wd16nm, y = n, fill=ifelse(wd16nm=="Fallowfield", 'Fallowfield', NA))) +
   geom_bar(stat = 'identity') +
   scale_y_continuous(labels = scales::comma) +
   coord_flip() +
+  scale_fill_manual(values = c('Fallowfield' = 'blue'), na.value='gray50', guide=F) + # we're highlighting Fallowfield!
   labs(title="Burglary counts,",
        x = "",
        y = "") 
 ```
 
 
-Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use `transition_states()`. This transition splits your data into multiple states based on the levels in a given column, much like ggplot2::facet_wrap() splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the `closest_state` to dynamically label the graph:
+Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use `transition_states()`. This transition splits your data into multiple states based on the levels in a given column, much like `ggplot2::facet_wrap()` splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the `closest_state` to dynamically label the graph:
 
 ```{r}
 anim + transition_states(date_month, transition_length = 1, state_length = 1) +
@@ -525,7 +521,8 @@ Again make a static map:
 ```{r}
 
 anim_map <- ggplot(bur_per_ward, aes(fill = n, color = n)) + 
-  geom_sf()
+  geom_sf() +
+  geom_sf(data=subset(bur_per_ward, wd16nm=='Fallowfield'), color='black', fill=NA) # and we are drawing a black boundary around fallowfield this time
 
 ```
 
