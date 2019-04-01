@@ -1,8 +1,6 @@
 
 # Thematic maps in R
 
-
-
 ## Intro and recap
 
 Last week we showed you fairly quickly how to create maps of spatial point patterns using `leaflet` and we also introduced the `tmap` package for thematic maps. Besides doing that we introduced a set of key concepts we hope you have continued studying over the week. We also discussed the `sf` package for storing spatial objects in R. 
@@ -29,7 +27,7 @@ manchester_lsoa <- st_read(shp_name)
 ```
 
 ```
-## Reading layer `england_lsoa_2011' from data source `/Users/reka/Dropbox (The University of Manchester)/crimemapping_textbook_bookdown/data/BoundaryData/england_lsoa_2011.shp' using driver `ESRI Shapefile'
+## Reading layer `england_lsoa_2011' from data source `C:\Users\Juanjo Medina\Dropbox\1_Teaching\1 Manchester courses\31152_60142 GIS and Crime Mapping\new_crimemapping\data\BoundaryData\england_lsoa_2011.shp' using driver `ESRI Shapefile'
 ## Simple feature collection with 282 features and 3 fields
 ## geometry type:  POLYGON
 ## dimension:      XY
@@ -91,7 +89,7 @@ tm_shape(manchester_lsoa) +
   tm_polygons()
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-5-1.png" width="672" />
 
 Given that we are not passing any additional arguments all we are getting is a map with the shape of the geographies that we are representing, the census LSOAs for Manchester city. We can, however, ask R to produce a choropleth map by mapping the values of a variable in our data table using colour.  In tmap we need to denote our variables between quotes. The first argument we pass then would be the name of the variable we want to visualise. If you remember we have a count for crimes ("count"), so let's visualise that by creating a thematic map.
 
@@ -101,7 +99,7 @@ tm_shape(manchester_lsoa) +
   tm_polygons("count")
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 
 Notice how this map is different from last week. What do you think the reason for this is? You may remember last week we used one additional argument `style` specifying the classification method we were going to use. If you remember we used quantiles. We will in a second look at how a map of the counts of crime looks different when we use different classification systems. But before we get to that, let's think about aesthetics a bit more. 
 
@@ -113,7 +111,7 @@ tm_shape(manchester_lsoa) +
   tm_fill("count")
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-8-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-7-1.png" width="672" />
 
 As you can see here, the look is a bit cleaner. We don't need to get rid of the borders completely. Perhaps we want to make them a bit more translucent. We could do that by adding the border element but making the drawing of the borders less pronounced. 
 
@@ -124,7 +122,7 @@ tm_shape(manchester_lsoa) +
   tm_borders(alpha = 0.1)
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-9-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-8-1.png" width="672" />
 
 The alpha parameter that we are inserting within `tm_borders()` controls the transparency of the borders, we can go from 0 (totally transparent) to 1 (not transparent). You can play around with this value and see the results.
 
@@ -141,7 +139,7 @@ tm_shape(manchester_lsoa) +
             legend.position = c("right", "bottom"), legend.title.size = 0.8)
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-10-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-9-1.png" width="672" />
 
 ```r
 #We are also going to change the current style of the maps by making them more friendly to colour blind people. We can use the tmap_style() function to do so.
@@ -223,7 +221,7 @@ So if you wanted to map just *map3* for example, all you need to do, is call the
 map3
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-15-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 
 But now we will plot all 4 maps together, arranged using the `tmap_arrange()` function. Like so: 
 
@@ -233,7 +231,7 @@ But now we will plot all 4 maps together, arranged using the `tmap_arrange()` fu
 tmap_arrange(map1, map2, map3, map4) 
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-16-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-15-1.png" width="672" />
 
 ### Homework 3.1
 
@@ -249,7 +247,7 @@ tm_shape(manchester_lsoa) +
   tm_bubbles("count")
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-17-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-16-1.png" width="672" />
 
 First thing you see is that we loose the context (provided by the polygon borders) that we had earlier. The `border.lwd` argument set to NA in the `tm_symbols()` is asking R not to draw a border to the circles. Whereas `tm_borders()` brings back a layer with the borders of the polygons representing the different LSOAs in Manchester city. Notice how I am modifying the transparency of the borders with the alpha parameter.
 
@@ -263,7 +261,7 @@ tm_shape(manchester_lsoa) +                         #use tm_shape function to sp
             legend.text.size = 0.5)
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-18-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-17-1.png" width="672" />
 
 ## Bringing additional census data in
 
@@ -363,7 +361,7 @@ tmaptools::palette_explorer()
 
 *Reproduce the map below, you will need to include the code you used as part of your homework submission. Discuss the results. What are the most notable differences? Which denominator do you think is more appropriate (you will need to think about this quite carefully). Are you comparing like with like? Why? Why not? Could you make these comparisons more equivalent if you think you are not comparing like with like?* 
 
-<img src="03-week3_files/figure-html/unnamed-chunk-27-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-26-1.png" width="672" />
 
 Once you have completed this activity, let's explore your map with the crime rate using the usual residents as the denominator using the interactive way. Assuming you name that visualisation map5 you could use the following code.
 
@@ -407,7 +405,7 @@ tm_shape(crime_sf) +
   tm_dots() 
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-29-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-28-1.png" width="672" />
 
 Here we are getting all the data points in the "crime_sf" object, which includes the whole of Greater Manchester. Also, since there are so many crimes, dots, it is hard to see patterns. We can add some transparency with the alpha argument as part of the `tm_dots` call.
 
@@ -417,7 +415,7 @@ tm_shape(crime_sf) +
   tm_dots(alpha=0.1) 
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-30-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-29-1.png" width="672" />
 
 Straight away you can start seeing some patterns, like the concentration of crimes in the town centres of all the different local authorities that conform Greater Manchester. This would be easier for you to see, if you are not familiar with the geography of Greater Manchester, if you place a basemap as a layer.
 
@@ -499,7 +497,7 @@ qtm(gm_osm) +
   tm_dots(alpha=0.1) 
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-36-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-35-1.png" width="672" />
 
 Let's zoom in into Manchester city, for which we can use our manchester_lsoa map.
 
@@ -512,7 +510,7 @@ qtm(mc_osm) +
   tm_dots(alpha=0.1) 
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-37-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-36-1.png" width="672" />
 
 We can use the `bb()` function from `tmaptols` to create a bounding box around the University of Manchester, the width and height parameters I am using determine the degree of zoom in (I got these experimenting with different ones until I got the right zooming around the University location). Once you have this bounding box you can pass it as an argument to the `read_osm()` function that will look for the basemap around that location. 
 
@@ -526,7 +524,7 @@ UoM_osm <- read_osm(UoM_bb, type = "stamen-toner")
 qtm(UoM_osm)
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-38-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-37-1.png" width="672" />
 
 Now that we have our basemap we can run our small multiples. Because we have a variable that determines the types we can use a different way to `tmap_arrange()` explained above, we can essentially ask `tmap` to create a map for each of the levels in our organising variable (in this case Crime.type). So instead of `tmap_arrange()` that requires the creation of each map, when each map simply represents different levels of an organising variable we can simplify the syntax using `tm_facets()` and within this function we specify as the first argument the name of the variable that has the different categories we want to map out. The second argument you see below `free.coords` set to FALSE simply ensures that the map gets bounded to the basemap, if you want to see what happens if you change it, just set it to TRUE instead.
 
@@ -539,6 +537,6 @@ qtm(UoM_osm) +
   tm_layout(legend.show=FALSE)
 ```
 
-<img src="03-week3_files/figure-html/unnamed-chunk-39-1.png" width="672" />
+<img src="03-week3_files/figure-html/unnamed-chunk-38-1.png" width="672" />
 
 We could do some further tweaking around for ensuring things look a bit neater. But we have covered a lot of ground today, and you should all give yourself a congratulatory "well done".

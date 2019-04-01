@@ -311,7 +311,7 @@ X
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'X' not found
+## Error in eval(expr, envir, enclos): objeto 'X' no encontrado
 ```
 
 You will get the following message: `"Error in eval(expr, envir, enclos): object 'X' not found"`. R is telling us that `X` does not exist. There isn't an object `X` (upper case), but there is an object `x` (lower case). Error messages in R are pretty good at telling you exactly what went wrong. 
@@ -500,7 +500,7 @@ If you want, give it a try. Try to create a variable called 12 and assign it the
 ```
 
 ```
-## Error in 12 <- "twelve": invalid (do_set) left-hand side to assignment
+## Error in 12 <- "twelve": lado izquierdo de la asignación inválida (do_set)
 ```
 
 You get an error!
@@ -750,6 +750,16 @@ There are multiple ways of getting results in R. Particularly for basic and inte
 I am only going to introduce one of them here *skimr*. It is neat and is maintained by one of my former stats teachers, the criminologist Elin Waring. You will need to install it before anything else. Use the code you have learnt to do so and then load it. I won't be providing you the code for it, by now you should now how to do this.
 
 
+```
+## 
+## Attaching package: 'skimr'
+```
+
+```
+## The following object is masked from 'package:stats':
+## 
+##     filter
+```
 
 Once you have loaded the *skimr* package you can use it. Its main function is *skim*. Like *summary* for data frames, skim presents results for all the columns and the statistics will depend on the class of the variable. However, the results are displayed and stored in a nicer way -though we won't get into the details of this right now.
 

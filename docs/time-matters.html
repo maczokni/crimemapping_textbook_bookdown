@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-03-24">
+<meta name="date" content="2019-04-01">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -48,70 +48,54 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.1.17/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.0.2/leaflet-providers-plugin.js"></script>
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -301,7 +285,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="10" data-path="time-matters.html"><a href="time-matters.html"><i class="fa fa-check"></i><b>10</b> Time matters</a><ul>
 <li class="chapter" data-level="10.1" data-path="time-matters.html"><a href="time-matters.html#getting-time-series-data-into-r-and-plotting-it"><i class="fa fa-check"></i><b>10.1</b> Getting time series data into R and plotting it</a></li>
 <li class="chapter" data-level="10.2" data-path="time-matters.html"><a href="time-matters.html#lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data"><i class="fa fa-check"></i><b>10.2</b> Lubridate: your guardian angel when it comes to working with temporal data</a></li>
-<li class="chapter" data-level="10.3" data-path="time-matters.html"><a href="time-matters.html#small-multiples-to-show-temporal-variation"><i class="fa fa-check"></i><b>10.3</b> Small multiples to show temporal variation</a></li>
+<li class="chapter" data-level="10.3" data-path="time-matters.html"><a href="time-matters.html#calendar-heatmaps"><i class="fa fa-check"></i><b>10.3</b> Calendar heatmaps</a></li>
+<li class="chapter" data-level="10.4" data-path="time-matters.html"><a href="time-matters.html#decomposing-time-series"><i class="fa fa-check"></i><b>10.4</b> Decomposing time series</a></li>
+<li class="chapter" data-level="10.5" data-path="time-matters.html"><a href="time-matters.html#static-maps-with-ggplot2"><i class="fa fa-check"></i><b>10.5</b> Static maps with ggplot2</a></li>
+<li class="chapter" data-level="10.6" data-path="time-matters.html"><a href="time-matters.html#small-multiples-to-show-temporal-variation"><i class="fa fa-check"></i><b>10.6</b> Small multiples to show temporal variation</a></li>
+<li class="chapter" data-level="10.7" data-path="time-matters.html"><a href="time-matters.html#spaghetti-plots"><i class="fa fa-check"></i><b>10.7</b> Spaghetti plots</a></li>
+<li class="chapter" data-level="10.8" data-path="time-matters.html"><a href="time-matters.html#animations"><i class="fa fa-check"></i><b>10.8</b> Animations!!!</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -339,20 +328,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="getting-time-series-data-into-r-and-plotting-it" class="section level2">
 <h2><span class="header-section-number">10.1</span> Getting time series data into R and plotting it</h2>
 <p>We are going to start with fairly simple data. We are just going to look at monthly counts of crime for Greater Manchester obtained from the Police.UK website. We have aggregated 36 months of data into a file for you to use. Grab the data using the following code:</p>
-<pre class="sourceCode r"><code class="sourceCode r">data_url &lt;-<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_month.csv&quot;</span>
-gmp_month &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">url</span>(data_url))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data_url &lt;-<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_month.csv&quot;</span>
+gmp_month &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">url</span>(data_url))</code></pre></div>
 <p>If you view the data you will see it has two columns, the date and the count of crimes for that month. Once you have read the time series data into R, the next step is to store the data in a time series object in R, so that you can use R’s many functions for analysing time series data. To store the data in a time series object, we use the <code>ts()</code> function in R.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr)
 <span class="co">#First we select the relevant column</span>
 gmp_month_c &lt;-<span class="st"> </span><span class="kw">select</span>(gmp_month, count)
 <span class="co">#Then we create the time series object</span>
-gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c)</code></pre>
+gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c)</code></pre></div>
 <p>You can autoprint to see the result:</p>
-<pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries</code></pre></div>
 <p>Sometimes the time series data set that you have may have been collected at regular intervals that were less than one year, for example, monthly or quarterly. In this case, you can specify the number of times that data was collected per year by using the <code>frequency</code> parameter in the <code>ts()</code> function. For monthly time series data, you set <code>frequency=12</code>, while for quarterly time series data, you set <code>frequency=4.</code></p>
 <p>You can also specify the first year that the data was collected, and the first interval in that year by using the <code>start</code> parameter in the <code>ts()</code> function. So, in our case, we would do as follows:</p>
-<pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c, <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2016</span>,<span class="dv">2</span>))
-gmp_timeseries</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c, <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2016</span>,<span class="dv">2</span>))
+gmp_timeseries</code></pre></div>
 <pre><code>##        Jan   Feb   Mar   Apr   May   Jun   Jul   Aug   Sep   Oct   Nov
 ## 2016       26422 28516 28258 30722 30111 31255 30850 31064 34709 31122
 ## 2017 31670 30784 35094 34878 35890 36397 37480 35658 32768 35990 34052
@@ -364,28 +353,28 @@ gmp_timeseries</code></pre>
 ## 2018 30377
 ## 2019</code></pre>
 <p>Once you have read a time series into R, the next step is usually to make a plot of the time series data, which you can do with the <code>plot.ts()</code> function in R.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot.ts</span>(gmp_timeseries)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot.ts</span>(gmp_timeseries)</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>We can of course also use <code>ggplot2</code>to plot a time series like the one we just did but here we would need a variable encoding the date (and preferably a full date, not just month and year as here). If you look a “gmp_month” you will see the name of the variables are not optimal, so we will rename them first.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 gmp_month &lt;-<span class="st"> </span><span class="kw">rename</span>(gmp_month, <span class="dt">date =</span> as.factor.Month., <span class="dt">crime =</span> count)
 <span class="kw">ggplot</span>(<span class="dt">data=</span>gmp_month, <span class="kw">aes</span>(<span class="dt">x=</span>date, <span class="dt">y=</span>crime, <span class="dt">group=</span><span class="dv">1</span>)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_line</span>()<span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_point</span>()<span class="op">+</span>
-<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>If we had a date vector rather than a factor encoding our date we would need to adapt our code. See <a href="http://www.sthda.com/english/articles/32-r-graphics-essentials/128-plot-time-series-data-using-ggplot/">here</a> for further details.</p>
 <p>Alternatively we can use <code>ggfortify</code>, an extension to <code>ggplot2</code> that would allow us to use <code>ts</code> objects as inputs. For this we use the <code>autoplot</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggfortify)
-<span class="kw">autoplot</span>(gmp_timeseries)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggfortify)
+<span class="kw">autoplot</span>(gmp_timeseries)</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data" class="section level2">
 <h2><span class="header-section-number">10.2</span> Lubridate: your guardian angel when it comes to working with temporal data</h2>
 <p>As you saw, the data from Police.Uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular.</p>
 <p>Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assult. The data from an open source initiative maintained by Matt Ashby <a href="https://osf.io/zyaqn/">here</a>. I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
-agassault_ny&lt;-<span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/agassault.csv&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
+agassault_ny&lt;-<span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/agassault.csv&quot;</span>)</code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   uid = col_double(),
@@ -399,55 +388,57 @@ agassault_ny&lt;-<span class="kw">read_csv</span>(<span class="st">&quot;https:/
 ##   date_end = col_datetime(format = &quot;&quot;)
 ## )</code></pre>
 <p>When you read the data into R, you will see that there is a column for date called <strong>date_single</strong>. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is 2014-01-01 00:03:00. What kind of variable is this?</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date_single)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date_single)</code></pre></div>
 <pre><code>## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;</code></pre>
 <p>Our date and time variables are of class <code>POSIXct</code> and <code>POSIXt</code>. These are the two basic classes of date/times. Class “POSIXct” represents the (signed) number of seconds since the beginning of 1970 as a numeric vector. Class “POSIXlt” is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown).</p>
 <p>Let’s plot this data:</p>
-<pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(date_single)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_freqpoly</span>(<span class="dt">binwidth =</span> <span class="dv">604800</span>) <span class="co"># 86400 seconds = 1 day, 604800 one week</span></code></pre>
+<span class="st">  </span><span class="kw">geom_freqpoly</span>(<span class="dt">binwidth =</span> <span class="dv">604800</span>) <span class="co"># 86400 seconds = 1 day, 604800 one week</span></code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Notice what <code>geom_freqpoly</code> is doing. We have a dataframe with rows for each case. The data is not aggregated in any form. But this function counts on the fly the number of cases (of rows) for each of the bins as we define them. It is, thus, a convenient function that saves us from having to first do that aggregation ourselves when we want to plot it. This may be helpful when you get your data for the assignment.</p>
 <p>An alternative approach to plotting individual components is to round the date to a nearby unit of time, with <code>floor_date()</code>, <code>round_date()</code>, and <code>ceiling_date()</code>. Each function takes a vector of dates to adjust and then the name of the unit round down (floor), round up (ceiling), or round to.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(lubridate)</code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     date</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">count</span>(<span class="dt">month =</span> <span class="kw">floor_date</span>(date_single, <span class="st">&quot;month&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(month, n)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>()</code></pre>
+<span class="st">    </span><span class="kw">geom_line</span>()</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>What if I asked you the question: which year had the most aggravated assaults? Or what if I want to know if aggravated assaults happen more in the weekday, when people are at work, or in the weekends, maybe when people are away for a holiday? You have the date, so you should be able to answer these questions, right?</p>
 <p>Well you need to be able to have the right variables to answer these questions. To know what year saw the most aggravated assaults, you need to have a variable for year. To know what day of the week has the most aggravated assaults, you need to have a variable for day of the week. So how can we extract these variables from your date column? Well luckily the <code>lubridate</code> package can help us do this.</p>
-<pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">year</span>(agassault_ny<span class="op">$</span>date_single)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">year</span>(agassault_ny<span class="op">$</span>date_single)
 agassault_ny<span class="op">$</span>month &lt;-<span class="st"> </span><span class="kw">month</span>(agassault_ny<span class="op">$</span>date_single, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>, <span class="dt">locale =</span> <span class="st">&quot;UK&quot;</span>)
 agassault_ny<span class="op">$</span>day &lt;-<span class="st"> </span><span class="kw">day</span>(agassault_ny<span class="op">$</span>date_single)
-agassault_ny<span class="op">$</span>wday &lt;-<span class="st"> </span><span class="kw">wday</span>(agassault_ny<span class="op">$</span>date_single, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>, <span class="dt">locale =</span> <span class="st">&quot;UK&quot;</span>)</code></pre>
+agassault_ny<span class="op">$</span>wday &lt;-<span class="st"> </span><span class="kw">wday</span>(agassault_ny<span class="op">$</span>date_single, <span class="dt">label =</span> <span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>, <span class="dt">locale =</span> <span class="st">&quot;UK&quot;</span>)</code></pre></div>
 <p>And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.</p>
 <p>We can now look at the distribution of events per day of the week.</p>
-<pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">mutate</span>(<span class="dt">wday =</span> <span class="kw">wday</span>(date_single, <span class="dt">label=</span><span class="ot">TRUE</span>, <span class="dt">abbr=</span><span class="ot">FALSE</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> wday)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_bar</span>()</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<span class="st">    </span><span class="kw">geom_bar</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>The <code>lubridate</code> package is incredibly helpful for anything date related. We don’t have time to go over it on details but you can find more information on <a href="https://lubridate.tidyverse.org/">the official page</a> or in <a href="https://mikoontz.github.io/data-carpentry-week/lesson_lubridate.html">this</a> tutorial. The relevant chapter in <a href="https://r4ds.had.co.nz/dates-and-times.html#introduction-10">R for Data Science</a> is also very helpful.</p>
-<p>##Calendar heatmaps</p>
+</div>
+<div id="calendar-heatmaps" class="section level2">
+<h2><span class="header-section-number">10.3</span> Calendar heatmaps</h2>
 <p>We can also parse the temporal information that is available in our date variable. For the next chart we introduce we only need date, month, and year. We don’t need the time.</p>
-<pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.POSIXct</span>(agassault_ny<span class="op">$</span>date_single,<span class="dt">format=</span><span class="st">&quot;%Y:%m:%d %H:%M:%S&quot;</span>),<span class="st">&quot;%d:%m:%Y&quot;</span>)
-<span class="kw">head</span>(agassault_ny<span class="op">$</span>date)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.POSIXct</span>(agassault_ny<span class="op">$</span>date_single,<span class="dt">format=</span><span class="st">&quot;%Y:%m:%d %H:%M:%S&quot;</span>),<span class="st">&quot;%d:%m:%Y&quot;</span>)
+<span class="kw">head</span>(agassault_ny<span class="op">$</span>date)</code></pre></div>
 <pre><code>## [1] &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot;
 ## [6] &quot;01:01:2014&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date)</code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <p>We can now use <code>dplyr</code> to counts the evens per day.</p>
-<pre class="sourceCode r"><code class="sourceCode r">by_day &lt;-<span class="st"> </span><span class="kw">group_by</span>(agassault_ny, date)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">by_day &lt;-<span class="st"> </span><span class="kw">group_by</span>(agassault_ny, date)
 agassault_ny_d &lt;-<span class="st"> </span><span class="kw">summarise</span>(by_day,
-                          <span class="dt">assaults =</span> <span class="kw">n</span>())</code></pre>
+                          <span class="dt">assaults =</span> <span class="kw">n</span>())</code></pre></div>
 <p>We will now use a <code>ggplot2</code> extension that allow us to produce calendar heat visualisations.</p>
-<pre class="sourceCode r"><code class="sourceCode r">agassault_ny_d<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">dmy</span>(agassault_ny_d<span class="op">$</span>date)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny_d<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">dmy</span>(agassault_ny_d<span class="op">$</span>date)
 <span class="kw">library</span>(ggTimeSeries)
 p1 &lt;-<span class="st"> </span><span class="kw">ggplot_calendar_heatmap</span>(
    agassault_ny_d,
@@ -458,24 +449,26 @@ p1 <span class="op">+</span>
 <span class="st">   </span><span class="kw">xlab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">ylab</span>(<span class="ot">NULL</span>) <span class="op">+</span>
 <span class="st">   </span><span class="kw">scale_fill_continuous</span>(<span class="dt">low =</span> <span class="st">&#39;green&#39;</span>, <span class="dt">high =</span> <span class="st">&#39;red&#39;</span>) <span class="op">+</span>
-<span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Year, <span class="dt">ncol =</span> <span class="dv">1</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<span class="st">   </span><span class="kw">facet_wrap</span>(<span class="op">~</span>Year, <span class="dt">ncol =</span> <span class="dv">1</span>)</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>There are many things that peak on certain days of the week. If you’re interested in some more examples, <a href="https://www.theguardian.com/lifeandstyle/2013/may/29/most-dangerous-day-of-week">read this article in the Guardian about the most dangerous days of the week</a>.</p>
-<p>##Decomposing time series</p>
+</div>
+<div id="decomposing-time-series" class="section level2">
+<h2><span class="header-section-number">10.4</span> Decomposing time series</h2>
 <p>Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let’s get some fresh data. These are intimate partner femicides from Spain;</p>
-<pre class="sourceCode r"><code class="sourceCode r">fem &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/fem.csv&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fem &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/fem.csv&quot;</span>)
 <span class="kw">colnames</span>(fem)&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;femicidios&quot;</span>)
 fem_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(fem, <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2003</span>,<span class="dv">1</span>))
-<span class="kw">plot.ts</span>(fem_timeseries)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<span class="kw">plot.ts</span>(fem_timeseries)</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 <p>As you can see it is very noisy. Fortunately, the annual count for intimate partner femicides is low in Spain. There seems to be some seasonality too.</p>
 <p>A seasonal time series consists of a trend component, a seasonal component and an irregular component. Decomposing the time series means separating the time series into these three components: that is, estimating these three components.</p>
 <p>To estimate the trend component and seasonal component of a seasonal time series that can be described using an additive model, we can use the <code>decompose()</code> function in R. This function estimates the trend, seasonal, and irregular components of a time series that can be described using an additive model.</p>
 <p>The function <code>decompose()</code> returns a list object as its result, where the estimates of the seasonal component, trend component and irregular component are stored in named elements of that list objects, called “seasonal”, “trend”, and “random” respectively.</p>
 <p>To estimate the trend, seasonal and irregular components of this time series, we type:</p>
-<pre class="sourceCode r"><code class="sourceCode r">fem_timeseriescomponents &lt;-<span class="st"> </span><span class="kw">decompose</span>(fem_timeseries)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fem_timeseriescomponents &lt;-<span class="st"> </span><span class="kw">decompose</span>(fem_timeseries)</code></pre></div>
 <p>The estimated values of the seasonal, trend and irregular components are now stored in variables <code>fem_timeseriescomponents$seasonal</code>, <code>fem_timeseriescomponents$trend</code> and <code>fem_timeseriescomponents$random</code>. For example, we can print out the estimated values of the seasonal component by typing:</p>
-<pre class="sourceCode r"><code class="sourceCode r">fem_timeseriescomponents<span class="op">$</span>seasonal</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fem_timeseriescomponents<span class="op">$</span>seasonal</code></pre></div>
 <pre><code>##              Jan         Feb         Mar         Apr         May
 ## 2003  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
 ## 2004  0.22142094 -0.75934829 -0.07345085 -0.44845085  0.63488248
@@ -523,26 +516,27 @@ fem_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(fem, <sp
 ## 2016  0.39449786 -0.65998932</code></pre>
 <p>The estimated seasonal factors are given for the months January-December, and are the same for each year. The largest seasonal factor is for July (about 0.70), and the lowest is for February (about -0.76), indicating that there seems to be a peak in femicides in July and a trough in femicides in February each year.</p>
 <p>We can plot the estimated trend, seasonal, and irregular components of the time series by using the <code>plot()</code> function, for example:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(fem_timeseriescomponents)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(fem_timeseriescomponents)</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 <p>Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.</p>
-<p><strong>Homework 10.1</strong>
-<em>Try creating a ts object using the aggassault data from New York and decompose the time seties</em></p>
+<p><strong>Homework 10.1</strong> <em>Try creating a ts object using the aggassault data from New York and decompose the time series</em></p>
 <p>We can also use <code>ggplot2</code> for these purposes. In particular we can use the <code>ggseas</code> extension -see for details <a href="https://github.com/ellisp/ggseas">here</a>. First I use the <code>tsdf</code> function that turns the <code>ts</code> object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggseas)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggseas)
 ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 <span class="kw">ggsdc</span>(ny_df, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y), <span class="dt">method =</span> <span class="st">&quot;decompose&quot;</span>) <span class="op">+</span>
-<span class="st">   </span><span class="kw">geom_line</span>()</code></pre>
+<span class="st">   </span><span class="kw">geom_line</span>()</code></pre></div>
 <pre><code>## Calculating frequency of 365 from the data.</code></pre>
 <pre><code>## Warning: Removed 182 rows containing missing values (geom_path).</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
-<p>##Static maps with ggplot2</p>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="static-maps-with-ggplot2" class="section level2">
+<h2><span class="header-section-number">10.5</span> Static maps with ggplot2</h2>
 <p>So far we have seen how we can produce maps with <code>tmap</code>for thematic maps and <code>leaflet</code> for interactive maps. But we can also use static maps with <code>ggplot2</code>. For the next set of exercises we are going to look at temporal variations on burglary across Greater Manchester. We are going to focus on wards as the unit of analysis. You will likely work with this dataset for crime for your assignment and you may use wards or smaller geographies. So we will focus on this data for this illustration of basic plotting and spatial operations (in the next section).</p>
 <p>To load the ward shapefiles for Manchester into a <code>sf</code> object we use code we had already used in a previous session.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre>
-<pre><code>## Linking to GEOS 3.6.1, GDAL 2.1.3, PROJ 4.9.3</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">manchester_ward &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&quot;</span>)</code></pre>
-<pre><code>## Reading layer `OGRGeoJSON&#39; from data source `https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&#39; using driver `GeoJSON&#39;
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sf)</code></pre></div>
+<pre><code>## Linking to GEOS 3.6.1, GDAL 2.2.3, PROJ 4.9.3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">manchester_ward &lt;-<span class="st"> </span><span class="kw">st_read</span>(<span class="st">&quot;https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&quot;</span>)</code></pre></div>
+<pre><code>## Reading layer `wards&#39; from data source `https://raw.githubusercontent.com/RUMgroup/Spatial-data-in-R/master/rumgroup/data/wards.geojson&#39; using driver `GeoJSON&#39;
 ## Simple feature collection with 215 features and 12 fields
 ## geometry type:  POLYGON
 ## dimension:      XY
@@ -550,14 +544,14 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 ## epsg (SRID):    27700
 ## proj4string:    +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs</code></pre>
 <p>With this data in our environment we can plot a map using <code>ggplot2</code>. We use the <code>geom_sf</code> function to tell <code>ggplot2</code> we are dealing with a <code>sf</code> object.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)
 <span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> manchester_ward, <span class="kw">aes</span>()) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>We can also plot objects that are not <code>sf</code> but have geographic coordinates.</p>
 <p>Let’s load the data with the burglaries for Greater Manchester.</p>
-<pre class="sourceCode r"><code class="sourceCode r">gmp_bur &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_bur.csv&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gmp_bur &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_bur.csv&quot;</span>)</code></pre></div>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   Month = col_character(),
@@ -566,111 +560,170 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 ##   Latitude = col_double()
 ## )</code></pre>
 <p>You can see there is a column with the longitude and another with latitude. For this we can use the standard <code>geom_point</code> function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparenci and size of the points to deal with overplotting.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude), 
              <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
 <p>You could try to have a map with two layers, the points and the wards, so combining what we have done so far.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> manchester_ward, <span class="kw">aes</span>()) <span class="op">+</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> manchester_ward, <span class="kw">aes</span>()) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)<span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Ooops. What happened? Can you think of what is going on here? This is something we have already covered in previous lab sessions.</p>
 <p>In week 4 we explained how it is important to check that spatial operations that use two spatial objects rely on both objects having the same coordinate reference system, otherwise funny things may happen. We can check the coordinate reference system with the <code>st_crs</code> function from <code>sf</code>.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(manchester_ward)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(manchester_ward)</code></pre></div>
 <pre><code>## Coordinate Reference System:
 ##   EPSG: 27700 
 ##   proj4string: &quot;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs&quot;</code></pre>
 <p>What is <code>EPGS: 27700</code>? You can check <a href="https://epsg.io/27700">here</a>. This is the British National Grid. How about the police data? Well, we don’t have a <code>sf</code> object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGs1984 instead. What do we do? First we need to create a <code>sf</code> object for the police data specifying the coordinate system (we covered how to do this in week 3).</p>
-<pre class="sourceCode r"><code class="sourceCode r">burglary_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(<span class="dt">x =</span> gmp_bur, 
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">burglary_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(<span class="dt">x =</span> gmp_bur, 
                         <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>),
-                        <span class="dt">crs =</span> <span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)</code></pre>
+                        <span class="dt">crs =</span> <span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)</code></pre></div>
 <p>If we now check:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(burglary_sf)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(burglary_sf)</code></pre></div>
 <pre><code>## Coordinate Reference System:
 ##   EPSG: 4326 
 ##   proj4string: &quot;+proj=longlat +datum=WGS84 +no_defs&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(manchester_ward) <span class="op">==</span><span class="st"> </span><span class="kw">st_crs</span>(burglary_sf)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">st_crs</span>(manchester_ward) <span class="op">==</span><span class="st"> </span><span class="kw">st_crs</span>(burglary_sf)</code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
 <p>We can see the code 4326, which is basically the code for WGS84. And that the coordinate system across our two <code>sf</code> objects is different. We also covered this in week 4 but take this as a helpful refresher for the kind of things it is likely you need to do for your assignment. Essentially, we need to use the <code>st_transform</code> function. We need to make sure we translate one of these layers into the other coordinate reference system.</p>
-<pre class="sourceCode r"><code class="sourceCode r">wards_WGS84 &lt;-<span class="st"> </span><span class="kw">st_transform</span>(manchester_ward, <span class="dv">4326</span>)
-<span class="kw">st_crs</span>(wards_WGS84) <span class="op">==</span><span class="st"> </span><span class="kw">st_crs</span>(burglary_sf)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wards_WGS84 &lt;-<span class="st"> </span><span class="kw">st_transform</span>(manchester_ward, <span class="dv">4326</span>)
+<span class="kw">st_crs</span>(wards_WGS84) <span class="op">==</span><span class="st"> </span><span class="kw">st_crs</span>(burglary_sf)</code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Try now plotting the map.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> wards_WGS84, <span class="kw">aes</span>()) <span class="op">+</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span><span class="kw">geom_sf</span>(<span class="dt">data =</span> wards_WGS84, <span class="kw">aes</span>()) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude),
              <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Longitude&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Latitude&quot;</span>)<span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 </div>
 <div id="small-multiples-to-show-temporal-variation" class="section level2">
-<h2><span class="header-section-number">10.3</span> Small multiples to show temporal variation</h2>
+<h2><span class="header-section-number">10.6</span> Small multiples to show temporal variation</h2>
 <p>We have covered small multiples before. You can indeed use facets to show how things change (or don’t change) across time. Let’s just focus on 2018 to simplify things a bit.</p>
-<pre class="sourceCode r"><code class="sourceCode r">bur_sf_<span class="dv">2018</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(burglary_sf, Month <span class="op">==</span><span class="st"> &quot;2018-01&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-02&quot;</span> <span class="op">|</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_sf_<span class="dv">2018</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(burglary_sf, Month <span class="op">==</span><span class="st"> &quot;2018-01&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-02&quot;</span> <span class="op">|</span>
 <span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-03&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-04&quot;</span> <span class="op">|</span>
 <span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-05&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-06&quot;</span> <span class="op">|</span>
 <span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-07&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-08&quot;</span> <span class="op">|</span>
 <span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-09&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-10&quot;</span> <span class="op">|</span>
 <span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-11&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-12&quot;</span>)
-<span class="kw">table</span>(bur_sf_<span class="dv">2018</span><span class="op">$</span>Month)</code></pre>
+<span class="kw">table</span>(bur_sf_<span class="dv">2018</span><span class="op">$</span>Month)</code></pre></div>
 <pre><code>## 
 ## 2018-01 2018-02 2018-03 2018-04 2018-05 2018-06 2018-07 2018-08 2018-09 
 ##    2649    2316    2566    2463    2534    2410    2458    2476    2450 
 ## 2018-10 2018-11 2018-12 
 ##    2582    2701    2593</code></pre>
 <p>Let’s simplify further by focusing just in Manchester City.</p>
-<pre class="sourceCode r"><code class="sourceCode r">mc_wards_WGS864 &lt;-<span class="st"> </span><span class="kw">filter</span>(wards_WGS84, lad16nm <span class="op">==</span><span class="st"> &quot;Manchester&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mc_wards_WGS864 &lt;-<span class="st"> </span><span class="kw">filter</span>(wards_WGS84, lad16nm <span class="op">==</span><span class="st"> &quot;Manchester&quot;</span>)</code></pre></div>
 <p>Ok, let’s do a point in polygon operation, count the number of burglaries per ward, so that we can display choropleth maps. Again, this is something we cover in week 4.</p>
-<pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">st_join</span>(mc_wards_WGS864, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(wd16nm)</code></pre>
+<span class="st">  </span><span class="kw">count</span>(wd16nm)</code></pre></div>
 <p>The code above only counts for the whole year. But if we want to have a map per month we don’t need the total counts for the whole year but rather the monthly counts.</p>
-<pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">st_join</span>(mc_wards_WGS864, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(wd16nm, Month)</code></pre>
+<span class="st">  </span><span class="kw">count</span>(wd16nm, Month)</code></pre></div>
 <p>We can now try to produce the small multiples.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
 <span class="kw">tm_shape</span>(bur_per_ward) <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">tm_fill</span>(<span class="st">&quot;n&quot;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">tm_borders</span>() <span class="op">+</span>
-<span class="st">  </span><span class="kw">tm_facets</span>(<span class="st">&quot;Month&quot;</span>, <span class="dt">free.coords=</span><span class="ot">FALSE</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
-<p>##Animations!!!</p>
+<span class="st">  </span><span class="kw">tm_facets</span>(<span class="st">&quot;Month&quot;</span>, <span class="dt">free.coords=</span><span class="ot">FALSE</span>)</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+</div>
+<div id="spaghetti-plots" class="section level2">
+<h2><span class="header-section-number">10.7</span> Spaghetti plots</h2>
+<p>In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectores. You can read more about them <a href="https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph">here</a>. Let’s first get rid of the “spatial component”&quot; for the data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">spa_df &lt;-<span class="st"> </span>bur_per_ward
+<span class="kw">st_geometry</span>(spa_df) &lt;-<span class="st"> </span><span class="ot">NULL</span>
+<span class="kw">class</span>(spa_df)</code></pre></div>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<p>To produce a simple spaghetti plot we can use <code>ggplot2</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(spa_df, <span class="kw">aes</span>(<span class="dt">x=</span>Month, <span class="dt">y=</span>n, <span class="dt">group =</span> wd16nm)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Observation Time Point&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Y&quot;</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p>As you can see we are grouping by ward. So in this case each line is the trend in crime for a single ward. We can use some of the power of <code>ggplot2</code> for example to extract the mean of Y and plot it along the trajectories. And we can also customise the graphic a bit.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(spa_df, <span class="kw">aes</span>(<span class="dt">x=</span>Month, <span class="dt">y=</span>n, <span class="dt">group=</span>wd16nm)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&quot;darkgrey&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Observation Time Point&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_summary</span>(<span class="kw">aes</span>(<span class="dt">group =</span> <span class="dv">1</span>), <span class="dt">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">fun.y =</span> mean, <span class="dt">shape =</span> <span class="dv">17</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-40-1.png" width="672" /></p>
+<p>The <code>stat_summary</code> function is very helpful and we can use it to obtain other statistical summaries. See, for example, how we would plot the first and third quartile.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(spa_df, <span class="kw">aes</span>(<span class="dt">x=</span>Month, <span class="dt">y=</span>n, <span class="dt">group=</span>wd16nm)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">color=</span><span class="st">&quot;darkgrey&quot;</span>) <span class="op">+</span><span class="st"> </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Observation Time Point&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">stat_summary</span>(<span class="kw">aes</span>(<span class="dt">group =</span> <span class="dv">1</span>), <span class="dt">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="dt">fun.y =</span> quantile, 
+  <span class="dt">fun.args=</span>(<span class="kw">list</span>(<span class="dt">probs =</span> <span class="kw">c</span>(<span class="fl">0.25</span>, <span class="fl">0.75</span>))), <span class="dt">shape =</span> <span class="dv">17</span>, <span class="dt">size =</span> <span class="dv">3</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>We can also obtained a smoothed representation of the average trend:</p>
+<p>But typically you may want to use this kind of plots in different ways (see the article we linked to above). Here we are going to produce a plot higliting the trajectory in Fallowfield. Before I do that I will create a new variable identifying Fallowfield.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">spa_df<span class="op">$</span>fallowfield &lt;-<span class="st"> &quot;No&quot;</span>
+spa_df<span class="op">$</span>fallowfield[spa_df<span class="op">$</span>wd16nm<span class="op">==</span><span class="st">&quot;Fallowfield&quot;</span>] &lt;-<span class="st"> &quot;Yes&quot;</span>
+<span class="kw">table</span>(spa_df<span class="op">$</span>fallowfield)</code></pre></div>
+<pre><code>## 
+##  No Yes 
+## 372  12</code></pre>
+<p>Now I can use this variable to plot the distinct trajectory of Fallowfield.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">data=</span> spa_df, <span class="kw">aes</span>(<span class="dt">x=</span>Month, <span class="dt">y=</span>n, <span class="dt">group=</span>wd16nm), <span class="dt">color=</span><span class="st">&quot;darkgrey&quot;</span>) <span class="op">+</span>
+<span class="st">   </span><span class="kw">geom_line</span>(<span class="dt">data=</span> <span class="kw">subset</span>(spa_df, fallowfield<span class="op">==</span><span class="st">&quot;Yes&quot;</span>), <span class="kw">aes</span>(<span class="dt">x=</span>Month, <span class="dt">y=</span>n, <span class="dt">group=</span><span class="dv">1</span>),
+             <span class="dt">colour=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">size =</span><span class="dv">2</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">guides</span>(<span class="dt">colour=</span><span class="ot">FALSE</span>) <span class="op">+</span><span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Observation Time Point&quot;</span>) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>Cool! Well, you haven’t seen it all yet.</p>
+</div>
+<div id="animations" class="section level2">
+<h2><span class="header-section-number">10.8</span> Animations!!!</h2>
 <p>You want a data viz person get excited? Mention animations! Now they are brought to <code>ggplot2</code> thanks to the <code>gganimate</code> extension.</p>
 <p>The next one is a non-spatial plot, in that we do not show a map. However we will show the varying rate of burglaries per month within each ward. It is interesting to see this as an animation over time, rather than in the small multiples format, because it can better drive home the message of change (and also it looks very cool!).</p>
-<p>So first thing we do is to load the gganimate package:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gganimate)</code></pre>
-<pre><code>## Warning: package &#39;gganimate&#39; was built under R version 3.5.2</code></pre>
+<p>So first thing we do is to load the <code>gganimate</code> package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gganimate)</code></pre></div>
 <p>Then, we need to make sure that our temporal variable is a date object. We can use the <code>ymd()</code> function, from the fantastic lubridate package (really I cannot praise this package enough, it makes handling dates so easy…!) to make sure that our Month variable is a date object.</p>
 <p>But we have no day you say! Only month! How can we use <code>ymd()</code> which clearly requires <em>y</em>ear <em>m</em>onth ad <em>day</em>! Well, one approach is to make this up, and just say that everything in our data happened on the 1st of the month. We can use the <code>paste0()</code> function to do this:</p>
-<pre class="sourceCode r"><code class="sourceCode r">bur_per_ward<span class="op">$</span>date_month &lt;-<span class="st"> </span><span class="kw">ymd</span>(<span class="kw">paste0</span>(bur_per_ward<span class="op">$</span>Month, <span class="st">&quot;-01&quot;</span>))</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_per_ward<span class="op">$</span>date_month &lt;-<span class="st"> </span><span class="kw">ymd</span>(<span class="kw">paste0</span>(bur_per_ward<span class="op">$</span>Month, <span class="st">&quot;-01&quot;</span>))</code></pre></div>
 <p>Now, we can create a simple static plot, the way we already know how. Let’s plot the number of burglaries per ward, and save this in an object called <code>anim</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r">anim &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">x =</span> wd16nm, <span class="dt">y =</span> n)) <span class="op">+</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">x =</span> wd16nm, <span class="dt">y =</span> n)) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales<span class="op">::</span>comma) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Burglary counts,&quot;</span>,
        <span class="dt">x =</span> <span class="st">&quot;&quot;</span>,
-       <span class="dt">y =</span> <span class="st">&quot;&quot;</span>) </code></pre>
+       <span class="dt">y =</span> <span class="st">&quot;&quot;</span>) </code></pre></div>
 <p>Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use <code>transition_states()</code>. This transition splits your data into multiple states based on the levels in a given column, much like ggplot2::facet_wrap() splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the <code>closest_state</code> to dynamically label the graph:</p>
-<pre class="sourceCode r"><code class="sourceCode r">anim <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-42-1.gif" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-48-1.gif" /><!-- --></p>
 <p>How cool is that!?</p>
-<p>We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called <code>transformr</code> installed. Install this package, and then we can apply gganimate to a map of burglaries.</p>
+<p>We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called <code>transformr</code> installed. Install this package, and then we can apply <code>gganimate</code> to a map of burglaries.</p>
 <p>Again make a static map:</p>
-<pre class="sourceCode r"><code class="sourceCode r">anim_map &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">fill =</span> n, <span class="dt">color =</span> n)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_sf</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim_map &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">fill =</span> n, <span class="dt">color =</span> n)) <span class="op">+</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_sf</span>()</code></pre></div>
 <p>And use <code>transition_states()</code> to animate by month.</p>
-<pre class="sourceCode r"><code class="sourceCode r">anim_map <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre>
-<p><img src="10-week10_files/figure-html/unnamed-chunk-44-1.gif" /><!-- --></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim_map <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre></div>
+<p><img src="10-week10_files/figure-html/unnamed-chunk-50-1.gif" /><!-- --></p>
 <p>Ta-daaa!</p>
 <p>What a way to end this course!</p>
 
 </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
             </section>
 
           </div>

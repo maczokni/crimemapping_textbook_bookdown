@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-03-06">
+<meta name="date" content="2019-04-01">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -61,67 +61,41 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 </style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -303,30 +277,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="9.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#introduction-3"><i class="fa fa-check"></i><b>9.1</b> Introduction</a></li>
 <li class="chapter" data-level="9.2" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#looking-at-the-residuals-and-testing-for-spatial-autocorrelation-in-regression"><i class="fa fa-check"></i><b>9.2</b> Looking at the residuals and testing for spatial autocorrelation in regression</a></li>
 <li class="chapter" data-level="9.3" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#what-to-do-now"><i class="fa fa-check"></i><b>9.3</b> What to do now?</a></li>
-<li class="chapter" data-level="9.4" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#spatial-regimes"><i class="fa fa-check"></i><b>9.4</b> Spatial Regimes</a><ul>
-<li class="chapter" data-level="9.4.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#homework-1-3"><i class="fa fa-check"></i><b>9.4.1</b> HOMEWORK 1</a></li>
-</ul></li>
-<li class="chapter" data-level="9.5" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#lagrange-multipliers"><i class="fa fa-check"></i><b>9.5</b> Lagrange multipliers</a><ul>
-<li class="chapter" data-level="9.5.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#homework-2-4"><i class="fa fa-check"></i><b>9.5.1</b> HOMEWORK 2</a></li>
-</ul></li>
+<li class="chapter" data-level="9.4" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#spatial-regimes"><i class="fa fa-check"></i><b>9.4</b> Spatial Regimes</a></li>
+<li class="chapter" data-level="9.5" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#lagrange-multipliers"><i class="fa fa-check"></i><b>9.5</b> Lagrange multipliers</a></li>
 <li class="chapter" data-level="9.6" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#fitting-and-interpreting-a-spatially-lagged-model"><i class="fa fa-check"></i><b>9.6</b> Fitting and interpreting a spatially lagged model</a></li>
-<li class="chapter" data-level="9.7" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#fitting-an-interpreting-a-spatial-error-model"><i class="fa fa-check"></i><b>9.7</b> Fitting an interpreting a spatial error model</a><ul>
-<li class="chapter" data-level="9.7.1" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#homework-3-1"><i class="fa fa-check"></i><b>9.7.1</b> HOMEWORK 3</a></li>
-</ul></li>
-<li class="chapter" data-level="9.8" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#interpreting-spatial-lag-coefficiences"><i class="fa fa-check"></i><b>9.8</b> Interpreting Spatial Lag Coefficiences</a></li>
+<li class="chapter" data-level="9.7" data-path="spatial-regression-models.html"><a href="spatial-regression-models.html#fitting-an-interpreting-a-spatial-error-model"><i class="fa fa-check"></i><b>9.7</b> Fitting an interpreting a spatial error model</a></li>
 </ul></li>
 <li class="chapter" data-level="10" data-path="time-matters.html"><a href="time-matters.html"><i class="fa fa-check"></i><b>10</b> Time matters</a><ul>
-<li class="chapter" data-level="10.1" data-path="time-matters.html"><a href="time-matters.html#crime-and-incident-trend-identification"><i class="fa fa-check"></i><b>10.1</b> Crime and incident trend identification</a><ul>
-<li class="chapter" data-level="10.1.1" data-path="time-matters.html"><a href="time-matters.html#lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data"><i class="fa fa-check"></i><b>10.1.1</b> Lubridate: your guardian angel when it comes to working with temporal data</a></li>
-</ul></li>
-<li class="chapter" data-level="10.2" data-path="time-matters.html"><a href="time-matters.html#aggregating-to-simple-intervals"><i class="fa fa-check"></i><b>10.2</b> Aggregating to simple intervals</a><ul>
-<li class="chapter" data-level="10.2.1" data-path="time-matters.html"><a href="time-matters.html#aggregating-burglary-to-hour"><i class="fa fa-check"></i><b>10.2.1</b> Aggregating burglary to hour</a></li>
-</ul></li>
-<li class="chapter" data-level="10.3" data-path="time-matters.html"><a href="time-matters.html#visualising-time-on-a-map"><i class="fa fa-check"></i><b>10.3</b> Visualising time on a map</a></li>
-<li class="chapter" data-level="10.4" data-path="time-matters.html"><a href="time-matters.html#time-series"><i class="fa fa-check"></i><b>10.4</b> Time series</a><ul>
-<li class="chapter" data-level="10.4.1" data-path="time-matters.html"><a href="time-matters.html#moving-averages"><i class="fa fa-check"></i><b>10.4.1</b> Moving averages</a></li>
-<li class="chapter" data-level="10.4.2" data-path="time-matters.html"><a href="time-matters.html#moving-average-in-r"><i class="fa fa-check"></i><b>10.4.2</b> Moving average in R</a></li>
-</ul></li>
+<li class="chapter" data-level="10.1" data-path="time-matters.html"><a href="time-matters.html#getting-time-series-data-into-r-and-plotting-it"><i class="fa fa-check"></i><b>10.1</b> Getting time series data into R and plotting it</a></li>
+<li class="chapter" data-level="10.2" data-path="time-matters.html"><a href="time-matters.html#lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data"><i class="fa fa-check"></i><b>10.2</b> Lubridate: your guardian angel when it comes to working with temporal data</a></li>
+<li class="chapter" data-level="10.3" data-path="time-matters.html"><a href="time-matters.html#calendar-heatmaps"><i class="fa fa-check"></i><b>10.3</b> Calendar heatmaps</a></li>
+<li class="chapter" data-level="10.4" data-path="time-matters.html"><a href="time-matters.html#decomposing-time-series"><i class="fa fa-check"></i><b>10.4</b> Decomposing time series</a></li>
+<li class="chapter" data-level="10.5" data-path="time-matters.html"><a href="time-matters.html#static-maps-with-ggplot2"><i class="fa fa-check"></i><b>10.5</b> Static maps with ggplot2</a></li>
+<li class="chapter" data-level="10.6" data-path="time-matters.html"><a href="time-matters.html#small-multiples-to-show-temporal-variation"><i class="fa fa-check"></i><b>10.6</b> Small multiples to show temporal variation</a></li>
+<li class="chapter" data-level="10.7" data-path="time-matters.html"><a href="time-matters.html#spaghetti-plots"><i class="fa fa-check"></i><b>10.7</b> Spaghetti plots</a></li>
+<li class="chapter" data-level="10.8" data-path="time-matters.html"><a href="time-matters.html#animations"><i class="fa fa-check"></i><b>10.8</b> Animations!!!</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -363,15 +327,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.2</span> Open up and explore RStudio</h2>
 <p>In this session we will focus in developing basic familiarity with R Studio. You can use R without using R Studio, but R Studio is an app that makes it easier to work with R.</p>
 <p>R Studio is what we call an IDE, an <strong>integrated development environment</strong>. It is a fancy way of saying that it is a cool interface designed to write programming code. Every time you open up R Studio you are in fact starting a R session. R Studio automatically runs R in the background. We will be interacting with R in this course unit via R Studio.</p>
-<p><img src="img/rstudio.PNG" /></p>
+<div class="figure">
+<img src="img/rstudio.PNG" />
+
+</div>
 <p>When you first open R Studio, you will see (as in the image above) that there are 3 main windows. The bigger one to your left is the console. If you read the text in the console you will see that R Studio is indeed opening R and you can see what version of R you are running. Depending on whether you are using the cluster machines or your own installation this may vary, but don’t worry too much about it. R is constantly being updated.</p>
-<p><img src="img/openscript.png" /></p>
+<div class="figure">
+<img src="img/openscript.png" />
+
+</div>
 <p>The view in R Studio is structured so that you have 4 open windows in a regular session. Click in the <em>File</em> drop down Menu, select <em>New File</em>, then <em>R Script</em>. You will now see the 4 window areas in display. On each of these areas you can shift between different views and panels. You can also use your mouse to re-size the different windows if that is convenient.</p>
-<p><img src="img/the4views.png" /></p>
+<div class="figure">
+<img src="img/the4views.png" />
+
+</div>
 <p>Look for example at the bottom right area. Within this area you can see that there are different tabs, which are associated with different views. You can see in the tabs in this section that there are different views available: <em>Files</em>, <em>Plots</em>, <em>Packages</em>, <em>Help</em>, and <em>Viewer</em>. The <strong>Files</strong> allow you to see the files in the physical directory that is currently set up as your working environment. You can think of it like a window in Windows Explorer that lets you see the content of a folder.</p>
 <p>In the <strong>plots</strong> panel you will see any data visualisations or graphical displays of data that you produce. We haven’t yet produced any, so it is empty at the moment. If you click in <strong>packages</strong> you will see the packages that are currently available in your installation. What is a “package” in this context?</p>
-<p>You can think of R as a Lego monster. You can make the monster scarier and more powerful by adding new bits to it. Packages are those bits. They are modules that expand what R can do. There are thousands of them. Which is pretty cool!!! R can do many more things than Excel. That is down to the fact that researchers all over the world write packages that continuously expand the functionality of R.
-You can think of a package as another drop down menu that gets added to you menu tab with loads of new options for doing fancy stuff, only they are not really drop down menus. You need to access their added functionality via programming code. So yeah, R is like Excel or SPSS only with over 10,000 “drop down menus.” And all for free.</p>
+<p>You can think of R as a Lego monster. You can make the monster scarier and more powerful by adding new bits to it. Packages are those bits. They are modules that expand what R can do. There are thousands of them. Which is pretty cool!!! R can do many more things than Excel. That is down to the fact that researchers all over the world write packages that continuously expand the functionality of R. You can think of a package as another drop down menu that gets added to you menu tab with loads of new options for doing fancy stuff, only they are not really drop down menus. You need to access their added functionality via programming code. So yeah, R is like Excel or SPSS only with over 10,000 “drop down menus.” And all for free.</p>
 <p>The other really useful panel in this part of the screen is the <strong>Help</strong> viewer. Here you can access the documentation for the various packages that make up R. Learning how to use this documentation will be essential if you want to be able to get the most from R.</p>
 <p>In the diagonally opposite corner, the top left, you should now have an open script window. The <strong>script</strong> is where you write your programming code. A script is nothing but a text file with some code on it. Unlike other programs for data analysis you may have used in the past (Excel, SPSS), you need to interact with R by means of writing down instructions and asking R to evaluate those instructions. R is an <em>interpreted</em> programming language: you write instructions (code) that the R engine has to interpret in order to do something. And all the instructions we write can and should be saved in a script, so that you can return later to what you did.</p>
 <p>One of the key advantages of doing data analysis this way - with code versus with a point and click interface like Excel or SPSS is that you are producing a written record of every step you take in the analysis. First time around it will take you time to write these instructions, it may be slower than pointing and clicking. And unlike with pointing and clicking you need to know the “words” and “grammar” of this language.</p>
@@ -388,13 +360,25 @@ You can think of a package as another drop down menu that gets added to you menu
 <p>We finished the previous section talking about sharing your analytic code. Let’s face it. You would not bring a new partner or somebody that you want to impress to your place before tidying a little bit first, wouldn’t you? In the same way, if you know you may have to share your code, if you know you may have guests, you may want to keep your analysis, data, and results tidy. R Studio helps a little bit with that. R Studio helps with this by virtue of something called <strong>R Projects</strong>.</p>
 <p>Technically, a R Studio project is just a directory with the name of the project, and a few files and folders created by R Studio for internal purposes. This is where you should hold your scripts, your data, and reports. You can manage this folder with your own operating system manager (eg., Windows Explorer) or through the R Studio file manager (that you access in the bottom right corner set of windows in R Studio).</p>
 <p>When a project is reopened, R Studio opens every file and data view that was open when the project was closed last time around. Let’s learn how to create a project. Go to the <em>File</em> drown menu and select <em>New Project</em>.</p>
-<p><img src="img/newproject.png" /></p>
+<div class="figure">
+<img src="img/newproject.png" />
+
+</div>
 <p>That will open a dialog box where you ask to specify what kind of directory you want to create. Select new working directory in this dialog box.</p>
-<p><img src="img/newproject2.PNG" /></p>
+<div class="figure">
+<img src="img/newproject2.png" />
+
+</div>
 <p>Now you get another dialog box (at least you have an older version of R Studio) where you have to specify what kind of project you want to create. Select the first option <em>New Project</em>.</p>
-<p><img src="img/newproject3.PNG" /></p>
+<div class="figure">
+<img src="img/newproject3.png" />
+
+</div>
 <p>Finally, you get to select a name for your project (in the image below I use the code for this course unit, but you can use any sensible name you prefer) and you will need to specify the folder in which to place this directory. If you are using a cluster machine use the P: drive, otherwise select what you prefer in your laptop (preferably not your desktop in Windows machines).</p>
-<p><img src="img/newproject4.PNG" /></p>
+<div class="figure">
+<img src="img/newproject4.png" />
+
+</div>
 <p>With simple projects a single script file and a data file is all you may have. But with more complex projects, things can rapidly become messy. So you may want to create subdirectories within this project folder. I typically use the following structure in my own work to put all files of a certain type in the same subdirectory:</p>
 <ul>
 <li><p><em>Scripts and code</em>: Here I put all the text files with my analytic code, including rmarkdown files which is something we will introduce much later in the semester.</p></li>
@@ -409,7 +393,7 @@ You can think of a package as another drop down menu that gets added to you menu
 <div id="talk-to-your-computer" class="section level2">
 <h2><span class="header-section-number">1.5</span> Talk to your computer</h2>
 <p>Enough background, let’s write some very simple code to talk to your computer. First open a new script within the project you just created. Type the following instructions in the script window. After you are done click in the top right corner where it says <em>Run</em> (if you prefer quick shortcuts, you can select the text and then press Ctrl + Enter):</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;I hate computers&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="st">&quot;I hate computers&quot;</span>)</code></pre></div>
 <pre><code>## [1] &quot;I hate computers&quot;</code></pre>
 <p>Congratulations!!! You just run your first line of R code! Though that was a really mean thing to say to your machine!</p>
 <p>In these handouts (written in html format) you will see grayed boxes with bit of code on it. You can cut and paste this code into your script window and run the code from it to reproduce our results. As we go along we will be covering new bits of code. You should start thinking about creating a file with some of the most useful bits of code we cover so that when you do your work you can just cut and paste from this file rather than having to come back to these handouts.</p>
@@ -417,37 +401,38 @@ You can think of a package as another drop down menu that gets added to you menu
 <p>The R languages uses <strong>functions</strong> to tell the computer what to do. In the R <em>language</em> functions are the <em>verbs</em>. You can think of functions as predefined commands that somebody has already programmed into R and tell R what to do. Here you learnt your first R function: <em>print</em>. All this function does is to ask R to print whatever it is you want in the main console (see the window in the bottom left corner).</p>
 <p>In R, you can pass a number of <strong>arguments</strong> to any function. These arguments control what the function will do in each case. The arguments appear between brackets. Here we passed the text “I hate computers” as an argument. Once you execute the program, by clicking on <em>Run</em>, the R engine sends this to the CPU of your machine in the form of binary code and this produces a result. In this case we see that result printed in the main console.</p>
 <p>Every R function admits different kind of arguments. Learning R involves not only learning different functions but also learning what are the valid arguments you can pass to each function. If you want to know more about a specific function, move your cursor onto it and press the <code>F1</code>-key. The documentation of the function will then appear in the <strong>Help</strong>-viewer.</p>
-<p><img src="img/consoleresults.png" />
-As indicated above, the window in the bottom left corner is the main <strong>console</strong>.You will see that the words “I hate computers” appear printed there. If rather than using R Studio you were working directly from R, that’s all you would get: the main console where you can write code interactively (rather than all the different windows you see in R Studio). You can write your code directly in the main console and execute it line by line in an interactive fashion. However, we will be running code from scripts, so that you get used to the idea of properly documenting all the steps you take,</p>
+<p><img src="img/consoleresults.png" /> As indicated above, the window in the bottom left corner is the main <strong>console</strong>.You will see that the words “I hate computers” appear printed there. If rather than using R Studio you were working directly from R, that’s all you would get: the main console where you can write code interactively (rather than all the different windows you see in R Studio). You can write your code directly in the main console and execute it line by line in an interactive fashion. However, we will be running code from scripts, so that you get used to the idea of properly documenting all the steps you take,</p>
 </div>
 <div id="more-on-packages" class="section level2">
 <h2><span class="header-section-number">1.6</span> More on packages</h2>
 <p>Before we described packages as elements that add the functionality of R. What most packages do is they introduce new functions that allow you to ask R to do new different things.</p>
 <p>Anybody can write a package, so consequently R packages vary on quality and complexity. You can find packages in different places, as well, from official repositories (which means they have passed a minimum of quality control), something called Git Hub (a webpage where software developers post work in progress), to personal webpages (danger danger!). In early 2017 we passed the 10,000 mark just in the main official repository, so the number of things that can be done with R grows exponentially every day as people keep adding new packages.</p>
 <p>When you install R you only install a set of basic packages, not the full 10,000 plus. So if you want to use any of these added packages that are not part of the basic installation you need to first install them. You can see what packages are availabe in your local install by looking at the <em>packages</em> tab in the bottom right corner panel. Click there and check. We are going to install a package that is not there so that you see how the installation is done.</p>
-<p><img src="img/packages.png" /></p>
+<div class="figure">
+<img src="img/packages.png" />
+
+</div>
 <p>If you just installed R in your laptop you will see a shortish list of packages that constitute the basic installation of R. If you are using one of the machines in the computer cluster this list is a bit longer, because we asked IT to install some of the most commonly used packages. But knowing how to install packages is pretty essential, since you will want to do it very often.</p>
 <p>We are going to install a package called “cowsay” to demonstrate the process. In the Packages panel there is an <em>Install</em> menu that would open a dialog box and allows you to install packages. Instead we are going to use code to do this. Just cut and paste the code below into your script and then run it:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;cowsay&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;cowsay&quot;</span>)</code></pre></div>
 <p>Here we are introducing a new function “install.packages” and what we have passed as an argument is the name of the package that we want to install. This is how we install a package <em>that is available in the official CRAN repository</em>. If we wanted to install a package from somewhere else we would have to adapt the code. Later this semester you will see how we install packages from Git Hub.</p>
-<p>This line of code (as it is currently written) will install this package in a personal library that will be located in your P: drive if you are using a cluster machine. If you are using a Windows machine this will place this package within a personal library in your Documents folder. Once you install a package is in the machine/location where you install it until you physically delete it.
-The code we have used by default connects to a cloud repository called <a href="https://cran.r-project.org/">CRAN</a> that has a collection of R packages that meet a minimum set of quality criteria. CRAN is the official repository of all things R. It’s a fairly safe place to get packages from. But beware, judging whether a package is good or not requires your input. We will come back to this several times during the semester to help you make wise choices regarding packages. Given that you are connecting to an online repository you will need an internet connection every time you want to install a package.</p>
+<p>This line of code (as it is currently written) will install this package in a personal library that will be located in your P: drive if you are using a cluster machine. If you are using a Windows machine this will place this package within a personal library in your Documents folder. Once you install a package is in the machine/location where you install it until you physically delete it. The code we have used by default connects to a cloud repository called <a href="https://cran.r-project.org/">CRAN</a> that has a collection of R packages that meet a minimum set of quality criteria. CRAN is the official repository of all things R. It’s a fairly safe place to get packages from. But beware, judging whether a package is good or not requires your input. We will come back to this several times during the semester to help you make wise choices regarding packages. Given that you are connecting to an online repository you will need an internet connection every time you want to install a package.</p>
 <p>How do you find out what a package does? You look at the relevant documentation. In the Packages window scroll down until you find the new package we installed listed. Here you will see the name of the package (cowsay), a brief description of what the program is about, and the version you have installed (an indication that a package is a good package is that it has gone through several versions, that means that someone is making sure the package gets regular updates and improvements). The version I have for cowsay is 0.7.0. Yours may be older or newer. It doesn’t matter much at this point.</p>
 <p>Click in the name <em>cowsay</em>. You will see that R Studio has now brought you to the Help tab. Here is where you find the help files for this package, including all the available documentation.</p>
 <p>Every beginner in R will find these help files a bit confusing. But after a while, their format and structure will begin to make sense to you. Click where it says <em>User guides, package vignettes, and other documentation</em>. Documentation in R has become much better since people started to write <strong>vignettes</strong> for their packages. They are little tutorials that explain with examples what each package does. Click in the <em>cowsay::cowsay_tutorial</em> that you see listed here (the html link). What you will find there is an html file that gives you a detailed tutorial on this package. You don’t need to read it now, but remember that this is one way to find help when using R. You will learn to love vignettes.</p>
 <p>Let’s try to use some of the functions of this package. We will use the “say” function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(<span class="st">&quot;I hate computers&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(<span class="st">&quot;I hate computers&quot;</span>)</code></pre></div>
 <p>You will get an error message telling you that this function could not be found. What happened? Installing a package is only the first step. The next step, when you want to use it in a given session, is to <strong>load</strong> it.</p>
 <p>Think of it as a pair of shoes. You buy it once, but you have to take them from your closet and put them on when you want to use them. Same with packages, you only install once, but need to load it from your library every time you want to use it -within a given session (once loaded it will remain loaded until you finish your session).</p>
 <p>To see what packages you currently have <strong>loaded</strong> in your session, you use the <code>search()</code> function (you do not need to pass it any arguments in this case).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">search</span>()</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">search</span>()</code></pre></div>
 <pre><code>## [1] &quot;.GlobalEnv&quot;        &quot;package:stats&quot;     &quot;package:graphics&quot; 
 ## [4] &quot;package:grDevices&quot; &quot;package:utils&quot;     &quot;package:datasets&quot; 
 ## [7] &quot;package:methods&quot;   &quot;Autoloads&quot;         &quot;package:base&quot;</code></pre>
 <p>If you run this code, you will see that <code>cowsay</code> is not in the list of loaded packages. To load a package we use the <strong>library</strong> function. So if we want to load the new package we installed in our machine we would need to use the following code:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;cowsay&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;cowsay&quot;</span>)</code></pre></div>
 <p>Run the <code>search</code> function again. You will see now this package is listed. So now we can try using the function “say” again.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(<span class="st">&quot;I hate computers&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(<span class="st">&quot;I hate computers&quot;</span>)</code></pre></div>
 <pre><code>## Colors cannot be applied in this environment :( Try using a terminal or RStudio.</code></pre>
 <pre><code>## 
 ##  -------------- 
@@ -468,7 +453,7 @@ The code we have used by default connects to a cloud repository called <a href="
 ##                \_)
 ## </code></pre>
 <p>You get a random animal in the console repeating the text we passed as an argument. If we like a different animal we could pass an argument to select it. So, say, we want to have cow rather than a random animal, then we would pass the following arguments to our function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(<span class="st">&quot;I hate computers&quot;</span>, <span class="st">&quot;cow&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(<span class="st">&quot;I hate computers&quot;</span>, <span class="st">&quot;cow&quot;</span>)</code></pre></div>
 <pre><code>## Colors cannot be applied in this environment :( Try using a terminal or RStudio.</code></pre>
 <pre><code>## 
 ##  ----- 
@@ -485,11 +470,11 @@ The code we have used by default connects to a cloud repository called <a href="
 <h2><span class="header-section-number">1.7</span> Using objects</h2>
 <p>We have seen how the first argument that the “say” function takes is the text that we want to convert into speech for our given animal. We could write the text directly into the function, but now we are going to do something different. We are going to create an object to store the text.</p>
 <p>An <strong>object</strong>? What do I mean? In the same way that everything you do in R you do with functions (your verbs), everything that exist in R is an object. You can think of objects as boxes where you put stuff. In this case we are going to create an object called <em>my_text</em> and inside this object we are going to store the text “I hate computers”. How do you do this? We will use the code below:</p>
-<pre class="sourceCode r"><code class="sourceCode r">my_text &lt;-<span class="st"> &quot;I hate computers.&quot;</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_text &lt;-<span class="st"> &quot;I hate computers.&quot;</span></code></pre></div>
 <p>This bit of code is simply telling R we are creating a new object with the assigned name (“my_text”). We are creating a box with such name and inside this box we are placing a bit of text (“I hate computers”). The arrow you see is the <strong>assignment operator</strong>. This is an important part of the R language that tells R what we are including inside the object in question.</p>
 <p>Run the code. Look now at the <em>Environment</em> window in the right top corner. We see that this object is now listed there. You can think of the Environment as a warehouse where you put stuff in, your different objects. Is there a limit to this environment? Yes, your RAM. R works on your RAM, so you need to be aware that if you use very large objects you will need loads of RAM. But that won’t be a problem you will encounter in this course unit.</p>
 <p>Once we put things into these boxes or objects we can use them as arguments in our functions. See the example below:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(my_text, <span class="st">&quot;cow&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">say</span>(my_text, <span class="st">&quot;cow&quot;</span>)</code></pre></div>
 <pre><code>## Colors cannot be applied in this environment :( Try using a terminal or RStudio.</code></pre>
 <pre><code>## 
 ##  ----- 
@@ -509,14 +494,14 @@ The code we have used by default connects to a cloud repository called <a href="
 <p>Technically R is an <em>Object Oriented language</em>. Object-oriented programming (OOP) is a programming language model organized around objects rather than “actions” and data rather than logic.</p>
 <p>As we have seen earlier, to create an object you have to give it a name, and then use the assignment operator (the <code>&lt;-</code> symbol) to assign it some value.</p>
 <p>For example, if we want to create an object that we name “x”, and we want it to represent the value of 5, we write:</p>
-<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">5</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">5</span></code></pre></div>
 <p>We are simply telling R to create a <strong>numeric object</strong>, called <code>x</code>, with one element (5) or of length 1. It is numeric because we are putting a number inside this object. The length is 1 because it only has one element on it, the number 5.</p>
 <p>You can see the content of the object <code>x</code> in the main console either by using the print function we used earlier or by auto-printing, that is, just typing the name of the object and running that as code:</p>
-<pre class="sourceCode r"><code class="sourceCode r">x</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x</code></pre></div>
 <pre><code>## [1] 5</code></pre>
 <p>When writing expressions in R is very important you understand that <strong>R is case sensitive</strong>. This could drive you nuts if you are not careful. More often than not if you write an expression asking R to do something and R returns an error message, chances are that you have used lower case when upper case was needed (or vice-versa). So always check for the right spelling. For example, see what happens if I use a capital ‘X’:</p>
-<pre class="sourceCode r"><code class="sourceCode r">X</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): object &#39;X&#39; not found</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X</code></pre></div>
+<pre><code>## Error in eval(expr, envir, enclos): objeto &#39;X&#39; no encontrado</code></pre>
 <p>You will get the following message: <code>&quot;Error in eval(expr, envir, enclos): object 'X' not found&quot;</code>. R is telling us that <code>X</code> does not exist. There isn’t an object <code>X</code> (upper case), but there is an object <code>x</code> (lower case). Error messages in R are pretty good at telling you exactly what went wrong.</p>
 <p>Remember computers are very literal. They are like dogs. You can tell a dog “sit” and if it has been trained it will sit. But if you tell a dog “would you be so kind as to relax a bit and lay down in the sofa?”, it won’t have a clue what you are saying and will stare at you like you have gone mad. Error messages are computers ways of telling us “I really want to help you but I don’t really understand what you mean” (never take them personal, computers don’t hate you).</p>
 <p>When you get an error message or implausible results, you want to look back at your code to figure out what is the problem. This process is called <strong>debugging</strong>. There are some proper systematic ways to write code that facilitate debugging, but we won’t get into that here. R is very good with automatic error handling at the levels we’ll be using it at. Very often the solution will simply involve correcting the spelling.</p>
@@ -527,35 +512,35 @@ The code we have used by default connects to a cloud repository called <a href="
 <p>Now that you are a bit more familiar with the idea of an object, we can start talking about a particular type of objects, specifically we are going to discuss <strong>vectors</strong>.</p>
 <p>What is a vector? A vector is simply a set of elements <em>of the same class</em> (typically these classes are: character, numeric, integer, or logical -as in True/False). Vectors are the basic data structure in R.</p>
 <p>Typically you will use the <code>c()</code> function (c stands for concatenate) to create vectors. The code below exemplifies how to create vectors of different classes (numeric, logical, etc.). Notice how the listed elements (to simplify there are two elements in each vector below) are separated by commas:</p>
-<pre class="sourceCode r"><code class="sourceCode r">my_1st_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.6</span>) <span class="co">#creates a numeric vector with two elements</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_1st_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="fl">0.6</span>) <span class="co">#creates a numeric vector with two elements</span>
 my_2nd_vector &lt;-<span class="st"> </span><span class="kw">c</span>(1L, 2L) <span class="co">#creates an integer vector</span>
 my_3rd_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="ot">TRUE</span>, <span class="ot">FALSE</span>) <span class="co">#creates a logical vector</span>
 my_4th_vector &lt;-<span class="st"> </span><span class="kw">c</span>(T, F) <span class="co">#creates a logical vector using abbreviations of True and False, but you should avoid this formulation an instead use the full word.</span>
 my_5th_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>) <span class="co">#creates a character vector</span>
-my_6th_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">+</span>0i, <span class="dv">2</span><span class="op">+</span>4i) <span class="co">#creates a complex vector (we won&#39;t really use this class)</span></code></pre>
+my_6th_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span><span class="op">+</span>0i, <span class="dv">2</span><span class="op">+</span>4i) <span class="co">#creates a complex vector (we won&#39;t really use this class)</span></code></pre></div>
 <p>Cut and paste this code into your script and run it. You will see how all these vectors are added to your global environment and stored there.</p>
 <p>The beauty of an object oriented statistical language like R is that one you have these objects you can use them as <strong>inputs</strong> in functions, use them in operations, or to create other objects. This makes R very flexible. See some examples below:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(my_1st_vector) <span class="co">#a function to figure out the class of the vector</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(my_1st_vector) <span class="co">#a function to figure out the class of the vector</span></code></pre></div>
 <pre><code>## [1] &quot;numeric&quot;</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(my_1st_vector) <span class="co">#a function to figure out the length of the vector</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(my_1st_vector) <span class="co">#a function to figure out the length of the vector</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">my_1st_vector <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="co">#Add a constant to each element of the vector</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_1st_vector <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="co">#Add a constant to each element of the vector</span></code></pre></div>
 <pre><code>## [1] 2.5 2.6</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r">my_7th_vector &lt;-<span class="st"> </span>my_1st_vector <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co">#Create a new vector that contains the elements of my1stvector plus a constant of 1</span>
-my_1st_vector <span class="op">+</span><span class="st"> </span>my_7th_vector <span class="co">#Adds the two vectors and auto-print the results (note how the sum was done)</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_7th_vector &lt;-<span class="st"> </span>my_1st_vector <span class="op">+</span><span class="st"> </span><span class="dv">1</span> <span class="co">#Create a new vector that contains the elements of my1stvector plus a constant of 1</span>
+my_1st_vector <span class="op">+</span><span class="st"> </span>my_7th_vector <span class="co">#Adds the two vectors and auto-print the results (note how the sum was done)</span></code></pre></div>
 <pre><code>## [1] 2.0 2.2</code></pre>
 <p>As indicated earlier, when you create objects you will place them in your working memory or workspace. Each R session will be associated to a workspace (called “global environment” in R Studio). In R Studio you can visualise the objects you have created during a session in the <strong>Global Environment</strong> screen. But if you want to produce a list of what’s there you can use the <code>ls()</code> function (the results you get my differ from the ones below depending on what you actually have in your global environment).</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ls</span>() <span class="co">#list all objects in your global environment</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ls</span>() <span class="co">#list all objects in your global environment</span></code></pre></div>
 <pre><code>## [1] &quot;my_1st_vector&quot; &quot;my_2nd_vector&quot; &quot;my_3rd_vector&quot; &quot;my_4th_vector&quot;
 ## [5] &quot;my_5th_vector&quot; &quot;my_6th_vector&quot; &quot;my_7th_vector&quot; &quot;my_text&quot;      
 ## [9] &quot;x&quot;</code></pre>
 <p>If you want to delete a particular object you can do so using the <code>rm()</code> function.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(x) <span class="co">#remove x from your global environment</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(x) <span class="co">#remove x from your global environment</span></code></pre></div>
 <p>It is also possibly to remove all objects at once:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>()) <span class="co">#remove all objects from your global environment</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rm</span>(<span class="dt">list =</span> <span class="kw">ls</span>()) <span class="co">#remove all objects from your global environment</span></code></pre></div>
 <p>If you mix in a vector elements that are of a different class (for example numerical and logical), R will <strong>coerce</strong> to the minimum common denominator, so that every element in the vector is of the same class. So, for example, if you input a number and a character, it will coerce the vector to be a character vector -see the example below and notice the use of the <code>class()</code> function to identify the class of an object.</p>
-<pre class="sourceCode r"><code class="sourceCode r">my_8th_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="st">&quot;a&quot;</span>)
-<span class="kw">class</span>(my_8th_vector) <span class="co">#The class() function will tell us the class of the vector</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">my_8th_vector &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="st">&quot;a&quot;</span>)
+<span class="kw">class</span>(my_8th_vector) <span class="co">#The class() function will tell us the class of the vector</span></code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 </div>
 <div id="on-comments" class="section level2">
@@ -575,24 +560,24 @@ my_1st_vector <span class="op">+</span><span class="st"> </span>my_7th_vector <s
 <p>An important thing to understand in R is that categorical (ordered, also called ordinal, or unordered, also called nominal) data are typically encoded as <strong>factors</strong>, which are just a special type of vector. A factor is simply an integer vector that can contain <em>only predefined values</em> (this bit is very important), and is used to store categorical data. Factors are treated specially by many data analytic and visualisation functions. This makes sense because they are essentially different from quantitative variables.</p>
 <p>Although you can use numbers to represent categories, <em>using factors with labels is better than using integers to represent categories</em> because factors are self-describing (having a variable that has values “Male” and “Female” is better than a variable that has values “1” and “2” to represent male and female). When R reads data in other formats (e.g., comma separated), by default it will automatically convert all character variables into factors. If you rather keep these variables as simple character vectors you need to explicitly ask R to do so. We will come back to this next week with some examples.</p>
 <p>Factors can also be created with the <code>factor()</code> function concatenating a series of <em>character</em> elements. You will notice that is printed differently from a simply character vector and that it tells us the levels of the factor (look at the second printed line).</p>
-<pre class="sourceCode r"><code class="sourceCode r">the_smiths &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;Morrisey&quot;</span>, <span class="st">&quot;Marr&quot;</span>, <span class="st">&quot;Rourke&quot;</span>, <span class="st">&quot;Joyce&quot;</span>)) <span class="co">#create a new factor</span>
-the_smiths <span class="co">#auto-print the factor</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">the_smiths &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="kw">c</span>(<span class="st">&quot;Morrisey&quot;</span>, <span class="st">&quot;Marr&quot;</span>, <span class="st">&quot;Rourke&quot;</span>, <span class="st">&quot;Joyce&quot;</span>)) <span class="co">#create a new factor</span>
+the_smiths <span class="co">#auto-print the factor</span></code></pre></div>
 <pre><code>## [1] Morrisey Marr     Rourke   Joyce   
 ## Levels: Joyce Marr Morrisey Rourke</code></pre>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Alternatively for similar result using the as.factor() function</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Alternatively for similar result using the as.factor() function</span>
 the_smiths_bis &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Morrisey&quot;</span>, <span class="st">&quot;Marr&quot;</span>, <span class="st">&quot;Rourke&quot;</span>, <span class="st">&quot;Joyce&quot;</span>) <span class="co">#create a character vector</span>
 the_smiths_f &lt;-<span class="st"> </span><span class="kw">as.factor</span>(the_smiths_bis) <span class="co">#create a factor using a character vector</span>
-the_smiths_f <span class="co">#auto-print factor</span></code></pre>
+the_smiths_f <span class="co">#auto-print factor</span></code></pre></div>
 <pre><code>## [1] Morrisey Marr     Rourke   Joyce   
 ## Levels: Joyce Marr Morrisey Rourke</code></pre>
 <p>Factors in R can be seen as vectors with a bit more information added. This extra information consists of a record of the distinct values in that vector, called <strong>levels</strong>. If you want to know the levels in a given factor you can use the <code>levels()</code> function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(the_smiths)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">levels</span>(the_smiths)</code></pre></div>
 <pre><code>## [1] &quot;Joyce&quot;    &quot;Marr&quot;     &quot;Morrisey&quot; &quot;Rourke&quot;</code></pre>
 <p>Notice that the levels appear printed by alphabetical order. There will be situations when this is not the most convenient order. Later on we will discuss in these tutorials how to reorder your factor levels when you need to.</p>
 </div>
 <div id="naming-conventions-for-objects-in-r" class="section level2">
 <h2><span class="header-section-number">1.12</span> Naming conventions for objects in R</h2>
-<p>You may have noticed the various names I have used to designate objects (<code>my_1st_vector</code>, <code>the_smiths</code>, etc.). You can use almost any names you want for your objects. Objects in R can have names of any length consisting of letters, numbers, underscores (&quot;_“) or the period (”.&quot;) and should begin with a letter. In addition, when naming objects you need to remember:</p>
+<p>You may have noticed the various names I have used to designate objects (<code>my_1st_vector</code>, <code>the_smiths</code>, etc.). You can use almost any names you want for your objects. Objects in R can have names of any length consisting of letters, numbers, underscores (“_“) or the period (”.“) and should begin with a letter. In addition, when naming objects you need to remember:</p>
 <ul>
 <li><p><em>Some names are forbidden</em>. These include words such as FALSE and TRUE, logical operators, and programming words like Inf, for, else, break, function, and words for special entities like NA and NaN.</p></li>
 <li><p><em>You want to use names that do not correspond to a specific function.</em> We have seen, for example, that there is a function called <code>print()</code>, you don’t want to call an object “print” to avoid conflicts. To avoid this use nouns instead of verbs for naming your variables and data.</p></li>
@@ -602,8 +587,8 @@ the_smiths_f <span class="co">#auto-print factor</span></code></pre>
 </ul>
 <p>It is also important to remember that R will always treat numbers as numbers. This sounds straightforward, but actually it is important to note. We can name our variables almost anything. EXCEPT they cannot be numbers. Numbers are <strong>protected</strong> by R. 1 will always mean 1.</p>
 <p>If you want, give it a try. Try to create a variable called 12 and assign it the value “twelve”. As we did last week, we can assign something a meaning by using the “&lt;-” characters.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="dv">12</span> &lt;-<span class="st"> &quot;twelve&quot;</span></code></pre>
-<pre><code>## Error in 12 &lt;- &quot;twelve&quot;: invalid (do_set) left-hand side to assignment</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">12</span> &lt;-<span class="st"> &quot;twelve&quot;</span></code></pre></div>
+<pre><code>## Error in 12 &lt;- &quot;twelve&quot;: lado izquierdo de la asignación inválida (do_set)</code></pre>
 <p>You get an error!</p>
 </div>
 <div id="dataframes" class="section level2">
@@ -611,19 +596,19 @@ the_smiths_f <span class="co">#auto-print factor</span></code></pre>
 <p>Ok, so now that you understand some of the basic types of objects you can use in R, let’s start taking about data frames. One of the most common objects you will work with in this course are <strong>data frames</strong>. Data frames can be created with the <code>data.frame()</code> function.</p>
 <p>Data frames are <em>multiple vectors</em> of possibly different classes (e.g., numeric, factors), but of the same length (e.g., all vectors, or variables, have the same number of rows). This may sound a bit too technical but it is simply a way of saying that a data frame is what in other programmes for data analysis gets represented as data sets, the tabular spreadsheets you have seen when using Excel.</p>
 <p>Let’s create a data frame with two variables:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We create a dataframe called mydata.1 with two variables, an integer vector called foo and a logical vector called bar</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#We create a dataframe called mydata.1 with two variables, an integer vector called foo and a logical vector called bar</span>
 mydata_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">foo =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">bar =</span> <span class="kw">c</span>(T,T,F,F))
-mydata_<span class="dv">1</span></code></pre>
+mydata_<span class="dv">1</span></code></pre></div>
 <pre><code>##   foo   bar
 ## 1   1  TRUE
 ## 2   2  TRUE
 ## 3   3 FALSE
 ## 4   4 FALSE</code></pre>
 <p>Or alternatively for the same result:</p>
-<pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">4</span>
 y &lt;-<span class="st"> </span><span class="kw">c</span>(T, T, F, F)
 mydata_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw">data.frame</span> (<span class="dt">foo =</span> x, <span class="dt">bar =</span> y)
-mydata_<span class="dv">2</span></code></pre>
+mydata_<span class="dv">2</span></code></pre></div>
 <pre><code>##   foo   bar
 ## 1   1  TRUE
 ## 2   2  TRUE
@@ -633,13 +618,13 @@ mydata_<span class="dv">2</span></code></pre>
 <p>These are silly toy examples of data frames. In this course, we will use real data. Next week we will learn in greater detail how to read data into R. But you should also know that R comes with pre-installed data sets. Some packages in fact are nothing but collections of data frames.</p>
 <p>Let’s have a look at some of them. We are going to look at some data that are part of the <em>fivethirtyeight</em> package. This package contains data sets and code behind the stories in <a href="http://fivethirtyeight.com/">this particular online newspaper</a>. This package is not part of the base installation of R, so you will need to install it first. I won’t give you the code for it. See if you can figure it out by looking at previous examples.</p>
 <p>Done? Ok, now we are going to look at the data sets that are included in this package. Remember first we have to load the package if we want to use it:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;fivethirtyeight&quot;</span>)
-<span class="kw">data</span>(<span class="dt">package=</span><span class="st">&quot;fivethirtyeight&quot;</span>) <span class="co">#This function will return all the data frames that are available in the named package.</span></code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;fivethirtyeight&quot;</span>)
+<span class="kw">data</span>(<span class="dt">package=</span><span class="st">&quot;fivethirtyeight&quot;</span>) <span class="co">#This function will return all the data frames that are available in the named package.</span></code></pre></div>
 <p>Notice that this package has some data sets that relate to stories covered in this journal that had a criminological angle. Let’s look for example at the hate_crimes data set. How do you that? First we have to load the data frame into our global environment. To do so use the following code:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;hate_crimes&quot;</span>)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;hate_crimes&quot;</span>)</code></pre></div>
 <p>This function will search among all the <em>loaded</em> packages and locate the hate_crimes data set. Notice that it now appears in the global environment, although it also says “promise” next to it. To see the data in full you need to do something to it first. So let’s do that.</p>
 <p>Every object in R can have <strong>attributes</strong>. These are: names; dimensions (for matrices and arrays: number of rows and columns) and dimensions names; class of object (numeric, character, etc.); length (for a vector this will be the number of elements in the vector); and other user-defined. You can access the attributes of an object using the <code>attributes()</code> function. Let’s query R for the attributes of this data frame.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attributes</span>(hate_crimes)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">attributes</span>(hate_crimes)</code></pre></div>
 <pre><code>## $class
 ## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;
 ## 
@@ -728,22 +713,28 @@ mydata_<span class="dv">2</span></code></pre>
 ## [11] &quot;hate_crimes_per_100k_splc&quot;   &quot;avg_hatecrimes_per_100k_fbi&quot;</code></pre>
 <p>These results printed in the may console may not make too much sense to you at this point. We will return to this next week, so do not worry.</p>
 <p>Go now to the global environment panel and left click on the data frame hate_crimes. This will open the data viewer in the top left section of R Studio. What you get there is a spreadsheet with 12 variables and 51 observations. Each variable in this case is providing you with information (demographics, voting patterns, and hate crime) about each of the US states.</p>
-<p><img src="img/dataview.png" /></p>
+<div class="figure">
+<img src="img/dataview.png" />
+
+</div>
 </div>
 <div id="exploring-data" class="section level2">
 <h2><span class="header-section-number">1.14</span> Exploring data</h2>
 <p>Ok, let’s now have a quick look at the data. There are so many different ways of producing summary stats for data stored in R that is impossible to cover them all! We will just introduce a few functions that you may find useful for summarising data. Before we do any of that it is important you get a sense for what is available in this data set. Go to the help tab and in the search box input the name of the data frame, this will take you to the documentation for this data frame. Here you can see a list of the available variables.</p>
-<p><img src="img/codebook.png" /></p>
+<div class="figure">
+<img src="img/codebook.png" />
+
+</div>
 <p>Let’s start with the <em>mean</em>. This function takes as an argument the numeric variable for which you want to obtain the mean. Because of the way that R works you cannot simply put the name of the variable you have to tell R as well in which data frame is that variable located. To do that you write the name of the data frame, the dollar sign, and then the name of the variable you want to summarise. If you want to obtain the mean of the variable that gives us the proportion of people that voted for Donald Trump you can use the following expression:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(hate_crimes<span class="op">$</span>share_vote_trump)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(hate_crimes<span class="op">$</span>share_vote_trump)</code></pre></div>
 <pre><code>## [1] 0.49</code></pre>
 <p>Another function you may want to use with numeric variables is <code>summary()</code>:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(hate_crimes<span class="op">$</span>share_vote_trump)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(hate_crimes<span class="op">$</span>share_vote_trump)</code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   0.040   0.415   0.490   0.490   0.575   0.700</code></pre>
 <p>This gives you the five number summary (minimum, first quartile, median, third quartile, and maximum, plus the mean and the count of missing values if there are any).</p>
 <p>You don’t have to specify a variable you can ask for these summaries from the whole data frame:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(hate_crimes)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(hate_crimes)</code></pre></div>
 <pre><code>##     state           median_house_inc share_unemp_seas  share_pop_metro 
 ##  Length:51          Min.   :35521    Min.   :0.02800   Min.   :0.3100  
 ##  Class :character   1st Qu.:48657    1st Qu.:0.04200   1st Qu.:0.6300  
@@ -778,8 +769,13 @@ mydata_<span class="dv">2</span></code></pre>
 ##  NA&#39;s   :1</code></pre>
 <p>There are multiple ways of getting results in R. Particularly for basic and intermediate-level statistical analysis many core functions and packages can give you the answer that you are looking for. For example, there are a variety of packages that allow you to look at summary statistics using functions defined within those packages. You will need to install these packages before you can use them.</p>
 <p>I am only going to introduce one of them here <em>skimr</em>. It is neat and is maintained by one of my former stats teachers, the criminologist Elin Waring. You will need to install it before anything else. Use the code you have learnt to do so and then load it. I won’t be providing you the code for it, by now you should now how to do this.</p>
+<pre><code>## 
+## Attaching package: &#39;skimr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:stats&#39;:
+## 
+##     filter</code></pre>
 <p>Once you have loaded the <em>skimr</em> package you can use it. Its main function is <em>skim</em>. Like <em>summary</em> for data frames, skim presents results for all the columns and the statistics will depend on the class of the variable. However, the results are displayed and stored in a nicer way -though we won’t get into the details of this right now.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">skim</span>(hate_crimes)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">skim</span>(hate_crimes)</code></pre></div>
 <p>Skim summary statistics<br />
 n obs: 51<br />
 n variables: 12</p>
@@ -995,11 +991,11 @@ n variables: 12</p>
 </table>
 <p>Apart from summary statistics, last semester we discussed a variety of ways to graphically display variables. In week 3 we covered scatterplots, a graphical device to show the relationship between two quantitative variables. I don’t know if you remember the amount of point and click you had to do in Excel for getting this done. If not you can review the notes <a href="https://rawgit.com/maczokni/MSCD/master/Lesson_3.html#visualising-the-differences-between-groups">here</a>.</p>
 <p>There’s also many different ways of producing graphics in R. In this course we rely on a package called <em>ggplot2</em>. It is already in the clusters, but if you are using your own laptop will need to install it first and then load it.</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
 <p>Then we will use one of its functions to create a scatterplot. Don’t worry about understanding this code below, we will have a whole session on the ggplot function:</p>
-<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(hate_crimes, <span class="kw">aes</span>(<span class="dt">x=</span>share_vote_trump, <span class="dt">y=</span>avg_hatecrimes_per_100k_fbi)) <span class="op">+</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(hate_crimes, <span class="kw">aes</span>(<span class="dt">x=</span>share_vote_trump, <span class="dt">y=</span>avg_hatecrimes_per_100k_fbi)) <span class="op">+</span>
 <span class="st">    </span><span class="kw">geom_point</span>(<span class="dt">shape=</span><span class="dv">1</span>) <span class="op">+</span>
-<span class="st">     </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>lm)</code></pre>
+<span class="st">     </span><span class="kw">geom_smooth</span>(<span class="dt">method=</span>lm)</code></pre></div>
 <pre><code>## Warning: Removed 1 rows containing non-finite values (stat_smooth).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_point).</code></pre>
 <p><img src="01-intro_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
@@ -1012,7 +1008,10 @@ n variables: 12</p>
 <p>Truth is what is real is your scripts and the data that your scripts use as inputs. You don’t need anything that is in your environment, because you can recreate those things by re-running your scripts. I like keeping things tidy, so when I am asked whether I want to save the image, my answer is always no. Most long time users of R never save the workspace, nor care about saving the history either. Remember what is real is your scripts and the data.</p>
 <p>Keep in mind though that you should not then panic if you open your next R Studio session and you don’t see any objects in your environment. The good news is you can generate them quickly enough (if you really need them) by re-running your scripts. I would suggest that at this point it may be helpful for you to get into this habit as well. I suspect otherwise you will be in week 9 of the semester and have an environment full of garbage you don’t really need.</p>
 <p>What is more. I would suggest you go to the Tools drop down menu, select Global Options, and make sure you select “Never” where it says “Save workspace”. Then click “Apply”. This way you will never be asked to save what is in your global environment when you terminate a session.</p>
-<p><img src="img/neversave.PNG" /></p>
+<div class="figure">
+<img src="img/neversave.png" />
+
+</div>
 
 </div>
 </div>

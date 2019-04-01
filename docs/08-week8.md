@@ -540,14 +540,7 @@ library(sjPlot)
 ```
 
 ```
-## Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
-## TMB was built with Matrix version 1.2.15
-## Current Matrix version is 1.2.14
-## Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
-```
-
-```
-## Learn more about sjPlot with 'browseVignettes("sjPlot")'.
+## Install package "strengejacke" from GitHub (`devtools::install_github("strengejacke/strengejacke")`) to load all sj-packages at once!
 ```
 
 Let's try with a more complex example:
