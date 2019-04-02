@@ -138,6 +138,7 @@ agassault_ny$wday <- wday(agassault_ny$date_single, label = TRUE, abbr=FALSE, lo
 
 ```
 
+If your script throws an error about the UK-locale here, just remove the `locale = "UK"` part. This only defines which language to choose to print dates in general, or more specifically here how to labels months and days. So instead of 'Monday', you would get your system language's equivalent of Monday, such as 'Lunes' or 'Montag'.
 
 And as you can see now you have a set of additional variables that have extracted information from your original time of occurrence variable.
 
