@@ -1,9 +1,9 @@
 # Time matters
 
 
-This week we consider another important factor that is present in our data that we don't always talk about, and that is the importance of *time*. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or depreived area you have different access to resources, and therefore your outcomes in terms of involvement with the criminal justice system also differs. However time is just as important as place. We often hear that crime is "going up" or "going down" over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding. 
+This week we consider another important factor that is present in our data that we don't always talk about, and that is the importance of *time*. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or deprived area you have different access to resources, and therefore your outcomes in terms of involvement with the criminal justice system also differs. However time is just as important as place. We often hear that crime is "going up" or "going down" over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding. 
 
-When violence increases bewteen March and August, is that because we are seeing an increase in crime and offending? Or is it possible that the time of year has something to do with this? How much must crime increase and over how long of a time, in order to be able to confidently say that crime is on the increase? These are important, and not always easy questions to answer, and this week we will begin to think about this. 
+When violence increases between March and August, is that because we are seeing an increase in crime and offending? Or is it possible that the time of year has something to do with this? How much must crime increase and over how long of a time, in order to be able to confidently say that crime is on the increase? These are important, and not always easy questions to answer, and this week we will begin to think about this. 
 
 All crimes occur at a specific date and time, however such definite temporal information is only available when victims or witnesses are present, alarms are triggered, etc., at the time of occurrence. This specific temporal data is most often collected in crimes against persons. In these cases, cross-tabulations or histogram of weekday and hour by count will suffice. The great majority of reported events are crimes against property. In these cases, there are seldom victims or witnesses present. These events present the analyst with ‘ranged’ temporal data, that is, an event reported as occurring over a range of hours or even days. In the case of ranged temporal data, analysis is possible through use of equal chance or probability methods. If an event was reported as having occurred from Monday to Tuesday, in the absence of evidence to the contrary, it is assumed the event had an equal chance or probability of occurring on each of the two days, or .5 (%50). In the same manner, if an event was reported as having occurred over a 10 hour span there is a 10% chance the event occurred during any one of the hours. This technique requires a reasonable number of events in the data set to be effective. The resulting probabilities are totalled in each category and graphed or cross-tabulated. This produces a comparison of relative frequency, by weekday or hour [source](http://cradpdf.drdc-rddc.gc.ca/PDFS/unc76/p530054.pdf).
 
@@ -41,7 +41,7 @@ gmp_timeseries <- ts(gmp_month_c)
 
 ```
 
-You can autoprint to see the result:
+You can auto print to see the result:
 
 ```{r, eval=FALSE}
 gmp_timeseries
@@ -88,7 +88,7 @@ autoplot(gmp_timeseries)
 
 As you saw, the data from Police.Uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular. 
 
-Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assult. The data from an open source initiative maintained by Matt Ashby [here](https://osf.io/zyaqn/).  I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years. 
+Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assault. The data from an open source initiative maintained by Matt Ashby [here](https://osf.io/zyaqn/).  I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years. 
 
 ```{r}
 library(readr)
@@ -248,7 +248,7 @@ ny_timeseriescomponents <- decompose(ny_timeseries)
 #plot(ny_timeseriescomponents)
 ```
 
-We can also use `ggplot2` for these purposes. In particular we can use the `ggseas` extension which allows for seasonal decomposition within ggplot — see [here](https://github.com/ellisp/ggseas) for details. First I use the `tsdf` function that turns the `ts` object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.
+We can also use `ggplot2` for these purposes. In particular we can use the `ggseas` extension which allows for seasonal decomposition within `ggplot` — see [here](https://github.com/ellisp/ggseas) for details. First I use the `tsdf` function that turns the `ts` object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.
 
 ```{r}
 library(ggseas)
@@ -286,7 +286,7 @@ Let's load the data with the burglaries for Greater Manchester.
 gmp_bur <- read_csv("https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/gmp_bur.csv")
 ```
 
-You can see there is a column with the longitude and another with latitude. For this we can use the standard `geom_point` function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparency and size of the points to deal with overplotting.
+You can see there is a column with the longitude and another with latitude. For this we can use the standard `geom_point` function specifying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparency and size of the points to deal with overplotting.
 
 ```{r}
 ggplot() + 
@@ -393,7 +393,7 @@ tm_shape(bur_per_ward) +
 
 ## Spaghetti plots
 
-In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectores. You can read more about them [here](https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph). Let's first get rid of the "spatial component" for the data.
+In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectories. You can read more about them [here](https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph). Let's first get rid of the "spatial component" for the data.
 
 ```{r}
 spa_df <- bur_per_ward
@@ -478,7 +478,7 @@ library(gganimate)
 ```
 
 
-Then, we need to make sure that our temporal variable is a date object. We can use the `ymd()` function, from the fantastic lubridate package (really I cannot praise this package enough, it makes handling dates so easy...!) to make sure that our Month variable is a date object. 
+Then, we need to make sure that our temporal variable is a date object. We can use the `ymd()` function, from the fantastic `lubridate` package (really I cannot praise this package enough, it makes handling dates so easy...!) to make sure that our Month variable is a date object. 
 
 But we have no day you say! Only month! How can we use `ymd()` which clearly requires *y*ear *m*onth ad *day*! Well, one approach is to make this up, and just say that everything in our data happened on the 1st of the month. We can use the `paste0()` function to do this: 
 
@@ -503,7 +503,7 @@ anim <- ggplot(bur_per_ward, aes(x = wd16nm, y = n, fill=ifelse(wd16nm=="Fallowf
 ```
 
 
-Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use `transition_states()`. This transition splits your data into multiple states based on the levels in a given column, much like `ggplot2::facet_wrap()` splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the `closest_state` to dynamically label the graph:
+Now, finally, we can animate this graph. Take the object of the static graph (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use `transition_states()`. This transition splits your data into multiple states based on the levels in a given column, much like `ggplot2::facet_wrap()` splits up the data in multiple panels. It then shifts between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the `closest_state` to dynamically label the graph:
 
 ```{r}
 anim + transition_states(date_month, transition_length = 1, state_length = 1) +
@@ -513,7 +513,7 @@ anim + transition_states(date_month, transition_length = 1, state_length = 1) +
 
 How cool is that!?
 
-We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called `transformr` installed. Install this package, and then we can apply `gganimate` to a map of burglaries. 
+We can do this for maps as well. However, to apply `gganimate` to `sf` objects, you need to have a package called `transformr` installed. Install this package, and then we can apply `gganimate` to a map of burglaries. 
 
 Again make a static map: 
 
