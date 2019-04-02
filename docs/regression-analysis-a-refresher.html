@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-04-01">
+<meta name="date" content="2019-04-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -624,7 +624,7 @@ fit_<span class="dv">3</span> &lt;-<span class="st"> </span><span class="kw">lm<
 <p>Communicating your results in a clear manner is incredibly important. We have seen the tabular results produced by R. If you want to use them in a paper you may need to do some tidying up of those results. There are a number of packages (<code>textreg</code>, <code>stargazer</code>) that automatise that process. They take your <code>lm</code> objects and produce tables that you can put straight away in your reports or papers. One popular trend in presenting results is the <strong>coefficient plot</strong> as an alternative to the table of regression coefficients. There are various ways of producing coefficient plots with R for a variety of models. See <a href="https://www.r-statistics.com/2010/07/visualization-of-regression-coefficients-in-r/">here</a> or <a href="http://felixhaass.de/dataviz_ggplot2/session4.html">here</a>, for example.</p>
 <p>We are going to use instead the <code>plot_model()</code> function of the <code>sjPlot</code> package, that makes it easier to produce this sort of plots. You can find a more detailed tutorial about this function <a href="https://strengejacke.wordpress.com/2017/10/23/one-function-to-rule-them-all-visualization-of-regression-models-in-rstats-w-sjplot/">here</a>. See below for an example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(sjPlot)</code></pre></div>
-<pre><code>## Install package &quot;strengejacke&quot; from GitHub (`devtools::install_github(&quot;strengejacke/strengejacke&quot;)`) to load all sj-packages at once!</code></pre>
+<pre><code>## Learn more about sjPlot with &#39;browseVignettes(&quot;sjPlot&quot;)&#39;.</code></pre>
 <p>Let’s try with a more complex example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit_<span class="dv">4</span> &lt;-<span class="st"> </span><span class="kw">lm</span>(HR90 <span class="op">~</span><span class="st"> </span>RD90 <span class="op">+</span><span class="st"> </span>SOUTH_f <span class="op">+</span><span class="st"> </span>DV90 <span class="op">+</span><span class="st"> </span>MA90 <span class="op">+</span><span class="st"> </span>PS90, <span class="dt">data=</span>ncovr)
 <span class="kw">plot_model</span>(fit_<span class="dv">4</span>, <span class="dt">breakLabelsAt =</span> <span class="dv">30</span>)</code></pre></div>

@@ -25,7 +25,7 @@
 <meta name="author" content="Juanjo Medina and Reka Solymosi">
 
 
-<meta name="date" content="2019-04-01">
+<meta name="date" content="2019-04-02">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -314,8 +314,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="time-matters" class="section level1">
 <h1><span class="header-section-number">Chapter 10</span> Time matters</h1>
-<p>This week we consider another important factor that is present in our data that we don’t always talk about, and that is the importance of <em>time</em>. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or depreived area you have different access to resources, and therefore your outcomes in terms of involvement with criminal justica system also differs. However time is just as important as place. We often hear that crime is “going up” or “going down” over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding.</p>
-<p>When violence increases bewteen March and August, is that because we are seeing an increase in crime and offending? Or is it possible that the time of year has something to do with this? How much must crime increase and over how long of a time, in order to be able to confidently say that crime is on the increase? These are important, and not always easy questions to answer, and this week we will begin to think about this.</p>
+<p>This week we consider another important factor that is present in our data that we don’t always talk about, and that is the importance of <em>time</em>. The importance of place in criminology and crime analysis is widely discussed. We know certain areas can be crime hotspots, and we know that whether you come from a well of or deprived area you have different access to resources, and therefore your outcomes in terms of involvement with the criminal justice system also differs. However time is just as important as place. We often hear that crime is “going up” or “going down” over time. It is very important, that as well-rounded criminologists, you are able to talk about these concepts with appropriate knowledge and understanding.</p>
+<p>When violence increases between March and August, is that because we are seeing an increase in crime and offending? Or is it possible that the time of year has something to do with this? How much must crime increase and over how long of a time, in order to be able to confidently say that crime is on the increase? These are important, and not always easy questions to answer, and this week we will begin to think about this.</p>
 <p>All crimes occur at a specific date and time, however such definite temporal information is only available when victims or witnesses are present, alarms are triggered, etc., at the time of occurrence. This specific temporal data is most often collected in crimes against persons. In these cases, cross-tabulations or histogram of weekday and hour by count will suffice. The great majority of reported events are crimes against property. In these cases, there are seldom victims or witnesses present. These events present the analyst with ‘ranged’ temporal data, that is, an event reported as occurring over a range of hours or even days. In the case of ranged temporal data, analysis is possible through use of equal chance or probability methods. If an event was reported as having occurred from Monday to Tuesday, in the absence of evidence to the contrary, it is assumed the event had an equal chance or probability of occurring on each of the two days, or .5 (%50). In the same manner, if an event was reported as having occurred over a 10 hour span there is a 10% chance the event occurred during any one of the hours. This technique requires a reasonable number of events in the data set to be effective. The resulting probabilities are totalled in each category and graphed or cross-tabulated. This produces a comparison of relative frequency, by weekday or hour <a href="http://cradpdf.drdc-rddc.gc.ca/PDFS/unc76/p530054.pdf">source</a>.</p>
 <p><strong>Temporal crime analysis</strong> looks at trends in crime or incidents. A crime or incident trend is a broad direction or pattern that specific types or general crime and/or incidents are following.</p>
 <p>Three types of trend can be identified:</p>
@@ -336,7 +336,7 @@ gmp_month &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span c
 gmp_month_c &lt;-<span class="st"> </span><span class="kw">select</span>(gmp_month, count)
 <span class="co">#Then we create the time series object</span>
 gmp_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(gmp_month_c)</code></pre></div>
-<p>You can autoprint to see the result:</p>
+<p>You can auto print to see the result:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">gmp_timeseries</code></pre></div>
 <p>Sometimes the time series data set that you have may have been collected at regular intervals that were less than one year, for example, monthly or quarterly. In this case, you can specify the number of times that data was collected per year by using the <code>frequency</code> parameter in the <code>ts()</code> function. For monthly time series data, you set <code>frequency=12</code>, while for quarterly time series data, you set <code>frequency=4.</code></p>
 <p>You can also specify the first year that the data was collected, and the first interval in that year by using the <code>start</code> parameter in the <code>ts()</code> function. So, in our case, we would do as follows:</p>
@@ -372,7 +372,7 @@ gmp_month &lt;-<span class="st"> </span><span class="kw">rename</span>(gmp_month
 <div id="lubridate-your-guardian-angel-when-it-comes-to-working-with-temporal-data" class="section level2">
 <h2><span class="header-section-number">10.2</span> Lubridate: your guardian angel when it comes to working with temporal data</h2>
 <p>As you saw, the data from Police.Uk is aggregated by months. We do not know when the offences happened, only the month, but nothing more granular than that. American police data on the other hand is much more granular.</p>
-<p>Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assult. The data from an open source initiative maintained by Matt Ashby <a href="https://osf.io/zyaqn/">here</a>. I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years.</p>
+<p>Cities release their own data. Here, we will be looking at crimes from New York City on aggravated assault. The data from an open source initiative maintained by Matt Ashby <a href="https://osf.io/zyaqn/">here</a>. I have filter and selected the data so that we are only working with aggravated assaults from New York for a period of five years.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readr)
 agassault_ny&lt;-<span class="kw">read_csv</span>(<span class="st">&quot;https://raw.githubusercontent.com/maczokni/crimemapping_textbook_bookdown/master/data/agassault.csv&quot;</span>)</code></pre></div>
 <pre><code>## Parsed with column specification:
@@ -387,14 +387,14 @@ agassault_ny&lt;-<span class="kw">read_csv</span>(<span class="st">&quot;https:/
 ##   date_start = col_datetime(format = &quot;&quot;),
 ##   date_end = col_datetime(format = &quot;&quot;)
 ## )</code></pre>
-<p>When you read the data into R, you will see that there is a column for date called <strong>date_single</strong>. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is 2014-01-01 00:03:00. What kind of variable is this?</p>
+<p>When you read the data into R, you will see that there is a column for date called <strong>date_single</strong>. The date is in the format dd/mm/yyyy and h/m/s. So the first date on there you can see is <em>2014-01-01 00:03:00</em>. What kind of variable is this?</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date_single)</code></pre></div>
 <pre><code>## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;</code></pre>
-<p>Our date and time variables are of class <code>POSIXct</code> and <code>POSIXt</code>. These are the two basic classes of date/times. Class “POSIXct” represents the (signed) number of seconds since the beginning of 1970 as a numeric vector. Class “POSIXlt” is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown).</p>
+<p>Our date and time variables are of class <code>POSIXct</code> and <code>POSIXt</code>. These are the two basic classes of date/times. Class “POSIXct” represents the (signed) <a href="https://en.wikipedia.org/wiki/Unix_time">number of seconds since the beginning of 1970</a> as a numeric vector. Class “POSIXt” is a named list of vectors representing seconds (0–61), minutes (0–59), hours (0–23), day of the month (1–31), months after the first of the year (0–11), years since 1900, day of the week, starting on Sunday (0–6), and a flag for whether it is daylight savings time or not (positive if in force, zero if not, negative if unknown).</p>
 <p>Let’s plot this data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(date_single)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_freqpoly</span>(<span class="dt">binwidth =</span> <span class="dv">604800</span>) <span class="co"># 86400 seconds = 1 day, 604800 one week</span></code></pre></div>
+<span class="st">  </span><span class="kw">geom_freqpoly</span>(<span class="dt">binwidth =</span> <span class="dv">7</span><span class="op">*</span><span class="dv">24</span><span class="op">*</span><span class="dv">60</span><span class="op">*</span><span class="dv">60</span>) <span class="co"># 7 days in seconds</span></code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>Notice what <code>geom_freqpoly</code> is doing. We have a dataframe with rows for each case. The data is not aggregated in any form. But this function counts on the fly the number of cases (of rows) for each of the bins as we define them. It is, thus, a convenient function that saves us from having to first do that aggregation ourselves when we want to plot it. This may be helpful when you get your data for the assignment.</p>
 <p>An alternative approach to plotting individual components is to round the date to a nearby unit of time, with <code>floor_date()</code>, <code>round_date()</code>, and <code>ceiling_date()</code>. Each function takes a vector of dates to adjust and then the name of the unit round down (floor), round up (ceiling), or round to.</p>
@@ -427,18 +427,18 @@ agassault_ny<span class="op">$</span>wday &lt;-<span class="st"> </span><span cl
 <div id="calendar-heatmaps" class="section level2">
 <h2><span class="header-section-number">10.3</span> Calendar heatmaps</h2>
 <p>We can also parse the temporal information that is available in our date variable. For the next chart we introduce we only need date, month, and year. We don’t need the time.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.POSIXct</span>(agassault_ny<span class="op">$</span>date_single,<span class="dt">format=</span><span class="st">&quot;%Y:%m:%d %H:%M:%S&quot;</span>),<span class="st">&quot;%d:%m:%Y&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">format</span>(<span class="kw">as.POSIXct</span>(agassault_ny<span class="op">$</span>date_single,<span class="dt">format=</span><span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>),<span class="st">&quot;%Y-%m-%d&quot;</span>)
 <span class="kw">head</span>(agassault_ny<span class="op">$</span>date)</code></pre></div>
-<pre><code>## [1] &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot; &quot;01:01:2014&quot;
-## [6] &quot;01:01:2014&quot;</code></pre>
+<pre><code>## [1] &quot;2014-01-01&quot; &quot;2014-01-01&quot; &quot;2014-01-01&quot; &quot;2014-01-01&quot; &quot;2014-01-01&quot;
+## [6] &quot;2014-01-01&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(agassault_ny<span class="op">$</span>date)</code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<p>We can now use <code>dplyr</code> to counts the evens per day.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">by_day &lt;-<span class="st"> </span><span class="kw">group_by</span>(agassault_ny, date)
-agassault_ny_d &lt;-<span class="st"> </span><span class="kw">summarise</span>(by_day,
-                          <span class="dt">assaults =</span> <span class="kw">n</span>())</code></pre></div>
+<p>On this character vector can now use <code>dplyr</code> to counts the events per day.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny_d &lt;-<span class="st"> </span>agassault_ny <span class="op">%&gt;%</span>
+<span class="st">                    </span><span class="kw">group_by</span>(date) <span class="op">%&gt;%</span>
+<span class="st">                    </span><span class="kw">summarise</span>(<span class="dt">assaults =</span> <span class="kw">n</span>())</code></pre></div>
 <p>We will now use a <code>ggplot2</code> extension that allow us to produce calendar heat visualisations.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny_d<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">dmy</span>(agassault_ny_d<span class="op">$</span>date)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agassault_ny_d<span class="op">$</span>date &lt;-<span class="st"> </span><span class="kw">ymd</span>(agassault_ny_d<span class="op">$</span>date) <span class="co"># we parse the date again from the character vector we made. If you open the help function on this command, you can see that you can also load any other order than the year, month, and date order we used here</span>
 <span class="kw">library</span>(ggTimeSeries)
 p1 &lt;-<span class="st"> </span><span class="kw">ggplot_calendar_heatmap</span>(
    agassault_ny_d,
@@ -456,7 +456,7 @@ p1 <span class="op">+</span>
 <div id="decomposing-time-series" class="section level2">
 <h2><span class="header-section-number">10.4</span> Decomposing time series</h2>
 <p>Decomposing a time series means separating it into its constituent components, which are usually a trend component and an irregular component, and if it is a seasonal time series, a seasonal component. Let’s get some fresh data. These are intimate partner femicides from Spain;</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fem &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;data/fem.csv&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fem &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://github.com/maczokni/crimemapping_textbook_bookdown/raw/master/data/fem.csv&quot;</span>)
 <span class="kw">colnames</span>(fem)&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;femicidios&quot;</span>)
 fem_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(fem, <span class="dt">frequency=</span><span class="dv">12</span>, <span class="dt">start=</span><span class="kw">c</span>(<span class="dv">2003</span>,<span class="dv">1</span>))
 <span class="kw">plot.ts</span>(fem_timeseries)</code></pre></div>
@@ -518,9 +518,9 @@ fem_timeseries &lt;-<span class="st"> </span><span class="kw">ts</span>(fem, <sp
 <p>We can plot the estimated trend, seasonal, and irregular components of the time series by using the <code>plot()</code> function, for example:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(fem_timeseriescomponents)</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
-<p>Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend.</p>
+<p>Once we remove the noise and the seasonal components, it becomes easier to see the estimated trend. Notice that while random and seasonal components still look messy, their scales are different and centred around zero.</p>
 <p><strong>Homework 10.1</strong> <em>Try creating a ts object using the aggassault data from New York and decompose the time series</em></p>
-<p>We can also use <code>ggplot2</code> for these purposes. In particular we can use the <code>ggseas</code> extension -see for details <a href="https://github.com/ellisp/ggseas">here</a>. First I use the <code>tsdf</code> function that turns the <code>ts</code> object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.</p>
+<p>We can also use <code>ggplot2</code> for these purposes. In particular we can use the <code>ggseas</code> extension which allows for seasonal decomposition within <code>ggplot</code> — see <a href="https://github.com/ellisp/ggseas">here</a> for details. First I use the <code>tsdf</code> function that turns the <code>ts</code> object you created for the homework into a dataframe (you may have provided this object with a different name) and then plot the series.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggseas)
 ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 <span class="kw">ggsdc</span>(ny_df, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y), <span class="dt">method =</span> <span class="st">&quot;decompose&quot;</span>) <span class="op">+</span>
@@ -559,7 +559,7 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 ##   Longitude = col_double(),
 ##   Latitude = col_double()
 ## )</code></pre>
-<p>You can see there is a column with the longitude and another with latitude. For this we can use the standard <code>geom_point</code> function speficying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparenci and size of the points to deal with overplotting.</p>
+<p>You can see there is a column with the longitude and another with latitude. For this we can use the standard <code>geom_point</code> function specifying X and Y as our longitude and latitude. Given the number of points in the data I am also modifying the transparency and size of the points to deal with overplotting.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>() <span class="op">+</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> gmp_bur, <span class="kw">aes</span>(<span class="dt">x =</span> Longitude, <span class="dt">y =</span> Latitude), 
              <span class="dt">alpha =</span> <span class="fl">0.05</span>, <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span><span class="st"> </span>
@@ -578,7 +578,7 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 <pre><code>## Coordinate Reference System:
 ##   EPSG: 27700 
 ##   proj4string: &quot;+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs&quot;</code></pre>
-<p>What is <code>EPGS: 27700</code>? You can check <a href="https://epsg.io/27700">here</a>. This is the British National Grid. How about the police data? Well, we don’t have a <code>sf</code> object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGs1984 instead. What do we do? First we need to create a <code>sf</code> object for the police data specifying the coordinate system (we covered how to do this in week 3).</p>
+<p>What is <code>EPGS: 27700</code>? You can check <a href="https://epsg.io/27700">here</a>. This is the British National Grid. How about the police data? Well, we don’t have a <code>sf</code> object, we have a dataframe for the burglaries. But if we look at the documentation for this data from the Police.UK website we can learn that they use WGS1984 instead. What do we do? First we need to create a <code>sf</code> object for the police data specifying the coordinate system (we covered how to do this in week 3).</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">burglary_sf &lt;-<span class="st"> </span><span class="kw">st_as_sf</span>(<span class="dt">x =</span> gmp_bur, 
                         <span class="dt">coords =</span> <span class="kw">c</span>(<span class="st">&quot;Longitude&quot;</span>, <span class="st">&quot;Latitude&quot;</span>),
                         <span class="dt">crs =</span> <span class="st">&quot;+proj=longlat +datum=WGS84&quot;</span>)</code></pre></div>
@@ -604,12 +604,7 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 <div id="small-multiples-to-show-temporal-variation" class="section level2">
 <h2><span class="header-section-number">10.6</span> Small multiples to show temporal variation</h2>
 <p>We have covered small multiples before. You can indeed use facets to show how things change (or don’t change) across time. Let’s just focus on 2018 to simplify things a bit.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_sf_<span class="dv">2018</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(burglary_sf, Month <span class="op">==</span><span class="st"> &quot;2018-01&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-02&quot;</span> <span class="op">|</span>
-<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-03&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-04&quot;</span> <span class="op">|</span>
-<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-05&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-06&quot;</span> <span class="op">|</span>
-<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-07&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-08&quot;</span> <span class="op">|</span>
-<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-09&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-10&quot;</span> <span class="op">|</span>
-<span class="st">                        </span>Month <span class="op">==</span><span class="st"> &quot;2018-11&quot;</span> <span class="op">|</span><span class="st"> </span>Month <span class="op">==</span><span class="st"> &quot;2018-12&quot;</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_sf_<span class="dv">2018</span> &lt;-<span class="st"> </span><span class="kw">filter</span>(burglary_sf, stringr<span class="op">::</span><span class="kw">str_detect</span>(Month, <span class="st">&#39;2018&#39;</span>)) <span class="co"># detect if there is 2018 anywhere in the Month value of a crime</span>
 <span class="kw">table</span>(bur_sf_<span class="dv">2018</span><span class="op">$</span>Month)</code></pre></div>
 <pre><code>## 
 ## 2018-01 2018-02 2018-03 2018-04 2018-05 2018-06 2018-07 2018-08 2018-09 
@@ -625,7 +620,7 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 <p>The code above only counts for the whole year. But if we want to have a map per month we don’t need the total counts for the whole year but rather the monthly counts.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_per_ward &lt;-<span class="st"> </span>bur_sf_<span class="dv">2018</span> <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">  </span><span class="kw">st_join</span>(mc_wards_WGS864, ., <span class="dt">left =</span> <span class="ot">FALSE</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">count</span>(wd16nm, Month)</code></pre></div>
+<span class="st">  </span><span class="kw">count</span>(wd16nm, Month) <span class="co"># by default, this saves the count to a column named &#39;n&#39;</span></code></pre></div>
 <p>We can now try to produce the small multiples.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tmap)
 <span class="kw">tm_shape</span>(bur_per_ward) <span class="op">+</span><span class="st"> </span>
@@ -636,7 +631,7 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 </div>
 <div id="spaghetti-plots" class="section level2">
 <h2><span class="header-section-number">10.7</span> Spaghetti plots</h2>
-<p>In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectores. You can read more about them <a href="https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph">here</a>. Let’s first get rid of the “spatial component”&quot; for the data.</p>
+<p>In longitudinal studies and in studies looking at areas over time, sometimes researchers use spaghetti plots. On their own they are not great, but they can used when one wants to put a trajectory within a broader context or when comparing different trajectories. You can read more about them <a href="https://www.storytellingwithdata.com/blog/2013/03/avoiding-spaghetti-graph">here</a>. Let’s first get rid of the “spatial component” for the data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">spa_df &lt;-<span class="st"> </span>bur_per_ward
 <span class="kw">st_geometry</span>(spa_df) &lt;-<span class="st"> </span><span class="ot">NULL</span>
 <span class="kw">class</span>(spa_df)</code></pre></div>
@@ -661,7 +656,7 @@ ny_df &lt;-<span class="st"> </span><span class="kw">tsdf</span>(ny_timeseries)
 <span class="st">  </span><span class="kw">theme_bw</span>()</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
 <p>We can also obtained a smoothed representation of the average trend:</p>
-<p>But typically you may want to use this kind of plots in different ways (see the article we linked to above). Here we are going to produce a plot higliting the trajectory in Fallowfield. Before I do that I will create a new variable identifying Fallowfield.</p>
+<p>But typically you may want to use this kind of plots in different ways (see the article we linked to above). Here we are going to produce a plot highlighting the trajectory in Fallowfield. Before I do that I will create a new variable identifying Fallowfield.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">spa_df<span class="op">$</span>fallowfield &lt;-<span class="st"> &quot;No&quot;</span>
 spa_df<span class="op">$</span>fallowfield[spa_df<span class="op">$</span>wd16nm<span class="op">==</span><span class="st">&quot;Fallowfield&quot;</span>] &lt;-<span class="st"> &quot;Yes&quot;</span>
 <span class="kw">table</span>(spa_df<span class="op">$</span>fallowfield)</code></pre></div>
@@ -684,26 +679,28 @@ spa_df<span class="op">$</span>fallowfield[spa_df<span class="op">$</span>wd16nm
 <p>The next one is a non-spatial plot, in that we do not show a map. However we will show the varying rate of burglaries per month within each ward. It is interesting to see this as an animation over time, rather than in the small multiples format, because it can better drive home the message of change (and also it looks very cool!).</p>
 <p>So first thing we do is to load the <code>gganimate</code> package:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gganimate)</code></pre></div>
-<p>Then, we need to make sure that our temporal variable is a date object. We can use the <code>ymd()</code> function, from the fantastic lubridate package (really I cannot praise this package enough, it makes handling dates so easy…!) to make sure that our Month variable is a date object.</p>
+<p>Then, we need to make sure that our temporal variable is a date object. We can use the <code>ymd()</code> function, from the fantastic <code>lubridate</code> package (really I cannot praise this package enough, it makes handling dates so easy…!) to make sure that our Month variable is a date object.</p>
 <p>But we have no day you say! Only month! How can we use <code>ymd()</code> which clearly requires <em>y</em>ear <em>m</em>onth ad <em>day</em>! Well, one approach is to make this up, and just say that everything in our data happened on the 1st of the month. We can use the <code>paste0()</code> function to do this:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">bur_per_ward<span class="op">$</span>date_month &lt;-<span class="st"> </span><span class="kw">ymd</span>(<span class="kw">paste0</span>(bur_per_ward<span class="op">$</span>Month, <span class="st">&quot;-01&quot;</span>))</code></pre></div>
 <p>Now, we can create a simple static plot, the way we already know how. Let’s plot the number of burglaries per ward, and save this in an object called <code>anim</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">x =</span> wd16nm, <span class="dt">y =</span> n)) <span class="op">+</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">x =</span> wd16nm, <span class="dt">y =</span> n, <span class="dt">fill=</span><span class="kw">ifelse</span>(wd16nm<span class="op">==</span><span class="st">&quot;Fallowfield&quot;</span>, <span class="st">&#39;Fallowfield&#39;</span>, <span class="ot">NA</span>))) <span class="op">+</span>
 <span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">labels =</span> scales<span class="op">::</span>comma) <span class="op">+</span>
 <span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw">c</span>(<span class="st">&#39;Fallowfield&#39;</span> =<span class="st"> &#39;blue&#39;</span>), <span class="dt">na.value=</span><span class="st">&#39;gray50&#39;</span>, <span class="dt">guide=</span>F) <span class="op">+</span><span class="st"> </span><span class="co"># we&#39;re highlighting Fallowfield!</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title=</span><span class="st">&quot;Burglary counts,&quot;</span>,
        <span class="dt">x =</span> <span class="st">&quot;&quot;</span>,
        <span class="dt">y =</span> <span class="st">&quot;&quot;</span>) </code></pre></div>
-<p>Now, finally, we can animate this graph. Take the object of the static grapn (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use <code>transition_states()</code>. This transition splits your data into multiple states based on the levels in a given column, much like ggplot2::facet_wrap() splits up the data in multiple panels. It then tweens between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the <code>closest_state</code> to dynamically label the graph:</p>
+<p>Now, finally, we can animate this graph. Take the object of the static graph (anim) and add a form of transition, which will be used to animate the graph. In this case, we can use <code>transition_states()</code>. This transition splits your data into multiple states based on the levels in a given column, much like <code>ggplot2::facet_wrap()</code> splits up the data in multiple panels. It then shifts between the defined states and pauses at each state. Layers with data without the specified column will be kept constant during the animation (again, mimicking facet_wrap). States are the unquoted name of the column holding the state levels in the data. You can then use the <code>closest_state</code> to dynamically label the graph:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre></div>
 <p><img src="10-week10_files/figure-html/unnamed-chunk-48-1.gif" /><!-- --></p>
 <p>How cool is that!?</p>
-<p>We can do this for maps as well. However, to apply gganimate to sf objects, you need to have a package called <code>transformr</code> installed. Install this package, and then we can apply <code>gganimate</code> to a map of burglaries.</p>
+<p>We can do this for maps as well. However, to apply <code>gganimate</code> to <code>sf</code> objects, you need to have a package called <code>transformr</code> installed. Install this package, and then we can apply <code>gganimate</code> to a map of burglaries.</p>
 <p>Again make a static map:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim_map &lt;-<span class="st"> </span><span class="kw">ggplot</span>(bur_per_ward, <span class="kw">aes</span>(<span class="dt">fill =</span> n, <span class="dt">color =</span> n)) <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw">geom_sf</span>()</code></pre></div>
+<span class="st">  </span><span class="kw">geom_sf</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_sf</span>(<span class="dt">data=</span><span class="kw">subset</span>(bur_per_ward, wd16nm<span class="op">==</span><span class="st">&#39;Fallowfield&#39;</span>), <span class="dt">color=</span><span class="st">&#39;black&#39;</span>, <span class="dt">fill=</span><span class="ot">NA</span>) <span class="co"># and we are drawing a black boundary around fallowfield this time</span></code></pre></div>
 <p>And use <code>transition_states()</code> to animate by month.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">anim_map <span class="op">+</span><span class="st"> </span><span class="kw">transition_states</span>(date_month, <span class="dt">transition_length =</span> <span class="dv">1</span>, <span class="dt">state_length =</span> <span class="dv">1</span>) <span class="op">+</span>
 <span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Month: {closest_state}&quot;</span>)</code></pre></div>
